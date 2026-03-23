@@ -4,15 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a3772287-d375-46a1-8af5-0cbcc7b72545" name="更改" comment="后端项目初始化">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="a3772287-d375-46a1-8af5-0cbcc7b72545" name="更改" comment="完成数据库连接">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/xinyun-common/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/xinyun-common/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/xinyun-pojo/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/xinyun-pojo/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/xinyun-pojo/src/main/java/com/xinyun/.gitkeep" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/xinyun-pojo/src/main/java/com/xinyun/entity/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/xinyun-pojo/src/main/java/com/xinyun/entity/User.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/xinyun-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/xinyun-service/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/xinyun-service/src/main/java/com/xinyun/.gitkeep" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../xinyun-frontend/接口文档.md" beforeDir="false" afterPath="$PROJECT_DIR$/../xinyun-frontend/接口文档.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,37 +52,37 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_MARK_IGNORED_FILES_AS_EXCLUDED": "true",
-    "JUnit.UserServiceTest.test.executor": "Debug",
-    "Maven.xinyun-backend [compile].executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "Spring Boot.XinyunApplication.executor": "Debug",
-    "git-widget-placeholder": "main",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/Code/project/xinyun-project/xinyun-backend",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "全局库",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "MavenSettings",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_MARK_IGNORED_FILES_AS_EXCLUDED&quot;: &quot;true&quot;,
+    &quot;JUnit.UserServiceTest.test.executor&quot;: &quot;Debug&quot;,
+    &quot;Maven.xinyun-backend [compile].executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;Spring Boot.XinyunApplication.executor&quot;: &quot;Debug&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/Code/project/xinyun-project/xinyun-backend&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;全局库&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.projectsettings.compiler.annotationProcessors&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "mysql"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;mysql&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected="JUnit.UserServiceTest.test">
     <configuration name="UserServiceTest.test" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="xinyun-service" />
@@ -141,7 +140,10 @@
       <workItem from="1774259158411" duration="105000" />
       <workItem from="1774259271218" duration="183000" />
       <workItem from="1774259497967" duration="186000" />
-      <workItem from="1774259734979" duration="5125000" />
+      <workItem from="1774259734979" duration="6211000" />
+      <workItem from="1774271771930" duration="862000" />
+      <workItem from="1774274041515" duration="906000" />
+      <workItem from="1774275047229" duration="7429000" />
     </task>
     <task id="LOCAL-00001" summary="后端项目初始化">
       <option name="closed" value="true" />
@@ -159,7 +161,23 @@
       <option name="project" value="LOCAL" />
       <updated>1774237237604</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="完成数据库连接">
+      <option name="closed" value="true" />
+      <created>1774270779270</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1774270779270</updated>
+    </task>
+    <task id="LOCAL-00004" summary="完成数据库连接">
+      <option name="closed" value="true" />
+      <created>1774270883212</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1774270883212</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -199,6 +217,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Initial commit" />
     <MESSAGE value="后端项目初始化" />
-    <option name="LAST_COMMIT_MESSAGE" value="后端项目初始化" />
+    <MESSAGE value="完成数据库连接" />
+    <option name="LAST_COMMIT_MESSAGE" value="完成数据库连接" />
   </component>
 </project>

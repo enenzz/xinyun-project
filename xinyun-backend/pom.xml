@@ -20,7 +20,6 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spring-boot.version>3.2.0</spring-boot.version>
         <mybatis-plus.version>3.5.5</mybatis-plus.version>
-        <mybatis-spring.version>3.0.3</mybatis-spring.version>
     </properties>
 
     <dependencyManagement>
@@ -38,11 +37,6 @@
                 <version>${mybatis-plus.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.mybatis</groupId>
-                <artifactId>mybatis-spring</artifactId>
-                <version>${mybatis-spring.version}</version>
-            </dependency>
-            <dependency>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
                 <version>1.18.30</version>
@@ -50,17 +44,7 @@
         </dependencies>
     </dependencyManagement>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-annotation</artifactId>
-            <version>${mybatis-plus.version}</version>
-        </dependency>
-    </dependencies>
+
 
     <build>
         <pluginManagement>
