@@ -1,0 +1,25 @@
+server:
+  port: 8080
+
+spring:
+  profiles:
+    active: dev
+  datasource:
+    url: jdbc:mysql://${spring.datasource.host}:${spring.datasource.port}/${spring.datasource.database}?useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    username: ${spring.datasource.username}
+    password: ${spring.datasource.password}
+    driver-class-name: ${spring.datasource.driver-class-name}
+
+# MyBatis-Plus 配置
+mybatis-plus:
+  # Mapper接口扫描路径（必配，否则MP无法识别Mapper）
+  mapper-locations: classpath:mapper/*.xml # 如有XML映射文件需配置
+  type-aliases-package: com.xinyun.entity # 实体类包路径
+  configuration:
+    map-underscore-to-camel-case: true # 开启驼峰命名自动转换（默认开启）
+  global-config: #全局配置
+    db-config:
+      id-type: assign_id # 全局主键生成策略（默认雪花算法）
+      logic-delete-field: deleted # 全局逻辑删除字段名
+      logic-delete-value: 1 # 逻辑删除值（默认1）
+      logic-not-delete-value: 0 # 逻辑未删除值（默认0）
