@@ -16,7 +16,7 @@ public class RegisterDTO {
     private String username;
 
     /**
-     * 密码（MD5加密后传输）
+     * 密码（MD5 加密后传输）
      */
     private String password;
 
@@ -26,12 +26,12 @@ public class RegisterDTO {
     private String nickname;
 
     /**
-     * 头像URL
+     * 头像 URL
      */
-    private String avatar;
+    private String avatarUrl;
 
     /**
-     * 性别: 0-未知 1-男 2-女
+     * 性别：0-未知 1-男 2-女
      */
     private Integer gender;
 
