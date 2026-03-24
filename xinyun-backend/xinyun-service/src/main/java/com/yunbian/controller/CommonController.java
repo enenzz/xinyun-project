@@ -23,7 +23,7 @@ import java.util.UUID;
 public class CommonController {
 
     // 图片存储目录 - 使用类路径下的 static/images 目录
-    private String uploadPath = "src/main/resources/static/images";
+    private String uploadPath = "xinyun-service/src/main/resources/static/images";
 
     /**
      * 图片上传
@@ -40,8 +40,18 @@ public class CommonController {
             //2. 将文件保存到本地 images 目录下
             // 获取原始文件名
             String originalFilename = file.getOriginalFilename();
+            
+            if (originalFilename == null || originalFilename.isEmpty()) {
+                throw new BusinessException("文件名为空");
+            }
+            
             // 获取文件后缀
-            String suffix = originalFilename.substring(originalFilename.lastIndexOf("."));
+            String suffix = "";
+            int lastDotIndex = originalFilename.lastIndexOf(".");
+            if (lastDotIndex > 0) {
+                suffix = originalFilename.substring(lastDotIndex);
+            }
+            
             // 生成唯一文件名，防止重名
             String fileName = UUID.randomUUID().toString().replace("-", "") + suffix;
                 

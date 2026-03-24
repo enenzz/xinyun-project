@@ -8,6 +8,8 @@ server:
 spring:
   profiles:
     active: dev
+  # 禁用 favicon
+  web.resources.favicon.enabled: false
   datasource:
     url: jdbc:mysql://${spring.datasource.host}:${spring.datasource.port}/${spring.datasource.database}?useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
     username: ${spring.datasource.username}
