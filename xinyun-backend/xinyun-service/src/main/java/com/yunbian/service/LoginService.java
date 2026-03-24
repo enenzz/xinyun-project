@@ -11,4 +11,12 @@ public interface LoginService extends IService<User> {
      * @param registerDTO
      */
     void register(RegisterDTO registerDTO);
+
+    /**
+     * 用户登录
+     * @param username 用户名
+     * @param password 密码
+     * @return 登录成功的用户信息（不包含密码）
+     */
+    User login(String username, String password);
 }

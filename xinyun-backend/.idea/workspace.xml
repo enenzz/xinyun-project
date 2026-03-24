@@ -4,34 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a3772287-d375-46a1-8af5-0cbcc7b72545" name="更改" comment="WIP: 用户注册功能">
+    <list default="true" id="a3772287-d375-46a1-8af5-0cbcc7b72545" name="更改" comment="完成： 阿里云Oss文件上传">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/xinyun-common/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/xinyun-common/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/xinyun-common/src/main/java/com/xinyun/constant/ExceptionConstants.java" beforeDir="false" afterPath="$PROJECT_DIR$/xinyun-common/src/main/java/com/yunbian/constant/ExceptionConstants.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/xinyun-common/src/main/java/com/xinyun/context/UserContext.java" beforeDir="false" afterPath="$PROJECT_DIR$/xinyun-common/src/main/java/com/yunbian/context/UserContext.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/xinyun-common/src/main/java/com/xinyun/exception/BusinessException.java" beforeDir="false" afterPath="$PROJECT_DIR$/xinyun-common/src/main/java/com/yunbian/exception/BusinessException.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/xinyun-common/src/main/java/com/xinyun/result/Result.java" beforeDir="false" afterPath="$PROJECT_DIR$/xinyun-common/src/main/java/com/yunbian/result/Result.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/xinyun-common/src/main/java/com/xinyun/utils/JwtUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/xinyun-common/src/main/java/com/yunbian/utils/JwtUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/xinyun-pojo/src/main/java/com/xinyun/dto/RegisterDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/xinyun-pojo/src/main/java/com/yunbian/dto/RegisterDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/xinyun-pojo/src/main/java/com/xinyun/entity/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/xinyun-pojo/src/main/java/com/yunbian/entity/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/xinyun-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/xinyun-service/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/xinyun-service/src/main/java/com/xinyun/XinyunApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/xinyun-service/src/main/java/com/yunbian/XinyunApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/xinyun-service/src/main/java/com/xinyun/config/MyMetaObjectHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/xinyun-service/src/main/java/com/yunbian/config/MyMetaObjectHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/xinyun-service/src/main/java/com/xinyun/config/WebMvcConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/xinyun-service/src/main/java/com/yunbian/config/WebMvcConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/xinyun-service/src/main/java/com/xinyun/controller/LoginController.java" beforeDir="false" afterPath="$PROJECT_DIR$/xinyun-service/src/main/java/com/yunbian/controller/LoginController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/xinyun-service/src/main/java/com/xinyun/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/xinyun-service/src/main/java/com/yunbian/controller/UserController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/xinyun-service/src/main/java/com/xinyun/exception/GlobalExceptionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/xinyun-service/src/main/java/com/yunbian/exception/GlobalExceptionHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/xinyun-service/src/main/java/com/xinyun/interceptor/JwtInterceptor.java" beforeDir="false" afterPath="$PROJECT_DIR$/xinyun-service/src/main/java/com/yunbian/interceptor/JwtInterceptor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/xinyun-service/src/main/java/com/xinyun/mapper/LoginMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/xinyun-service/src/main/java/com/yunbian/mapper/LoginMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/xinyun-service/src/main/java/com/xinyun/mapper/UserMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/xinyun-service/src/main/java/com/yunbian/mapper/UserMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/xinyun-service/src/main/java/com/xinyun/service/LoginService.java" beforeDir="false" afterPath="$PROJECT_DIR$/xinyun-service/src/main/java/com/yunbian/service/LoginService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/xinyun-service/src/main/java/com/xinyun/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/xinyun-service/src/main/java/com/yunbian/service/UserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/xinyun-service/src/main/java/com/xinyun/service/impl/LoginServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/xinyun-service/src/main/java/com/yunbian/service/impl/LoginServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/xinyun-service/src/main/java/com/xinyun/service/impl/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/xinyun-service/src/main/java/com/yunbian/service/impl/UserServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/xinyun-service/src/main/java/com/yunbian/config/WebMvcConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/xinyun-service/src/main/java/com/yunbian/config/WebMvcConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/xinyun-service/src/main/java/com/yunbian/controller/CommonController.java" beforeDir="false" afterPath="$PROJECT_DIR$/xinyun-service/src/main/java/com/yunbian/controller/CommonController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/xinyun-service/src/main/java/com/yunbian/controller/LoginController.java" beforeDir="false" afterPath="$PROJECT_DIR$/xinyun-service/src/main/java/com/yunbian/controller/LoginController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/xinyun-service/src/main/java/com/yunbian/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/xinyun-service/src/main/java/com/yunbian/controller/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/xinyun-service/src/main/java/com/yunbian/exception/GlobalExceptionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/xinyun-service/src/main/java/com/yunbian/exception/GlobalExceptionHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/xinyun-service/src/main/java/com/yunbian/service/LoginService.java" beforeDir="false" afterPath="$PROJECT_DIR$/xinyun-service/src/main/java/com/yunbian/service/LoginService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/xinyun-service/src/main/java/com/yunbian/service/impl/LoginServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/xinyun-service/src/main/java/com/yunbian/service/impl/LoginServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/xinyun-service/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/xinyun-service/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/xinyun-service/src/test/java/com/xinyun/UserServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/xinyun-service/src/test/java/com/yunbian/UserServiceTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../xinyun-frontend/接口文档.md" beforeDir="false" afterPath="$PROJECT_DIR$/../xinyun-frontend/接口文档.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -75,44 +57,45 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_MARK_IGNORED_FILES_AS_EXCLUDED": "true",
-    "JUnit.AliOssConfigTest.testAliOssPropertiesInjection.executor": "Debug",
-    "JUnit.OssJavaSdkQuickStart.testOss.executor": "Debug",
-    "JUnit.OssUploadTest.testUploadDirectly.executor": "Debug",
-    "JUnit.OssUploadTest.testUploadViaController.executor": "Debug",
-    "JUnit.UserServiceTest.test.executor": "Run",
-    "Maven.xinyun-backend [clean].executor": "Run",
-    "Maven.xinyun-backend [compile].executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "Spring Boot.XinyunApplication.executor": "Debug",
-    "git-widget-placeholder": "main",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/Code/project/xinyun-project/xinyun-backend",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "项目",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_MARK_IGNORED_FILES_AS_EXCLUDED&quot;: &quot;true&quot;,
+    &quot;JUnit.AliOssConfigTest.testAliOssPropertiesInjection.executor&quot;: &quot;Debug&quot;,
+    &quot;JUnit.OssJavaSdkQuickStart.testOss.executor&quot;: &quot;Debug&quot;,
+    &quot;JUnit.OssUploadTest.testUploadDirectly.executor&quot;: &quot;Debug&quot;,
+    &quot;JUnit.OssUploadTest.testUploadViaController.executor&quot;: &quot;Debug&quot;,
+    &quot;JUnit.UserServiceTest.test.executor&quot;: &quot;Run&quot;,
+    &quot;Maven.xinyun-backend [clean].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.xinyun-backend [compile].executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;Spring Boot.XinyunApplication.executor&quot;: &quot;Debug&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/Code/project/xinyun-project/xinyun-backend&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;项目&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "mysql"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;mysql&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Code\project\xinyun-project\xinyun-backend\xinyun-service\src\main\resources\static" />
       <recent name="D:\Code\project\xinyun-project\xinyun-backend\xinyun-service\src\test\java\com\xinyun" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
@@ -252,7 +235,9 @@
       <workItem from="1774330768957" duration="5174000" />
       <workItem from="1774336193016" duration="419000" />
       <workItem from="1774336626318" duration="239000" />
-      <workItem from="1774339007088" duration="2002000" />
+      <workItem from="1774339007088" duration="2441000" />
+      <workItem from="1774341470229" duration="3014000" />
+      <workItem from="1774349592467" duration="7217000" />
     </task>
     <task id="LOCAL-00001" summary="后端项目初始化">
       <option name="closed" value="true" />
@@ -294,7 +279,15 @@
       <option name="project" value="LOCAL" />
       <updated>1774284834713</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="完成： 阿里云Oss文件上传">
+      <option name="closed" value="true" />
+      <created>1774341193590</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1774341193590</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -336,7 +329,8 @@
     <MESSAGE value="后端项目初始化" />
     <MESSAGE value="完成数据库连接" />
     <MESSAGE value="WIP: 用户注册功能" />
-    <option name="LAST_COMMIT_MESSAGE" value="WIP: 用户注册功能" />
+    <MESSAGE value="完成： 阿里云Oss文件上传" />
+    <option name="LAST_COMMIT_MESSAGE" value="完成： 阿里云Oss文件上传" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
