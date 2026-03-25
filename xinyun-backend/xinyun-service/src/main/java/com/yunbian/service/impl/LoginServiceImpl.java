@@ -3,7 +3,9 @@ package com.yunbian.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yunbian.constant.ExceptionConstants;
+import com.yunbian.constant.RedisConstants;
 import com.yunbian.constant.SystemConstants;
+import com.yunbian.dto.LoginDTO;
 import com.yunbian.dto.RegisterDTO;
 import com.yunbian.entity.User;
 import com.yunbian.entity.UserLocation;
@@ -19,9 +21,9 @@ import com.yunbian.vo.CaptchaVO;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -32,6 +34,7 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.util.Random;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 import static com.yunbian.constant.ExceptionConstants.REGISTER_FAILED;
 
@@ -41,9 +44,11 @@ public class LoginServiceImpl extends ServiceImpl<UserMapper, User> implements L
 
     @Resource
     private AliOssUtil aliOssUtil;
-
     @Resource
     private UserLocationMapper userLocationMapper;
+    @Resource
+    private StringRedisTemplate stringRedisTemplate;
+
 
     /**
      * 静态内部类：将本地 File 文件转换为 MultipartFile
@@ -282,12 +287,25 @@ public class LoginServiceImpl extends ServiceImpl<UserMapper, User> implements L
 
     /**
      * 用户登录
-     * @param username 用户名
-     * @param password 密码
+     * @param loginDTO 登录信息
      * @return 登录成功的用户信息（不包含密码）
      */
     @Override
-    public User login(String username, String password) {
+    public User login(LoginDTO loginDTO) {
+        String username = loginDTO.getUsername();
+        String password = loginDTO.getPassword();
+        String captcha = loginDTO.getCaptcha();
+        
+        // 校验验证码（如果提供了）
+        if (StrUtils.isNotBlank(captcha)) {
+            String savedCaptcha = stringRedisTemplate.opsForValue().get(RedisConstants.CAPTCHA_USERNAME + username);
+            if (savedCaptcha == null || !captcha.equals(savedCaptcha)) {
+                throw new BusinessException(ExceptionConstants.CAPTCHA_ERROR);
+            }
+            // 验证成功后删除验证码，防止重复使用
+            stringRedisTemplate.delete(RedisConstants.CAPTCHA_USERNAME + username);
+        }
+        
         // 根据用户名查询用户
         LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(User::getUsername, username);
@@ -310,14 +328,14 @@ public class LoginServiceImpl extends ServiceImpl<UserMapper, User> implements L
 
     /**
      * 生成并发送验证码
-     * @param phone 手机号
+     * @param username 用户名
      * @return 验证码 VO
      */
     @Override
-    public CaptchaVO generateCaptcha(String phone) {
-        // 校验手机号格式
-        if (StrUtils.isBlank(phone)) {
-            throw new BusinessException(ExceptionConstants.PHONE_EMPTY);
+    public String generateCaptcha(String username) {
+        // 校验用户名
+        if (StrUtils.isBlank(username)) {
+            throw new BusinessException(ExceptionConstants.USERNAME_EMPTY);
         }
         
         // 生成 6 位数字验证码
@@ -325,15 +343,13 @@ public class LoginServiceImpl extends ServiceImpl<UserMapper, User> implements L
         
         // 通过日志输出验证码（模拟发送）
         log.info("===========================================");
-        log.info("验证码发送 - 手机号：{}", phone);
+        log.info("验证码发送 - 用户名：{}", username);
         log.info("验证码：{}", captcha);
         log.info("===========================================");
+
+        // 将验证码保存到 Redis 中，并设置过期时间（1 分钟）
+        stringRedisTemplate.opsForValue().set(RedisConstants.CAPTCHA_USERNAME + username, captcha, 1, TimeUnit.MINUTES);
         
-        // TODO: 实际项目中可以在这里缓存验证码到 Redis，设置 5 分钟过期
-        // 例如：redisTemplate.setex("captcha:" + phone, 300, captcha);
-        
-        return CaptchaVO.builder()
-                .captcha(captcha)
-                .build();
+        return captcha;
     }
 }

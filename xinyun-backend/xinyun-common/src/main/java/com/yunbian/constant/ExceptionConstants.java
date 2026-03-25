@@ -26,6 +26,7 @@ public class ExceptionConstants {
     public static final String USER_NOT_FOUND_LOGIN = "用户名不存在";
     public static final String PASSWORD_ERROR = "密码错误";
     public static final String PASSWORD_LENGTH_ERROR = "密码长度必须在 6-20 位之间";
+    public static final String CAPTCHA_ERROR = "验证码错误";
 
     // ========== 通用相关 ==========
     public static final String SYSTEM_ERROR = "系统繁忙，请稍后重试";

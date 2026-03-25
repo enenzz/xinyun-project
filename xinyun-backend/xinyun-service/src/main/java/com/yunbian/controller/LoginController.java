@@ -1,5 +1,6 @@
 package com.yunbian.controller;
 
+import com.yunbian.dto.LoginDTO;
 import com.yunbian.dto.RegisterDTO;
 import com.yunbian.entity.User;
 import com.yunbian.result.Result;
@@ -8,8 +9,6 @@ import com.yunbian.vo.CaptchaVO;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Map;
 
 @RestController
 @Slf4j
@@ -27,24 +26,21 @@ public class LoginController {
     }
 
     @PostMapping
-    public Result login(@RequestBody Map<String, String> params) {
+    public Result login(@RequestBody LoginDTO loginDTO) {
         log.info("开始登录.....");
         
-        String username = params.get("username");
-        String password = params.get("password");
-        
-        User user = loginService.login(username, password);
+        User user = loginService.login(loginDTO);
         
         return Result.success(user);
     }
 
     @GetMapping("/captcha")
-    public Result<CaptchaVO> captcha(@RequestParam("phone") String phone) {
-        log.info("获取验证码请求 - 手机号：{}", phone);
+    public Result<String> captcha(@RequestParam("username") String username) {
+        log.info("获取验证码请求 - 用户名：{}", username);
         
-        CaptchaVO captchaVO = loginService.generateCaptcha(phone);
+        String captcha = loginService.generateCaptcha(username);
         
-        return Result.success(captchaVO);
+        return Result.success(captcha);
     }
 
     private Result logout() {

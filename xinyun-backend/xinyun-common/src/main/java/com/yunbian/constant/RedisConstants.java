@@ -17,7 +17,7 @@ public class RedisConstants {
      * 格式：xinyun:captcha:手机号
      * 示例：xinyun:captcha:13800138000
      */
-    public static final String CAPTCHA_PHONE = KEY_PREFIX + "captcha:";
+    public static final String CAPTCHA_USERNAME = KEY_PREFIX + "login:captcha:";
 
     // ========== 用户相关 ==========
     /**
