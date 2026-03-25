@@ -4,12 +4,10 @@ import com.yunbian.dto.RegisterDTO;
 import com.yunbian.entity.User;
 import com.yunbian.result.Result;
 import com.yunbian.service.LoginService;
+import com.yunbian.vo.CaptchaVO;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -40,13 +38,16 @@ public class LoginController {
         return Result.success(user);
     }
 
-    public Result captcha() {
-        log.info("获取验证码成功");
-
-        return Result.success("获取验证码成功");
+    @GetMapping("/captcha")
+    public Result<CaptchaVO> captcha(@RequestParam("phone") String phone) {
+        log.info("获取验证码请求 - 手机号：{}", phone);
+        
+        CaptchaVO captchaVO = loginService.generateCaptcha(phone);
+        
+        return Result.success(captchaVO);
     }
 
-    public Result logout() {
+    private Result logout() {
         log.info("退出登录");
 
         return Result.success("退出登录");

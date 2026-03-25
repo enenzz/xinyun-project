@@ -37,7 +37,9 @@ public class AliOssUtil {
         // 获取文件后缀
         String suffix = originalFilename.substring(originalFilename.lastIndexOf("."));
         // 生成唯一文件名
-        String objectName = dir + "/" + UUID.randomUUID().toString().replace("-", "") + suffix;
+        // 确保目录路径不以 / 结尾，避免双斜杠
+        String cleanDir = dir != null && dir.endsWith("/") ? dir.substring(0, dir.length() - 1) : dir;
+        String objectName = cleanDir + "/" + UUID.randomUUID().toString().replace("-", "") + suffix;
 
         OSS ossClient = null;
         try {

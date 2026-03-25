@@ -10,68 +10,66 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+/**
+ * 用户位置实体
+ */
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@TableName("user")
-public class User {
-    
+@TableName("user_location")
+public class UserLocation {
+
     /**
      * 主键 ID
      */
     @TableId(type = IdType.AUTO)
     private Long id;
-    
+
     /**
-     * 用户名
+     * 用户 ID
      */
-    private String username;
-    
+    private Long userId;
+
     /**
-     * 昵称
+     * 经度
      */
-    private String nickname;
-    
+    private BigDecimal longitude;
+
     /**
-     * 密码 (加密)
+     * 纬度
      */
-    private String password;
-    
+    private BigDecimal latitude;
+
     /**
-     * 头像 URL
+     * 省
      */
-    private String avatar;
-    
+    private String province;
+
     /**
-     * 性别：0-未知 1-男 2-女
+     * 市
      */
-    private Integer gender;
-    
+    private String city;
+
     /**
-     * 生日
+     * 区/县
      */
-    private LocalDate birthday;
-    
+    private String district;
+
     /**
-     * 手机号
+     * 详细地址
      */
-    private String phone;
-    
-    /**
-     * 用户状态：0-禁用 1-正常
-     */
-    private Integer status;
-    
+    private String address;
+
     /**
      * 创建时间
      */
     @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createTime;
-    
+
     /**
      * 更新时间
      */

@@ -4,11 +4,20 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a3772287-d375-46a1-8af5-0cbcc7b72545" name="更改" comment="完成：图片上传至本地">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+    <list default="true" id="a3772287-d375-46a1-8af5-0cbcc7b72545" name="更改" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/xinyun-common/src/main/java/com/yunbian/constant/ExceptionConstants.java" beforeDir="false" afterPath="$PROJECT_DIR$/xinyun-common/src/main/java/com/yunbian/constant/ExceptionConstants.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/xinyun-common/src/main/java/com/yunbian/utils/AliOssUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/xinyun-common/src/main/java/com/yunbian/utils/AliOssUtil.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/xinyun-pojo/src/main/java/com/yunbian/dto/RegisterDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/xinyun-pojo/src/main/java/com/yunbian/dto/RegisterDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/xinyun-pojo/src/main/java/com/yunbian/entity/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/xinyun-pojo/src/main/java/com/yunbian/entity/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/xinyun-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/xinyun-service/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/xinyun-service/src/main/java/com/yunbian/controller/LoginController.java" beforeDir="false" afterPath="$PROJECT_DIR$/xinyun-service/src/main/java/com/yunbian/controller/LoginController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/xinyun-service/src/main/java/com/yunbian/service/LoginService.java" beforeDir="false" afterPath="$PROJECT_DIR$/xinyun-service/src/main/java/com/yunbian/service/LoginService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/xinyun-service/src/main/java/com/yunbian/service/impl/LoginServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/xinyun-service/src/main/java/com/yunbian/service/impl/LoginServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/xinyun-service/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/xinyun-service/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/xinyun-service/src/main/resources/static/images/0ebe16706ea44452b7031e1dbb62736f.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../xinyun-frontend/test-upload.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../踩坑总结 - 文件上传跨域问题.md" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -233,7 +242,9 @@
       <workItem from="1774339007088" duration="2441000" />
       <workItem from="1774341470229" duration="3014000" />
       <workItem from="1774349592467" duration="12551000" />
-      <workItem from="1774367800073" duration="2168000" />
+      <workItem from="1774367800073" duration="2307000" />
+      <workItem from="1774402800723" duration="8628000" />
+      <workItem from="1774416811418" duration="12210000" />
     </task>
     <task id="LOCAL-00001" summary="后端项目初始化">
       <option name="closed" value="true" />
@@ -299,7 +310,15 @@
       <option name="project" value="LOCAL" />
       <updated>1774365992137</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="开发中：用户注册功能&#10;代码基本编写完成，还需进一步测试">
+      <option name="closed" value="true" />
+      <created>1774370098317</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1774370098317</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -344,7 +363,8 @@
     <MESSAGE value="完成： 阿里云Oss文件上传" />
     <MESSAGE value="开发中：用户注册功能" />
     <MESSAGE value="完成：图片上传至本地" />
-    <option name="LAST_COMMIT_MESSAGE" value="完成：图片上传至本地" />
+    <MESSAGE value="开发中：用户注册功能&#10;代码基本编写完成，还需进一步测试" />
+    <option name="LAST_COMMIT_MESSAGE" value="开发中：用户注册功能&#10;代码基本编写完成，还需进一步测试" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -2,28 +2,38 @@ package com.yunbian.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.yunbian.constant.ExceptionConstants;
+import com.yunbian.constant.SystemConstants;
 import com.yunbian.dto.RegisterDTO;
 import com.yunbian.entity.User;
+import com.yunbian.entity.UserLocation;
 import com.yunbian.exception.BusinessException;
+import com.yunbian.mapper.UserLocationMapper;
 import com.yunbian.mapper.UserMapper;
 import com.yunbian.service.LoginService;
 import com.yunbian.utils.AliOssUtil;
 import com.yunbian.utils.Md5Utils;
+import com.yunbian.utils.PhoneUtils;
+import com.yunbian.utils.StrUtils;
+import com.yunbian.vo.CaptchaVO;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.LocalDate;
+import java.time.Period;
+import java.util.Random;
 import java.util.UUID;
 
 import static com.yunbian.constant.ExceptionConstants.REGISTER_FAILED;
-import static com.yunbian.constant.ExceptionConstants.USERNAME_EXISTS;
 
 @Service
 @Slf4j
@@ -31,6 +41,9 @@ public class LoginServiceImpl extends ServiceImpl<UserMapper, User> implements L
 
     @Resource
     private AliOssUtil aliOssUtil;
+
+    @Resource
+    private UserLocationMapper userLocationMapper;
 
     /**
      * 静态内部类：将本地 File 文件转换为 MultipartFile
@@ -101,57 +114,98 @@ public class LoginServiceImpl extends ServiceImpl<UserMapper, User> implements L
      * @param registerDTO
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void register(RegisterDTO registerDTO) {
-        // 先判断用户名是否已存在
-        String username = registerDTO.getUsername();
-        LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(User::getUsername, username);
-        User existUser = this.getOne(queryWrapper);
-        
-        if (existUser != null) {
-            throw new BusinessException(USERNAME_EXISTS);
+        // 校验用户名
+        if (StrUtils.isBlank(registerDTO.getUsername())) {
+            throw new BusinessException(ExceptionConstants.USERNAME_EMPTY);
         }
-
-        User user = new User();
-        // 从 avatarUrl 中提取文件名（如果提供了头像 URL）
-        String avatarUrl = registerDTO.getAvatarUrl();
-        if (avatarUrl != null && !avatarUrl.isEmpty()) {
-            // 从完整 URL 中提取文件名
-            // 例如：http://localhost:8080/images/abc123.jpg → abc123.jpg
-            try {
-                String fileName = avatarUrl.substring(avatarUrl.lastIndexOf('/') + 1);  // 获取文件名：abc123.jpg
-                //从 images 目录下获取图片
-                String localImagePath = "xinyun-service/src/main/resources/static/images/" + fileName;
-                File localFile = new File(localImagePath);
-                            
-                if (localFile.exists()) {
-                    //上传至 aliyun
-                    MultipartFile imageFile = new FileMultipartFileAdapter(localFile, fileName);
-                    String ossUrl = aliOssUtil.upload(imageFile, "xinyun/images/");
-                    user.setAvatar(ossUrl);
-                    log.info("头像上传至 OSS 成功：{}", ossUrl);
-                } else {
-                    log.warn("本地图片文件不存在，使用原始 URL: {}", localImagePath);
-                    user.setAvatar(avatarUrl);
-                }
-
-            } catch (Exception e) {
-                log.warn("解析头像 URL 失败，使用原始 URL: {}", avatarUrl);
-                user.setAvatar(avatarUrl);
+    
+        // 校验用户名长度
+        if (registerDTO.getUsername().length() < 3 || registerDTO.getUsername().length() > 20) {
+            throw new BusinessException(ExceptionConstants.USERNAME_LENGTH_ERROR);
+        }
+    
+        // 校验用户名是否已存在
+        LambdaQueryWrapper<User> usernameWrapper = new LambdaQueryWrapper<>();
+        usernameWrapper.eq(User::getUsername, registerDTO.getUsername());
+        User existUser = this.getOne(usernameWrapper);
+    
+        if (existUser != null) {
+            throw new BusinessException(ExceptionConstants.USERNAME_EXISTS);
+        }
+    
+        // 校验密码
+        if (StrUtils.isBlank(registerDTO.getPassword())) {
+            throw new BusinessException(ExceptionConstants.PASSWORD_EMPTY);
+        }
+    
+        // 校验密码长度
+        if (registerDTO.getPassword().length() < 6 || registerDTO.getPassword().length() > 20) {
+            throw new BusinessException(ExceptionConstants.PASSWORD_LENGTH_ERROR);
+        }
+    
+        // 校验手机号（如果提供了）
+        String phone = registerDTO.getPhone();
+        if (StrUtils.isNotBlank(phone)) {
+            // 校验手机号格式
+            if (!PhoneUtils.isValidPhone(phone)) {
+                throw new BusinessException(ExceptionConstants.PHONE_ERROR);
             }
+    
+            // 校验手机号是否已存在
+            LambdaQueryWrapper<User> phoneWrapper = new LambdaQueryWrapper<>();
+            phoneWrapper.eq(User::getPhone, phone);
+            User existPhoneUser = this.getOne(phoneWrapper);
+                
+            if (existPhoneUser != null) {
+                throw new BusinessException(ExceptionConstants.PHONE_EXISTS);
+            }
+        }
+                
+        // 校验生日合理性（如果提供了生日）
+        LocalDate birthday = registerDTO.getBirthday();
+        if (birthday != null) {
+            // 1. 不能是未来时间
+            if (birthday.isAfter(LocalDate.now())) {
+                throw new BusinessException(ExceptionConstants.BIRTHDAY_FUTURE);
+            }
+                    
+            // 2. 年龄限制（可选，比如必须满 18 岁）
+            int age = Period.between(birthday, LocalDate.now()).getYears();
+            if (age < 18) {
+                throw new BusinessException(ExceptionConstants.BIRTHDAY_AGE_LIMIT);
+            }
+                    
+            // 3. 合理的年龄范围（比如 0-150 岁）
+            LocalDate minBirthday = LocalDate.now().minusYears(150);
+            if (birthday.isBefore(minBirthday)) {
+                throw new BusinessException(ExceptionConstants.BIRTHDAY_OUT_OF_RANGE);
+            }
+        }
+        
+        // 校验通过后再处理头像上传
+        User user = new User();
+        if (StrUtils.isNotBlank(registerDTO.getAvatarUrl())) {
+            String avatar = processAvatarUrl(registerDTO.getAvatarUrl());
+            user.setAvatar(avatar);
+        } else {
+            // 默认头像
+            user.setAvatar(SystemConstants.DEFAULT_AVATAR);
         }
 
         BeanUtils.copyProperties(registerDTO, user);
 
         //插入默认昵称（如果前端未传递）
-        if (user.getNickname() == null || user.getNickname().isEmpty()) {
-            user.setNickname("xinyun" + UUID.randomUUID().toString().substring(0, 5));
+        if (StrUtils.isBlank(user.getNickname())) {
+            user.setNickname(SystemConstants.PROJECT_NAME + UUID.randomUUID().toString().substring(0, 5));
         }
-        
         //设置默认性别（如果前端未传递）
         if (user.getGender() == null) {
-            user.setGender(0);
+            user.setGender(SystemConstants.DEFAULT_GENDER);
         }
+        //设置账号状态
+        user.setStatus(SystemConstants.USER_STATUS_NORMAL);
 
         // 对密码进行 MD5 加密
         user.setPassword(Md5Utils.encode(registerDTO.getPassword()));
@@ -159,6 +213,70 @@ public class LoginServiceImpl extends ServiceImpl<UserMapper, User> implements L
         boolean result = this.save(user);
         if (!result) {
             throw new BusinessException(REGISTER_FAILED);
+        }
+                
+        // 将用户地址插入用户地址表中（只有当提供了位置信息时才保存）
+        if (StrUtils.isNotBlank(registerDTO.getProvince()) || 
+            StrUtils.isNotBlank(registerDTO.getCity()) ||
+            StrUtils.isNotBlank(registerDTO.getDistrict()) ||
+            registerDTO.getLongitude() != null || 
+            registerDTO.getLatitude() != null) {
+            UserLocation userLocation = UserLocation.builder()
+                    .userId(user.getId())
+                    .longitude(registerDTO.getLongitude())
+                    .latitude(registerDTO.getLatitude())
+                    .province(StrUtils.trimToNull(registerDTO.getProvince()))
+                    .city(StrUtils.trimToNull(registerDTO.getCity()))
+                    .district(StrUtils.trimToNull(registerDTO.getDistrict()))
+                    .build();
+            
+            userLocationMapper.insert(userLocation);
+            log.info("用户位置信息已保存：userId={}", user.getId());
+        } else {
+            log.info("用户未提供位置信息，跳过保存：userId={}", user.getId());
+        }
+        
+        log.info("用户注册成功：userId={}, username={}", user.getId(), user.getUsername());
+    }
+
+    /**
+     * 返回 OSS URL
+     * @param avatarUrl
+     * @return
+     */
+    private String processAvatarUrl(String avatarUrl) {
+        // 从完整 URL 中提取文件名
+        // 例如：http://localhost:8080/images/abc123.jpg → abc123.jpg
+        try {
+            String fileName = avatarUrl.substring(avatarUrl.lastIndexOf('/') + 1);  // 获取文件名：abc123.jpg
+            //从 images 目录下获取图片
+            String localImagePath = SystemConstants.IMAGES_PATH + fileName;
+            File localFile = new File(localImagePath);
+    
+            if (localFile.exists()) {
+                //上传至 aliyun
+                MultipartFile imageFile = new FileMultipartFileAdapter(localFile, fileName);
+                String ossUrl = aliOssUtil.upload(imageFile, SystemConstants.OSS_BASE_PATH);
+                    
+                //删除本地图片
+                if (localFile.delete()) {
+                    log.info("本地临时图片已删除：{}", localImagePath);
+                } else {
+                    log.warn("本地临时图片删除失败：{}", localImagePath);
+                }
+                    
+                //返回 OSS URL
+                return ossUrl;
+            } else {
+                log.warn("本地图片文件不存在: {}", localImagePath);
+                //返回默认头像
+                return SystemConstants.DEFAULT_AVATAR;
+            }
+    
+        } catch (Exception e) {
+            log.warn("解析头像 URL 失败: {}", avatarUrl);
+            //返回默认头像
+            return SystemConstants.DEFAULT_AVATAR;
         }
     }
 
@@ -177,16 +295,45 @@ public class LoginServiceImpl extends ServiceImpl<UserMapper, User> implements L
 
         // 判断用户是否存在
         if (user == null) {
-            throw new BusinessException("用户名不存在");
+            throw new BusinessException(ExceptionConstants.USER_NOT_FOUND_LOGIN);
         }
 
         // 验证密码
         if (!Md5Utils.matches(password, user.getPassword())) {
-            throw new BusinessException("密码错误");
+            throw new BusinessException(ExceptionConstants.PASSWORD_ERROR);
         }
 
         // 返回用户信息（不返回密码）
         user.setPassword(null);
         return user;
+    }
+
+    /**
+     * 生成并发送验证码
+     * @param phone 手机号
+     * @return 验证码 VO
+     */
+    @Override
+    public CaptchaVO generateCaptcha(String phone) {
+        // 校验手机号格式
+        if (StrUtils.isBlank(phone)) {
+            throw new BusinessException(ExceptionConstants.PHONE_EMPTY);
+        }
+        
+        // 生成 6 位数字验证码
+        String captcha = String.valueOf(100000 + new Random().nextInt(900000));
+        
+        // 通过日志输出验证码（模拟发送）
+        log.info("===========================================");
+        log.info("验证码发送 - 手机号：{}", phone);
+        log.info("验证码：{}", captcha);
+        log.info("===========================================");
+        
+        // TODO: 实际项目中可以在这里缓存验证码到 Redis，设置 5 分钟过期
+        // 例如：redisTemplate.setex("captcha:" + phone, 300, captcha);
+        
+        return CaptchaVO.builder()
+                .captcha(captcha)
+                .build();
     }
 }

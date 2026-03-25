@@ -2,6 +2,7 @@ package com.yunbian.dto;
 
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 /**
@@ -46,7 +47,27 @@ public class RegisterDTO {
     private String phone;
 
     /**
-     * 邮箱
+     * 经度（用于附近的人功能，可为空）
      */
-    private String email;
+    private BigDecimal longitude;
+
+    /**
+     * 纬度（用于附近的人功能，可为空）
+     */
+    private BigDecimal latitude;
+
+    /**
+     * 省（用于同城匹配，可为空）
+     */
+    private String province;
+
+    /**
+     * 市（用于同城匹配，可为空）
+     */
+    private String city;
+
+    /**
+     * 区/县（可选，可为空）
+     */
+    private String district;
 }

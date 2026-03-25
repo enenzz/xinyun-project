@@ -15,6 +15,13 @@ spring:
     username: ${spring.datasource.username}
     password: ${spring.datasource.password}
     driver-class-name: ${spring.datasource.driver-class-name}
+  # Redis 配置
+  data:
+    redis:
+      host: ${spring.data.redis.host}  # Redis 服务器地址
+      port: ${spring.data.redis.port}  # Redis 端口
+      password: ${spring.data.redis.password}  # 密码（无密码则留空）
+      database: ${spring.data.redis.database}  # 数据库索引
 
 # MyBatis-Plus 配置
 mybatis-plus:
@@ -42,4 +49,6 @@ aliyun:
 file:
   upload:
     path: src/main/resources/static/images  # 图片存储目录
+
+
 

@@ -3,6 +3,7 @@ package com.yunbian.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.yunbian.dto.RegisterDTO;
 import com.yunbian.entity.User;
+import com.yunbian.vo.CaptchaVO;
 
 public interface LoginService extends IService<User> {
 
@@ -19,4 +20,11 @@ public interface LoginService extends IService<User> {
      * @return 登录成功的用户信息（不包含密码）
      */
     User login(String username, String password);
+
+    /**
+     * 生成并发送验证码
+     * @param phone 手机号
+     * @return 验证码 VO
+     */
+    CaptchaVO generateCaptcha(String phone);
 }
