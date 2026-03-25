@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.yunbian.dto.LoginDTO;
 import com.yunbian.dto.RegisterDTO;
 import com.yunbian.entity.User;
-import com.yunbian.vo.CaptchaVO;
+import com.yunbian.vo.LoginVO;
 
 public interface LoginService extends IService<User> {
 
@@ -17,9 +17,9 @@ public interface LoginService extends IService<User> {
     /**
      * 用户登录
      * @param loginDTO 登录信息
-     * @return 登录成功的用户信息（不包含密码）
+     * @return 登录响应（包含 Token、Refresh Token、有效期和用户信息）
      */
-    User login(LoginDTO loginDTO);
+    LoginVO login(LoginDTO loginDTO);
 
     /**
      * 生成并发送验证码

@@ -13,11 +13,9 @@ import com.yunbian.exception.BusinessException;
 import com.yunbian.mapper.UserLocationMapper;
 import com.yunbian.mapper.UserMapper;
 import com.yunbian.service.LoginService;
-import com.yunbian.utils.AliOssUtil;
-import com.yunbian.utils.Md5Utils;
-import com.yunbian.utils.PhoneUtils;
-import com.yunbian.utils.StrUtils;
-import com.yunbian.vo.CaptchaVO;
+import com.yunbian.utils.*;
+import com.yunbian.vo.LoginVO;
+import com.yunbian.vo.UserVO;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -48,6 +46,8 @@ public class LoginServiceImpl extends ServiceImpl<UserMapper, User> implements L
     private UserLocationMapper userLocationMapper;
     @Resource
     private StringRedisTemplate stringRedisTemplate;
+    @Resource
+    private JwtUtils jwtUtils;
 
 
     /**
@@ -288,10 +288,10 @@ public class LoginServiceImpl extends ServiceImpl<UserMapper, User> implements L
     /**
      * 用户登录
      * @param loginDTO 登录信息
-     * @return 登录成功的用户信息（不包含密码）
+     * @return 登录响应（包含 Token、Refresh Token、有效期和用户信息）
      */
     @Override
-    public User login(LoginDTO loginDTO) {
+    public LoginVO login(LoginDTO loginDTO) {
         String username = loginDTO.getUsername();
         String password = loginDTO.getPassword();
         String captcha = loginDTO.getCaptcha();
@@ -321,9 +321,27 @@ public class LoginServiceImpl extends ServiceImpl<UserMapper, User> implements L
             throw new BusinessException(ExceptionConstants.PASSWORD_ERROR);
         }
 
-        // 返回用户信息（不返回密码）
-        user.setPassword(null);
-        return user;
+        // 生成 Token 和 Refresh Token
+        Long userId = user.getId();
+        String token = jwtUtils.createToken(userId, username);
+        String refreshToken = jwtUtils.createRefreshToken(userId, username);
+        Long expiresIn = jwtUtils.getJwtProperties().getAccessExpirationTime() / 1000; // 转换为秒
+
+        // 构建 UserVO
+        UserVO userVO = UserVO.builder()
+                .id(userId)
+                .username(username)
+                .nickname(user.getNickname())
+                .avatar(user.getAvatar())
+                .build();
+
+        // 返回登录响应（不返回密码）
+        return LoginVO.builder()
+                .token(token)
+                .refreshToken(refreshToken)
+                .expiresIn(expiresIn)
+                .userVO(userVO)
+                .build();
     }
 
     /**

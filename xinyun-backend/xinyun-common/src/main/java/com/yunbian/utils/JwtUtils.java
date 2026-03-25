@@ -1,9 +1,13 @@
 package com.yunbian.utils;
 
+import com.yunbian.properties.JwtProperties;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import jakarta.annotation.Resource;
+import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
@@ -15,35 +19,51 @@ import java.util.Map;
  * JWT 工具类
  */
 @Slf4j
+@Component
 public class JwtUtils {
 
     /**
-     * 密钥（实际项目中应该从配置文件读取）
+     * JWT 配置属性
      */
-    private static final String SECRET_KEY = "xinyun-jwt-secret-key-2024-min-length-32-characters!";
-    
-    /**
-     * 默认过期时间（毫秒）：7 天
-     */
-    private static final long DEFAULT_EXPIRATION_TIME = 7 * 24 * 60 * 60 * 1000L;
+    @Resource
+    private JwtProperties jwtProperties;
 
+    /**
+     * 获取 JWT 配置属性
+     * @return JWT 配置属性
+     */
+    public JwtProperties getJwtProperties() {
+        return jwtProperties;
+    }
+    
     /**
      * 获取密钥对象
      */
-    private static SecretKey getSigningKey() {
-        byte[] keyBytes = SECRET_KEY.getBytes(StandardCharsets.UTF_8);
+    private SecretKey getSigningKey() {
+        byte[] keyBytes = jwtProperties.getSecretKey().getBytes(StandardCharsets.UTF_8);
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
     /**
-     * 创建 JWT Token
-     *
+     * 创建 JWT AccessToken
+     * 过期时间为2小时
      * @param userId 用户 ID
      * @param username 用户名
      * @return JWT Token
      */
-    public static String createToken(Long userId, String username) {
-        return createToken(userId, username, DEFAULT_EXPIRATION_TIME);
+    public String createToken(Long userId, String username) {
+        return createToken(userId, username, jwtProperties.getAccessExpirationTime());
+    }
+
+    /**
+     * 创建 Refresh Token
+     * 过期时间为3天
+     * @param userId 用户 ID
+     * @param username 用户名
+     * @return Refresh Token
+     */
+    public String createRefreshToken(Long userId, String username) {
+        return createToken(userId, username, jwtProperties.getRefreshExpirationTime());
     }
 
     /**
@@ -54,7 +74,7 @@ public class JwtUtils {
      * @param expirationTime 过期时间（毫秒）
      * @return JWT Token
      */
-    public static String createToken(Long userId, String username, long expirationTime) {
+    public String createToken(Long userId, String username, long expirationTime) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("userId", userId);
         claims.put("username", username);
@@ -77,7 +97,7 @@ public class JwtUtils {
      * @param token JWT Token
      * @return Claims 包含声明信息的对象
      */
-    public static Claims parseToken(String token) {
+    public Claims parseToken(String token) {
         return Jwts.parser()
                 .verifyWith(getSigningKey())
                 .build()
@@ -91,7 +111,7 @@ public class JwtUtils {
      * @param token JWT Token
      * @return 用户 ID
      */
-    public static Long getUserIdFromToken(String token) {
+    public Long getUserIdFromToken(String token) {
         Claims claims = parseToken(token);
         return claims.get("userId", Long.class);
     }
@@ -102,7 +122,7 @@ public class JwtUtils {
      * @param token JWT Token
      * @return 用户名
      */
-    public static String getUsernameFromToken(String token) {
+    public String getUsernameFromToken(String token) {
         Claims claims = parseToken(token);
         return claims.getSubject();
     }
@@ -113,7 +133,7 @@ public class JwtUtils {
      * @param token JWT Token
      * @return true-有效，false-无效
      */
-    public static boolean isTokenValid(String token) {
+    public boolean isTokenValid(String token) {
         try {
             parseToken(token);
             return true;
@@ -129,7 +149,7 @@ public class JwtUtils {
      * @param token JWT Token
      * @return true-已过期，false-未过期
      */
-    public static boolean isTokenExpired(String token) {
+    public boolean isTokenExpired(String token) {
         try {
             Claims claims = parseToken(token);
             return claims.getExpiration().before(new Date());

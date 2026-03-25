@@ -30,7 +30,7 @@ public class SystemConstants {
     /**
      * 默认头像
      */
-    public static final String DEFAULT_AVATAR = " https://enenzz.oss-cn-shenzhen.aliyuncs.com/xinyun/images/default_avatar.jpg";
+    public static final String DEFAULT_AVATAR = "https://enenzz.oss-cn-shenzhen.aliyuncs.com/xinyun/images/default_avatar.jpg";
 
     /**
      * OSS 上传基础路径

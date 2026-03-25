@@ -23,6 +23,12 @@ public class GlobalExceptionHandler {
         log.warn("业务异常：{}", e.getMessage());
         return Result.error(e.getMessage());
     }
+
+    @ExceptionHandler(TokenException.class)
+    public Result<Void> handleTokenException(TokenException e) {
+        log.warn("Token异常：{}", e.getMessage());
+        return Result.error(ExceptionConstants.UNAUTHORIZED, e.getMessage());
+    }
     
     /**
      * 处理数据库唯一约束异常

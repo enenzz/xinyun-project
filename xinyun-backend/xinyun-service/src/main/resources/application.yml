@@ -50,5 +50,10 @@ file:
   upload:
     path: src/main/resources/static/images  # 图片存储目录
 
+# JWT 配置
+jwt:
+  secret-key: ${jwt.secret-key}
+  access-expiration-time: ${jwt.expiration-time}
+
 
 
