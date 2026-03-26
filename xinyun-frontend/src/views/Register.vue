@@ -1,17 +1,10 @@
 <template>
-  <div class="register-container">
-    <!-- 左侧品牌区 -->
-    <div class="left-section" :style="leftSectionStyle">
-      <div class="left-content">
-        <h1 class="brand-title">心云</h1>
-        <p class="brand-subtitle">让相遇更简单</p>
-      </div>
-    </div>
-    
-    <!-- 右侧表单区 -->
+  <!-- 【样式修改区域开始】全屏背景容器 -->
+  <div class="register-container" :style="bgStyle">
+    <!-- 【样式修改区域】仅保留右侧表单区，删除左侧品牌区 -->
     <div class="right-section">
       <div class="form-card">
-        <!-- 表单头部 -->
+        <!-- 表单头部（保留功能，仅修改样式） -->
         <div class="form-header">
           <h2 class="form-title">欢迎加入心云</h2>
           <span class="form-link" @click="goToLogin">已有账号？去登录</span>
@@ -195,6 +188,7 @@
 </template>
 
 <script setup>
+// 【功能代码区域：完全不修改】
 import { ref, reactive } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
@@ -210,8 +204,8 @@ const registerLoading = ref(false)
 const countdown = ref(0)
 let countdownTimer = null
 
-// 【关键位置】使用import引入的背景图片
-const leftSectionStyle = reactive({
+// 【样式修改相关】全屏背景图样式
+const bgStyle = reactive({
   backgroundImage: `url(${registerBg})`
 })
 
@@ -482,79 +476,36 @@ const goToLogin = () => {
 </script>
 
 <style scoped>
+/* 【样式修改区域开始】全屏背景图容器 */
 .register-container {
   width: 100vw;
   height: 100vh;
-  display: flex;
-  overflow: hidden;
-}
-
-/* 【关键位置】左侧品牌区背景设置 */
-.left-section {
-  width: 60%;
-  height: 100%;
   position: relative;
+  overflow: hidden;
   background-size: cover;
-  background-position: center center;
+  background-position: center;
   background-repeat: no-repeat;
 }
 
-/* 【关键位置】半透明渐变遮罩，和项目主色调统一 */
-.left-section::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(135deg, rgba(99, 102, 241, 0.85) 0%, rgba(139, 92, 246, 0.85) 100%);
-}
-
-.left-content {
-  position: relative;
-  z-index: 1;
+/* 【样式修改区域】右侧表单区 - 透明背景 */
+.right-section {
   width: 100%;
   height: 100%;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.brand-title {
-  font-size: 48px;
-  font-weight: 700;
-  color: #fff;
-  margin: 0 0 12px 0;
-  letter-spacing: 4px;
-}
-
-.brand-subtitle {
-  font-size: 20px;
-  color: rgba(255, 255, 255, 0.9);
-  margin: 0;
-  letter-spacing: 2px;
-}
-
-.right-section {
-  width: 40%;
-  height: 100%;
-  background: #fff;
-  display: flex;
-  justify-content: center;
+  justify-content: flex-end;
   align-items: center;
   overflow-y: auto;
-  padding: 40px 0;
+  padding: 40px 60px;
 }
 
+/* 【样式修改区域】表单卡片 - 完全透明 */
 .form-card {
   width: 450px;
-  background: #fff;
-  border-radius: 16px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+  background: transparent;
   padding: 40px 36px;
 }
 
+/* 保留原有表单结构样式，仅修改背景相关 */
 .form-header {
   display: flex;
   justify-content: space-between;
@@ -565,20 +516,22 @@ const goToLogin = () => {
 .form-title {
   font-size: 28px;
   font-weight: 700;
-  color: #111827;
+  color: #fff;
   margin: 0;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .form-link {
   font-size: 14px;
-  color: #6366f1;
+  color: #fff;
   cursor: pointer;
   font-weight: 500;
   transition: color 0.2s;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .form-link:hover {
-  color: #4f46e5;
+  color: #e0e7ff;
 }
 
 .form-section {
@@ -588,10 +541,11 @@ const goToLogin = () => {
 .section-title {
   font-size: 14px;
   font-weight: 600;
-  color: #374151;
+  color: #fff;
   margin-bottom: 16px;
   padding-left: 4px;
-  border-left: 3px solid #6366f1;
+  border-left: 3px solid #fff;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .optional-collapse {
@@ -601,7 +555,8 @@ const goToLogin = () => {
 .optional-collapse :deep(.el-collapse-item__header) {
   font-size: 14px;
   font-weight: 600;
-  color: #374151;
+  color: #fff;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .optional-collapse :deep(.el-collapse-item__content) {
@@ -615,22 +570,25 @@ const goToLogin = () => {
 .register-form :deep(.el-form-item__label) {
   font-size: 14px;
   font-weight: 500;
-  color: #374151;
+  color: #fff;
   padding-bottom: 6px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .register-form :deep(.el-input__wrapper) {
   border-radius: 12px;
   padding: 12px 16px;
   transition: all 0.3s;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
 }
 
 .register-form :deep(.el-input__wrapper:hover) {
-  box-shadow: 0 0 0 1px #d1d5db;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.5);
 }
 
 .register-form :deep(.el-input__wrapper.is-focus) {
-  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.5);
 }
 
 .captcha-wrapper {
@@ -656,8 +614,8 @@ const goToLogin = () => {
 }
 
 .captcha-btn:disabled {
-  background: #e5e7eb;
-  color: #9ca3af;
+  background: rgba(255, 255, 255, 0.3);
+  color: rgba(255, 255, 255, 0.7);
 }
 
 .avatar-upload-wrapper {
@@ -672,44 +630,66 @@ const goToLogin = () => {
   width: 100px;
   height: 100px;
   border-radius: 50%;
-  border: 2px dashed #d1d5db;
+  border: 2px dashed rgba(255, 255, 255, 0.7);
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   cursor: pointer;
   transition: all 0.3s;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
 }
 
 .avatar-placeholder:hover {
-  border-color: #6366f1;
+  border-color: #fff;
+  background: rgba(255, 255, 255, 0.3);
 }
 
 .avatar-icon {
   font-size: 32px;
-  color: #9ca3af;
+  color: rgba(255, 255, 255, 0.9);
   margin-bottom: 4px;
 }
 
 .avatar-text {
   font-size: 12px;
-  color: #9ca3af;
+  color: rgba(255, 255, 255, 0.9);
 }
 
 .avatar-tips {
   margin-top: 12px;
   font-size: 12px;
-  color: #9ca3af;
+  color: rgba(255, 255, 255, 0.9);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .agreement-link {
-  color: #6366f1;
+  color: #e0e7ff;
   cursor: pointer;
   font-weight: 500;
 }
 
 .agreement-link:hover {
-  color: #4f46e5;
+  color: #c7d2fe;
+}
+
+.register-form :deep(.el-checkbox__label) {
+  color: #fff;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.register-form :deep(.el-radio__label) {
+  color: #fff;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.register-form :deep(.el-cascader) {
+  width: 100%;
+}
+
+.register-form :deep(.el-date-editor) {
+  width: 100%;
 }
 
 .register-submit-btn {
