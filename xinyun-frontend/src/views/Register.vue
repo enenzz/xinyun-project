@@ -17,11 +17,13 @@
           class="register-form"
           label-position="top"
         >
-          <!-- 必填信息区 -->
+          <!-- 【表单字段区域开始】全字段展开，取消折叠面板 -->
+          
+          <!-- ========== 必填项区域 ========== -->
           <div class="form-section">
             <div class="section-title">必填信息</div>
             
-            <!-- 用户名 -->
+            <!-- 【接口字段：username】用户名 - 必填 -->
             <el-form-item prop="username" label="用户名">
               <el-input 
                 v-model="registerForm.username" 
@@ -31,7 +33,7 @@
               />
             </el-form-item>
             
-            <!-- 密码 -->
+            <!-- 【接口字段：password】密码 - 必填 -->
             <el-form-item prop="password" label="密码">
               <el-input 
                 v-model="registerForm.password" 
@@ -43,7 +45,7 @@
               />
             </el-form-item>
             
-            <!-- 确认密码 -->
+            <!-- 【前端校验字段】确认密码 - 必填（不传递给后端） -->
             <el-form-item prop="confirmPassword" label="确认密码">
               <el-input 
                 v-model="registerForm.confirmPassword" 
@@ -56,108 +58,110 @@
             </el-form-item>
           </div>
           
-          <!-- 可选信息区（折叠面板） -->
-          <el-collapse class="optional-collapse">
-            <el-collapse-item title="可选信息（点击展开）">
-              <!-- 手机号 -->
-              <el-form-item prop="phone" label="手机号">
-                <el-input 
-                  v-model="registerForm.phone" 
-                  placeholder="请输入手机号"
-                  size="large"
-                  prefix-icon="Phone"
-                />
-              </el-form-item>
-              
-              <!-- 验证码 -->
-              <el-form-item prop="captcha" label="验证码">
-                <div class="captcha-wrapper">
-                  <el-input 
-                    v-model="registerForm.captcha" 
-                    placeholder="请输入验证码"
-                    size="large"
-                    prefix-icon="Key"
-                    class="captcha-input"
-                  />
-                  <el-button 
-                    type="primary" 
-                    size="large"
-                    class="captcha-btn"
-                    :disabled="countdown > 0"
-                    @click="handleGetCaptcha"
-                  >
-                    {{ countdown > 0 ? `${countdown}s` : '获取验证码' }}
-                  </el-button>
-                </div>
-              </el-form-item>
-              
-              <!-- 昵称 -->
-              <el-form-item prop="nickname" label="昵称">
-                <el-input 
-                  v-model="registerForm.nickname" 
-                  placeholder="请设置昵称（选填）"
-                  size="large"
-                  prefix-icon="UserFilled"
-                />
-              </el-form-item>
-              
-              <!-- 性别 -->
-              <el-form-item prop="gender" label="性别">
-                <el-radio-group v-model="registerForm.gender" size="large">
-                  <el-radio :value="0">未知</el-radio>
-                  <el-radio :value="1">男</el-radio>
-                  <el-radio :value="2">女</el-radio>
-                </el-radio-group>
-              </el-form-item>
-              
-              <!-- 生日 -->
-              <el-form-item prop="birthday" label="生日">
-                <el-date-picker
-                  v-model="registerForm.birthday"
-                  type="date"
-                  placeholder="选择生日"
-                  format="YYYY-MM-DD"
-                  value-format="YYYY-MM-DD"
-                  size="large"
-                  style="width: 100%"
-                />
-              </el-form-item>
-              
-              <!-- 省市区 -->
-              <el-form-item prop="region" label="所在地">
-                <el-cascader
-                  v-model="registerForm.region"
-                  :options="regionOptions"
-                  placeholder="选择省/市/区"
-                  size="large"
-                  style="width: 100%"
-                  @change="handleRegionChange"
-                />
-              </el-form-item>
-              
-              <!-- 头像上传 -->
-              <el-form-item prop="avatar" label="头像">
-                <div class="avatar-upload-wrapper">
-                  <el-upload
-                    class="avatar-uploader"
-                    :show-file-list="false"
-                    :before-upload="beforeAvatarUpload"
-                    :http-request="handleAvatarUpload"
-                    accept="image/*"
-                  >
-                    <el-avatar v-if="registerForm.avatarUrl" :size="100" :src="registerForm.avatarUrl" />
-                    <div v-else class="avatar-placeholder">
-                      <el-icon class="avatar-icon"><Plus /></el-icon>
-                      <span class="avatar-text">点击上传</span>
-                    </div>
-                  </el-upload>
-                  <div class="avatar-tips">
-                    <span>支持JPG/PNG/GIF格式，大小不超过2MB</span>
+          <!-- ========== 选填项区域 ========== -->
+          <div class="form-section">
+            <div class="section-title">选填信息</div>
+            
+            <!-- 【接口字段：nickname】昵称 - 选填 -->
+            <el-form-item prop="nickname" label="昵称（选填）">
+              <el-input 
+                v-model="registerForm.nickname" 
+                placeholder="请设置昵称（选填）"
+                size="large"
+                prefix-icon="UserFilled"
+              />
+            </el-form-item>
+            
+            <!-- 【接口字段：avatarUrl】头像 - 选填 -->
+            <el-form-item prop="avatar" label="头像（选填）">
+              <div class="avatar-upload-wrapper">
+                <el-upload
+                  class="avatar-uploader"
+                  :show-file-list="false"
+                  :before-upload="beforeAvatarUpload"
+                  :http-request="handleAvatarUpload"
+                  accept="image/*"
+                >
+                  <el-avatar v-if="registerForm.avatarUrl" :size="100" :src="registerForm.avatarUrl" />
+                  <div v-else class="avatar-placeholder">
+                    <el-icon class="avatar-icon"><Plus /></el-icon>
+                    <span class="avatar-text">点击上传</span>
                   </div>
+                </el-upload>
+                <div class="avatar-tips">
+                  <span>支持JPG/PNG/GIF格式，大小不超过2MB</span>
                 </div>
-              </el-form-item>
-            </el-collapse-item>
-          </el-collapse>
+              </div>
+            </el-form-item>
+            
+            <!-- 【接口字段：gender】性别 - 选填 -->
+            <el-form-item prop="gender" label="性别（选填）">
+              <el-radio-group v-model="registerForm.gender" size="large">
+                <el-radio :value="0">未知</el-radio>
+                <el-radio :value="1">男</el-radio>
+                <el-radio :value="2">女</el-radio>
+              </el-radio-group>
+            </el-form-item>
+            
+            <!-- 【接口字段：birthday】生日 - 选填 -->
+            <el-form-item prop="birthday" label="生日（选填）">
+              <el-date-picker
+                v-model="registerForm.birthday"
+                type="date"
+                placeholder="选择生日（选填）"
+                format="YYYY-MM-DD"
+                value-format="YYYY-MM-DD"
+                size="large"
+                style="width: 100%"
+              />
+            </el-form-item>
+            
+            <!-- 【接口字段：phone】手机号 - 选填 -->
+            <el-form-item prop="phone" label="手机号（选填）">
+              <el-input 
+                v-model="registerForm.phone" 
+                placeholder="请输入手机号（选填）"
+                size="large"
+                prefix-icon="Phone"
+              />
+            </el-form-item>
+            
+            <!-- 【前端可选字段】验证码 - 选填（不传递给后端） -->
+            <el-form-item prop="captcha" label="验证码（选填）">
+              <div class="captcha-wrapper">
+                <el-input 
+                  v-model="registerForm.captcha" 
+                  placeholder="请输入验证码（选填）"
+                  size="large"
+                  prefix-icon="Key"
+                  class="captcha-input"
+                />
+                <el-button 
+                  type="primary" 
+                  size="large"
+                  class="captcha-btn"
+                  :disabled="countdown > 0"
+                  @click="handleGetCaptcha"
+                >
+                  {{ countdown > 0 ? `${countdown}s` : '获取验证码' }}
+                </el-button>
+              </div>
+            </el-form-item>
+            
+            <!-- 【接口字段：province/city/district】所在地 - 选填 -->
+            <el-form-item prop="region" label="所在地（选填）">
+              <el-cascader
+                v-model="registerForm.region"
+                :options="regionOptions"
+                placeholder="选择省/市/区（选填）"
+                size="large"
+                style="width: 100%"
+                @change="handleRegionChange"
+              />
+            </el-form-item>
+          </div>
+          
+          <!-- 【表单字段区域结束】 -->
           
           <!-- 用户协议 -->
           <el-form-item prop="agreement">
@@ -279,6 +283,19 @@ const validatePhone = (rule, value, callback) => {
   }
 }
 
+// 校验规则：昵称
+const validateNickname = (rule, value, callback) => {
+  if (!value) {
+    callback() // 可选字段，不填直接通过
+  } else {
+    if (value.length < 1 || value.length > 20) {
+      callback(new Error('昵称长度为1-20位'))
+    } else {
+      callback()
+    }
+  }
+}
+
 // 注册表单数据
 const registerForm = reactive({
   username: '',
@@ -312,6 +329,9 @@ const registerRules = {
   ],
   phone: [
     { validator: validatePhone, trigger: 'blur' }
+  ],
+  nickname: [
+    { validator: validateNickname, trigger: 'blur' }
   ],
   captcha: [
     // 可选字段，不设置必填校验
@@ -501,8 +521,10 @@ const goToLogin = () => {
 /* 【样式修改区域】表单卡片 - 完全透明 */
 .form-card {
   width: 450px;
+  max-height: 90vh;
   background: transparent;
   padding: 40px 36px;
+  overflow-y: auto;
 }
 
 /* 保留原有表单结构样式，仅修改背景相关 */
@@ -546,21 +568,6 @@ const goToLogin = () => {
   padding-left: 4px;
   border-left: 3px solid #fff;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-}
-
-.optional-collapse {
-  margin-bottom: 24px;
-}
-
-.optional-collapse :deep(.el-collapse-item__header) {
-  font-size: 14px;
-  font-weight: 600;
-  color: #fff;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-}
-
-.optional-collapse :deep(.el-collapse-item__content) {
-  padding-top: 8px;
 }
 
 .register-form :deep(.el-form-item) {
