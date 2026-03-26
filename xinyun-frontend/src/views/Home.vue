@@ -66,15 +66,15 @@ onMounted(() => {
 .home-wrapper {
   width: 100%;
   min-width: 1000px;
-  padding: 0 20px;
+  padding: 0 8px 0 8px;
 }
 
 .home-content {
   display: flex;
-  max-width: 1400px;
+  justify-content: space-between;
+  max-width: 1600px;
   margin: 0 auto;
   padding-top: 20px;
-  gap: 24px;
 }
 
 .sidebar-wrapper {
@@ -83,16 +83,14 @@ onMounted(() => {
 }
 
 .main-area {
-  flex: 1;
-  min-width: 600px;
-  max-width: 800px;
+  width: 800px;
   flex-shrink: 0;
+  margin: 0 32px;
 }
 
 .right-panel-wrapper {
   width: 300px;
   flex-shrink: 0;
-  margin-left: 8px;
 }
 
 .post-list {
@@ -103,11 +101,17 @@ onMounted(() => {
   .right-panel-wrapper {
     display: none;
   }
+  .main-area {
+    margin-right: 0;
+  }
 }
 
 @media (max-width: 900px) {
   .sidebar-wrapper {
     display: none;
+  }
+  .main-area {
+    margin-left: 0;
   }
 }
 </style>
