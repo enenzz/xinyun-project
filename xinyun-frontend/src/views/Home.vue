@@ -11,7 +11,7 @@
             v-for="post in postList" 
             :key="post.id" 
             :post="post"
-            @like="handleLike"
+            @click="handlePostClick"
           />
           <el-empty v-if="!loading && postList.length === 0" description="暂无动态" />
         </div>
@@ -22,7 +22,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import { ElMessage } from 'element-plus'
 import Header from '@/components/layout/Header.vue'
 import Sidebar from '@/components/layout/Sidebar.vue'
@@ -46,8 +46,8 @@ const loadPosts = async () => {
   }
 }
 
-const handleLike = (post) => {
-  console.log('点赞事件:', post)
+const handlePostClick = (post) => {
+  console.log('点击帖子:', post)
 }
 
 onMounted(() => {
@@ -58,20 +58,21 @@ onMounted(() => {
 <style scoped>
 .home {
   min-height: 100vh;
-  background: #f5f7fa;
+  background: #f5f6f7;
 }
 
 .home-content {
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 0 24px;
   display: flex;
-  gap: 20px;
+  gap: 24px;
 }
 
 .main-area {
   flex: 1;
   min-width: 0;
+  padding-top: 8px;
 }
 
 .post-list {

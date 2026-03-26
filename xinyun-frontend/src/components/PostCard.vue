@@ -1,48 +1,62 @@
 <template>
   <div class="post-card">
-    <div class="post-header">
-      <img :src="post.avatar" class="user-avatar" :alt="post.username">
-      <div class="user-info">
-        <div class="user-name">{{ post.username }}</div>
-        <div class="post-time" v-if="post.location">{{ post.location }} · {{ post.createTime }}</div>
-        <div class="post-time" v-else>{{ post.createTime }}</div>
+    <div class="bar-info">
+      <img :src="post.barAvatar" class="bar-avatar" :alt="post.barName">
+      <div class="bar-detail">
+        <div class="bar-name">{{ post.barName }}</div>
+        <div class="bar-meta">
+          <span>关注 {{ post.followers }}w</span>
+          <span class="dot">·</span>
+          <span>帖子 {{ post.posts }}w</span>
+        </div>
       </div>
+      <el-button type="primary" size="small" plain class="follow-btn">关注</el-button>
     </div>
 
-    <div class="post-content">{{ post.content }}</div>
+    <div class="post-title" @click="handleClick">{{ post.title }}</div>
 
-    <div v-if="post.images?.length" class="post-images">
-      <img 
-        v-for="(img, index) in post.images" 
-        :key="index"
-        :src="img" 
-        class="post-image"
-        :class="{ 'single-image': post.images.length === 1 }"
-        alt="动态图片"
-      >
+    <div class="post-media">
+      <div v-if="post.video" class="video-preview">
+        <img :src="post.thumbnail" class="video-thumb" alt="视频预览">
+        <div class="video-overlay">
+          <el-icon class="play-icon"><VideoPlay /></el-icon>
+          <span class="video-duration">{{ post.duration }}</span>
+        </div>
+      </div>
+      <div v-else-if="post.images?.length" class="post-images">
+        <img 
+          v-for="(img, index) in post.images" 
+          :key="index"
+          :src="img" 
+          class="post-image"
+          :class="{ 'single-image': post.images.length === 1 }"
+          alt="帖子图片"
+        >
+      </div>
     </div>
 
     <div class="post-footer">
-      <div class="action-item" @click="toggleLike">
-        <span class="action-icon" :class="{ liked: post.isLiked }">
-          {{ post.isLiked ? '❤️' : '🤍' }}
-        </span>
-        <span class="action-count">{{ post.likeCount }}</span>
+      <div class="footer-left">
+        <div class="action-item">
+          <el-icon><ChatDotRound /></el-icon>
+          <span>{{ post.replyCount }}</span>
+        </div>
+        <div class="action-item">
+          <el-icon><View /></el-icon>
+          <span>{{ post.viewCount }}</span>
+        </div>
+        <div class="action-item">
+          <el-icon><Share /></el-icon>
+          <span>{{ post.shareCount }}</span>
+        </div>
       </div>
-      <div class="action-item">
-        <span class="action-icon">💬</span>
-        <span class="action-count">{{ post.commentCount }}</span>
-      </div>
-      <div class="action-item">
-        <span class="action-icon">🔗</span>
-      </div>
+      <div class="post-time">{{ post.createTime }}</div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { likePost, unlikePost } from '@/api/post'
-import { ElMessage } from 'element-plus'
+import { VideoPlay, ChatDotRound, View, Share } from '@element-plus/icons-vue'
 
 const props = defineProps({
   post: {
@@ -51,152 +65,171 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(['like'])
+const emit = defineEmits(['click'])
 
-const toggleLike = async () => {
-  try {
-    if (props.post.isLiked) {
-      await unlikePost(props.post.id)
-      props.post.isLiked = false
-      props.post.likeCount--
-    } else {
-      await likePost(props.post.id)
-      props.post.isLiked = true
-      props.post.likeCount++
-    }
-    emit('like', props.post)
-  } catch (error) {
-    ElMessage.error('操作失败，请重试')
-  }
+const handleClick = () => {
+  emit('click', props.post)
 }
 </script>
 
 <style scoped>
 .post-card {
-  background: white;
+  background: #fff;
   border-radius: 12px;
-  padding: 20px;
-  margin-bottom: 20px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  transition: all 0.3s;
+  padding: 16px;
+  margin-bottom: 16px;
+  cursor: pointer;
+  transition: box-shadow 0.2s;
 }
 
 .post-card:hover {
-  box-shadow: 0 4px 16px rgba(99, 102, 241, 0.15);
-  transform: translateY(-2px);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
 }
 
-.post-header {
+.bar-info {
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-bottom: 16px;
+  margin-bottom: 12px;
 }
 
-.user-avatar {
+.bar-avatar {
   width: 48px;
   height: 48px;
-  border-radius: 50%;
+  border-radius: 12px;
   object-fit: cover;
 }
 
-.user-info {
+.bar-detail {
   flex: 1;
 }
 
-.user-name {
+.bar-name {
   font-size: 15px;
   font-weight: 600;
   color: #333;
+  margin-bottom: 4px;
 }
 
-.post-time {
+.bar-meta {
   font-size: 12px;
   color: #999;
-  margin-top: 2px;
 }
 
-.post-content {
-  font-size: 15px;
-  color: #333;
-  line-height: 1.6;
-  margin-bottom: 16px;
+.bar-meta .dot {
+  margin: 0 6px;
+}
+
+.follow-btn {
+  border-radius: 16px;
+  padding: 4px 12px;
+  font-size: 12px;
+  border-color: #2385bb;
+  color: #2385bb;
+}
+
+.follow-btn:hover {
+  background: #2385bb !important;
+  border-color: #2385bb !important;
+  color: #fff !important;
+}
+
+.post-title {
+  font-size: 16px;
+  font-weight: 500;
+  color: #222;
+  line-height: 1.5;
+  margin-bottom: 12px;
+}
+
+.post-title:hover {
+  color: #2385bb;
+}
+
+.post-media {
+  margin-bottom: 12px;
+}
+
+.video-preview {
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.video-thumb {
+  width: 100%;
+  height: 240px;
+  object-fit: cover;
+}
+
+.video-overlay {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 4px 10px;
+  border-radius: 12px;
+}
+
+.play-icon {
+  font-size: 18px;
+  color: #fff;
+}
+
+.video-duration {
+  font-size: 12px;
+  color: #fff;
 }
 
 .post-images {
-  display: grid;
+  display: flex;
   gap: 8px;
-  margin-bottom: 16px;
-}
-
-.post-images.single {
-  grid-template-columns: 1fr;
-}
-
-.post-images:not(.single) {
-  grid-template-columns: repeat(3, 1fr);
+  flex-wrap: wrap;
 }
 
 .post-image {
-  width: 100%;
-  aspect-ratio: 1;
+  width: 160px;
+  height: 120px;
   object-fit: cover;
   border-radius: 8px;
-  cursor: pointer;
-  transition: transform 0.3s;
-}
-
-.post-image:hover {
-  transform: scale(1.02);
 }
 
 .post-image.single-image {
-  aspect-ratio: auto;
-  max-height: 400px;
-  width: auto;
-  max-width: 100%;
+  width: 100%;
+  height: auto;
+  max-height: 360px;
 }
 
 .post-footer {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: 32px;
   padding-top: 12px;
   border-top: 1px solid #f0f0f0;
+}
+
+.footer-left {
+  display: flex;
+  gap: 24px;
 }
 
 .action-item {
   display: flex;
   align-items: center;
   gap: 6px;
-  cursor: pointer;
-  transition: color 0.3s;
+  font-size: 13px;
+  color: #999;
 }
 
-.action-item:hover {
-  color: #6366f1;
+.action-item .el-icon {
+  font-size: 16px;
 }
 
-.action-icon {
-  font-size: 20px;
-  transition: transform 0.2s;
-}
-
-.action-icon:hover {
-  transform: scale(1.2);
-}
-
-.action-icon.liked {
-  animation: heartBeat 0.3s;
-}
-
-@keyframes heartBeat {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.3); }
-}
-
-.action-count {
-  font-size: 14px;
-  color: #666;
+.post-time {
+  font-size: 12px;
+  color: #ccc;
 }
 </style>

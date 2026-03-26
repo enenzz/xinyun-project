@@ -1,14 +1,18 @@
 <template>
   <aside class="sidebar">
-    <div class="sidebar-content">
-      <div class="sidebar-section">
-        <h3 class="section-title">热门话题</h3>
-        <div class="topic-list">
-          <div class="topic-item" v-for="topic in topics" :key="topic.id">
-            <span class="topic-tag">#</span>
-            <span class="topic-name">{{ topic.name }}</span>
-          </div>
-        </div>
+    <div class="nav-item active">
+      <el-icon class="nav-icon"><House /></el-icon>
+      <span>首页</span>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="section-title">大家都在逛的吧</div>
+
+    <div class="bar-list">
+      <div class="bar-item" v-for="bar in bars" :key="bar.id">
+        <img :src="bar.avatar" class="bar-avatar" :alt="bar.name">
+        <span class="bar-name">{{ bar.name }}</span>
       </div>
     </div>
   </aside>
@@ -16,63 +20,106 @@
 
 <script setup>
 import { ref } from 'vue'
+import { House } from '@element-plus/icons-vue'
 
-const topics = ref([
-  { id: 1, name: '周末去哪玩' },
-  { id: 2, name: '美食分享' },
-  { id: 3, name: '日常打卡' },
-  { id: 4, name: '交友脱单' }
+const bars = ref([
+  { id: 1, name: '王者荣耀吧', avatar: 'https://i.pravatar.cc/40?img=11' },
+  { id: 2, name: '孙笑川吧', avatar: 'https://i.pravatar.cc/40?img=12' },
+  { id: 3, name: 'assu吧', avatar: 'https://i.pravatar.cc/40?img=13' },
+  { id: 4, name: '三角洲行动吧', avatar: 'https://i.pravatar.cc/40?img=14' },
+  { id: 5, name: '大学吧', avatar: 'https://i.pravatar.cc/40?img=15' },
+  { id: 6, name: '888吧', avatar: 'https://i.pravatar.cc/40?img=16' },
+  { id: 7, name: 'lol陪玩吧', avatar: 'https://i.pravatar.cc/40?img=17' },
+  { id: 8, name: '英语四六级吧', avatar: 'https://i.pravatar.cc/40?img=18' },
+  { id: 9, name: '土木工程吧', avatar: 'https://i.pravatar.cc/40?img=19' },
+  { id: 10, name: '双一流吧', avatar: 'https://i.pravatar.cc/40?img=20' },
+  { id: 11, name: '崩坏星穹铁道...吧', avatar: 'https://i.pravatar.cc/40?img=21' },
+  { id: 12, name: 'bilibili吧', avatar: 'https://i.pravatar.cc/40?img=22' },
+  { id: 13, name: '历史吧', avatar: 'https://i.pravatar.cc/40?img=23' }
 ])
 </script>
 
 <style scoped>
 .sidebar {
-  width: 280px;
+  width: 220px;
   position: sticky;
-  top: 80px;
+  top: 70px;
   align-self: flex-start;
+  padding-top: 8px;
 }
 
-.sidebar-content {
-  background: white;
-  border-radius: 12px;
-  padding: 20px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  color: #333;
+  font-size: 14px;
+  margin-bottom: 4px;
+  transition: background 0.2s;
+}
+
+.nav-item:hover {
+  background: #f5f6f7;
+}
+
+.nav-item.active {
+  background: #e8f3f9;
+  color: #2385bb;
+  font-weight: 500;
+}
+
+.nav-icon {
+  font-size: 18px;
+}
+
+.divider {
+  height: 1px;
+  background: #e5e6eb;
+  margin: 12px 0;
 }
 
 .section-title {
-  font-size: 16px;
-  font-weight: 600;
-  color: #333;
-  margin-bottom: 16px;
+  font-size: 12px;
+  color: #999;
+  padding: 0 16px;
+  margin-bottom: 8px;
 }
 
-.topic-list {
+.bar-list {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 2px;
 }
 
-.topic-item {
+.bar-item {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 8px 12px;
+  gap: 10px;
+  padding: 10px 16px;
   border-radius: 8px;
   cursor: pointer;
-  transition: all 0.3s;
+  transition: background 0.2s;
 }
 
-.topic-item:hover {
-  background: #f0f2ff;
+.bar-item:hover {
+  background: #f5f6f7;
 }
 
-.topic-tag {
-  color: #6366f1;
-  font-weight: 600;
+.bar-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  object-fit: cover;
 }
 
-.topic-name {
-  color: #555;
+.bar-name {
+  font-size: 14px;
+  color: #333;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 </style>

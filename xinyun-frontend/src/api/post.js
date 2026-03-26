@@ -1,11 +1,6 @@
 import request from './index'
 
-// 获取动态列表
 export const getPostList = (params) => {
-  // TODO: 对接后端时取消注释，移除模拟数据
-  // return request.get('/post/list', { params })
-  
-  // 模拟数据
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve({
@@ -15,47 +10,46 @@ export const getPostList = (params) => {
           list: [
             {
               id: 1,
-              userId: 2,
-              username: '小红',
-              avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=xiaohong',
-              content: '今天天气真好，出来逛街啦~',
-              images: [
-                'https://picsum.photos/400/300?random=1',
-                'https://picsum.photos/400/300?random=2'
-              ],
-              location: '上海市浦东新区',
-              createTime: '2024-03-25 14:30:00',
-              likeCount: 128,
-              commentCount: 32,
-              isLiked: false
+              barName: '孙笑川吧',
+              barAvatar: 'https://i.pravatar.cc/48?img=12',
+              followers: 752,
+              posts: 22.3,
+              title: '啊？这编剧的智商有超过过我吗？',
+              video: true,
+              thumbnail: 'https://picsum.photos/480/240?random=1',
+              duration: '00:12/48',
+              replyCount: 471,
+              viewCount: 976,
+              shareCount: 7659,
+              createTime: '1小时前'
             },
             {
               id: 2,
-              userId: 3,
-              username: '小明',
-              avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=xiaoming',
-              content: '打卡广州小蛮腰，夜景真的太美了！',
-              images: [
-                'https://picsum.photos/400/300?random=3'
-              ],
-              location: '广州市天河区',
-              createTime: '2024-03-25 12:15:00',
-              likeCount: 256,
-              commentCount: 48,
-              isLiked: true
+              barName: '航空母舰吧',
+              barAvatar: 'https://i.pravatar.cc/48?img=14',
+              followers: 168,
+              posts: 2.8,
+              title: '日本国防官坠机后我潜到俄国大使馆',
+              images: [],
+              replyCount: 63,
+              viewCount: 13,
+              shareCount: 40,
+              createTime: '2小时前'
             },
             {
               id: 3,
-              userId: 4,
-              username: '小芳',
-              avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=xiaofang',
-              content: '周末宅在家看电影，推荐一部好片~',
-              images: [],
-              location: '深圳市南山区',
-              createTime: '2024-03-24 20:45:00',
-              likeCount: 89,
-              commentCount: 15,
-              isLiked: false
+              barName: '奇迹MU全...吧',
+              barAvatar: 'https://i.pravatar.cc/48?img=15',
+              followers: 4,
+              posts: 8.5,
+              title: '小贺娜4属性卓越，1小时上600级，登录送4代翅膀！',
+              images: [
+                'https://picsum.photos/160/120?random=2'
+              ],
+              replyCount: 0,
+              viewCount: 0,
+              shareCount: 0,
+              createTime: '广告'
             }
           ],
           total: 100,
@@ -67,12 +61,7 @@ export const getPostList = (params) => {
   })
 }
 
-// 点赞
 export const likePost = (postId) => {
-  // TODO: 对接后端时取消注释，移除模拟数据
-  // return request.post('/post/like', { postId })
-  
-  // 模拟数据
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve({
@@ -84,12 +73,7 @@ export const likePost = (postId) => {
   })
 }
 
-// 取消点赞
 export const unlikePost = (postId) => {
-  // TODO: 对接后端时取消注释，移除模拟数据
-  // return request.post('/post/unlike', { postId })
-  
-  // 模拟数据
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve({
