@@ -117,6 +117,23 @@ public class JwtUtils {
     }
 
     /**
+     * 从 Token 中获取用户 ID（即使 token 已过期）
+     * 用于退出登录等场景
+     *
+     * @param token JWT Token
+     * @return 用户 ID
+     */
+    public Long getUserIdFromExpiredToken(String token) {
+        try {
+            return getUserIdFromToken(token);
+        } catch (io.jsonwebtoken.ExpiredJwtException e) {
+            // token 已过期，但从异常中获取 claims 信息
+            Claims claims = e.getClaims();
+            return claims.get("userId", Long.class);
+        }
+    }
+
+    /**
      * 从 Token 中获取用户名
      *
      * @param token JWT Token

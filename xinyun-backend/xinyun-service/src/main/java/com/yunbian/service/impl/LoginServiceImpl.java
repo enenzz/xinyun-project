@@ -428,4 +428,22 @@ public class LoginServiceImpl extends ServiceImpl<UserMapper, User> implements L
                 .expiresIn(expiresIn)
                 .build();
     }
+
+    /**
+     * 退出登录
+     * @param authorization 请求头中的 Authorization 值
+     */
+    @Override
+    public void logout(String authorization) {
+        // 从 Authorization header 中提取 token
+        String token = authorization.replace("Bearer ", "");
+        
+        // 从 token 中获取用户 ID（即使 token 已过期）
+        Long userId = jwtUtils.getUserIdFromExpiredToken(token);
+        
+        // 删除 Redis 中的 refresh token
+        stringRedisTemplate.delete(RedisConstants.REFRESH_TOKEN + userId);
+        
+        log.info("用户退出登录 - userId: {}", userId);
+    }
 }

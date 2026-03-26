@@ -35,13 +35,13 @@ public class JwtInterceptor implements HandlerInterceptor {
 
         // 2. Token 为空
         if (StrUtils.isBlank(token)) {
-            throw new TokenException(ExceptionConstants.NOT_LOGIN);
+            throw new BusinessException(ExceptionConstants.NOT_LOGIN);
         }
 
         // 3. 验证 Token 有效性
         if (!jwtUtils.isTokenValid(token)) {
             log.warn("无效的 Token: {}", token);
-            throw new TokenException(ExceptionConstants.NOT_LOGIN);
+            throw new BusinessException(ExceptionConstants.NOT_LOGIN);
         }
 
         // 4. 验证 Token 是否过期

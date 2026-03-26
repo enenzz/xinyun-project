@@ -1,5 +1,6 @@
 package com.yunbian.controller;
 
+import com.yunbian.constant.MessageConstants;
 import com.yunbian.dto.LoginDTO;
 import com.yunbian.dto.RegisterDTO;
 import com.yunbian.result.Result;
@@ -52,9 +53,12 @@ public class LoginController {
         return Result.success(refreshTokenVO);
     }
 
-    private Result logout() {
-        log.info("退出登录");
-        //TODO 退出时讲redis中的token删除
-        return Result.success("退出登录");
+    @PostMapping("/logout")
+    public Result logout(@RequestHeader("Authorization") String authorization) {
+        log.info("退出登录请求");
+        
+        loginService.logout(authorization);
+        
+        return Result.success(MessageConstants.LOGOUT_SUCCESS);
     }
 }

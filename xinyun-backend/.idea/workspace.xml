@@ -4,10 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a3772287-d375-46a1-8af5-0cbcc7b72545" name="更改" comment="开发中: 用户登录功能&#10;&#10;- 使用双token思想来刷新token">
+    <list default="true" id="a3772287-d375-46a1-8af5-0cbcc7b72545" name="更改" comment="完成：刷新token功能">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/xinyun-common/src/main/java/com/yunbian/constant/ExceptionConstants.java" beforeDir="false" afterPath="$PROJECT_DIR$/xinyun-common/src/main/java/com/yunbian/constant/ExceptionConstants.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/xinyun-common/src/main/java/com/yunbian/constant/RedisConstants.java" beforeDir="false" afterPath="$PROJECT_DIR$/xinyun-common/src/main/java/com/yunbian/constant/RedisConstants.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/xinyun-common/src/main/java/com/yunbian/constant/MessageConstants.java" beforeDir="false" afterPath="$PROJECT_DIR$/xinyun-common/src/main/java/com/yunbian/constant/MessageConstants.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/xinyun-common/src/main/java/com/yunbian/utils/JwtUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/xinyun-common/src/main/java/com/yunbian/utils/JwtUtils.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/xinyun-service/src/main/java/com/yunbian/controller/LoginController.java" beforeDir="false" afterPath="$PROJECT_DIR$/xinyun-service/src/main/java/com/yunbian/controller/LoginController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/xinyun-service/src/main/java/com/yunbian/interceptor/JwtInterceptor.java" beforeDir="false" afterPath="$PROJECT_DIR$/xinyun-service/src/main/java/com/yunbian/interceptor/JwtInterceptor.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/xinyun-service/src/main/java/com/yunbian/service/LoginService.java" beforeDir="false" afterPath="$PROJECT_DIR$/xinyun-service/src/main/java/com/yunbian/service/LoginService.java" afterDir="false" />
@@ -242,6 +242,7 @@
       <workItem from="1774416811418" duration="16602000" />
       <workItem from="1774449773362" duration="5571000" />
       <workItem from="1774485158475" duration="3872000" />
+      <workItem from="1774489110913" duration="2732000" />
     </task>
     <task id="LOCAL-00001" summary="后端项目初始化">
       <option name="closed" value="true" />
@@ -331,7 +332,15 @@
       <option name="project" value="LOCAL" />
       <updated>1774455601126</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="完成：刷新token功能">
+      <option name="closed" value="true" />
+      <created>1774489369401</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1774489369401</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -379,7 +388,8 @@
     <MESSAGE value="开发中：用户注册功能&#10;代码基本编写完成，还需进一步测试" />
     <MESSAGE value="完成:用户注册功能并优化文件上传&#10;&#10;- 添加手机号验证和用户注册参数校验逻辑&#10;- 实现用户位置信息存储功能&#10;- 优化阿里云OSS文件上传路径处理&#10;- 添加注册表单字段验证包括用户名、密码、手机号等" />
     <MESSAGE value="开发中: 用户登录功能&#10;&#10;- 使用双token思想来刷新token" />
-    <option name="LAST_COMMIT_MESSAGE" value="开发中: 用户登录功能&#10;&#10;- 使用双token思想来刷新token" />
+    <MESSAGE value="完成：刷新token功能" />
+    <option name="LAST_COMMIT_MESSAGE" value="完成：刷新token功能" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -35,4 +35,10 @@ public interface LoginService extends IService<User> {
      * @return 新的访问令牌和有效期
      */
     RefreshTokenVO refreshToken(String refreshToken);
+
+    /**
+     * 退出登录
+     * @param authorization 请求头中的 Authorization 值
+     */
+    void logout(String authorization);
 }
