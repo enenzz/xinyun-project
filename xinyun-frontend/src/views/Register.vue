@@ -1,13 +1,23 @@
 <template>
   <!-- 【样式修改区域开始】全屏背景容器 -->
   <div class="register-container" :style="bgStyle">
-    <!-- 【样式修改区域】仅保留右侧表单区，删除左侧品牌区 -->
-    <div class="right-section">
+    <!-- 【样式修改区域】表单水平垂直居中 -->
+    <div class="form-wrapper">
       <div class="form-card">
-        <!-- 表单头部（保留功能，仅修改样式） -->
+        <!-- 表单头部 -->
         <div class="form-header">
           <h2 class="form-title">欢迎加入心云</h2>
           <span class="form-link" @click="goToLogin">已有账号？去登录</span>
+        </div>
+        
+        <!-- 【布局控制】展开/收起按钮（始终可见） -->
+        <div class="toggle-btn-wrapper">
+          <div class="toggle-btn" @click="toggleOptional">
+            <span>{{ isShowOptional ? '收起选填信息' : '填写更多选填信息' }}</span>
+            <el-icon class="toggle-icon" :class="{ 'rotated': isShowOptional }">
+              <ArrowRight />
+            </el-icon>
+          </div>
         </div>
         
         <el-form 
@@ -17,174 +27,173 @@
           class="register-form"
           label-position="top"
         >
-          <!-- 【表单字段区域开始】全字段展开，取消折叠面板 -->
-          
-          <!-- ========== 必填项区域 ========== -->
-          <div class="form-section">
-            <div class="section-title">必填信息</div>
-            
-            <!-- 【接口字段：username】用户名 - 必填 -->
-            <el-form-item prop="username" label="用户名">
-              <el-input 
-                v-model="registerForm.username" 
-                placeholder="请设置用户名"
-                size="large"
-                prefix-icon="User"
-              />
-            </el-form-item>
-            
-            <!-- 【接口字段：password】密码 - 必填 -->
-            <el-form-item prop="password" label="密码">
-              <el-input 
-                v-model="registerForm.password" 
-                type="password" 
-                placeholder="请设置6-20位密码"
-                size="large"
-                prefix-icon="Lock"
-                show-password
-              />
-            </el-form-item>
-            
-            <!-- 【前端校验字段】确认密码 - 必填（不传递给后端） -->
-            <el-form-item prop="confirmPassword" label="确认密码">
-              <el-input 
-                v-model="registerForm.confirmPassword" 
-                type="password" 
-                placeholder="请再次输入密码"
-                size="large"
-                prefix-icon="Lock"
-                show-password
-              />
-            </el-form-item>
-          </div>
-          
-          <!-- ========== 选填项区域 ========== -->
-          <div class="form-section">
-            <div class="section-title">选填信息</div>
-            
-            <!-- 【接口字段：nickname】昵称 - 选填 -->
-            <el-form-item prop="nickname" label="昵称（选填）">
-              <el-input 
-                v-model="registerForm.nickname" 
-                placeholder="请设置昵称（选填）"
-                size="large"
-                prefix-icon="UserFilled"
-              />
-            </el-form-item>
-            
-            <!-- 【接口字段：avatarUrl】头像 - 选填 -->
-            <el-form-item prop="avatar" label="头像（选填）">
-              <div class="avatar-upload-wrapper">
-                <el-upload
-                  class="avatar-uploader"
-                  :show-file-list="false"
-                  :before-upload="beforeAvatarUpload"
-                  :http-request="handleAvatarUpload"
-                  accept="image/*"
-                >
-                  <el-avatar v-if="registerForm.avatarUrl" :size="100" :src="registerForm.avatarUrl" />
-                  <div v-else class="avatar-placeholder">
-                    <el-icon class="avatar-icon"><Plus /></el-icon>
-                    <span class="avatar-text">点击上传</span>
-                  </div>
-                </el-upload>
-                <div class="avatar-tips">
-                  <span>支持JPG/PNG/GIF格式，大小不超过2MB</span>
-                </div>
-              </div>
-            </el-form-item>
-            
-            <!-- 【接口字段：gender】性别 - 选填 -->
-            <el-form-item prop="gender" label="性别（选填）">
-              <el-radio-group v-model="registerForm.gender" size="large">
-                <el-radio :value="0">未知</el-radio>
-                <el-radio :value="1">男</el-radio>
-                <el-radio :value="2">女</el-radio>
-              </el-radio-group>
-            </el-form-item>
-            
-            <!-- 【接口字段：birthday】生日 - 选填 -->
-            <el-form-item prop="birthday" label="生日（选填）">
-              <el-date-picker
-                v-model="registerForm.birthday"
-                type="date"
-                placeholder="选择生日（选填）"
-                format="YYYY-MM-DD"
-                value-format="YYYY-MM-DD"
-                size="large"
-                style="width: 100%"
-              />
-            </el-form-item>
-            
-            <!-- 【接口字段：phone】手机号 - 选填 -->
-            <el-form-item prop="phone" label="手机号（选填）">
-              <el-input 
-                v-model="registerForm.phone" 
-                placeholder="请输入手机号（选填）"
-                size="large"
-                prefix-icon="Phone"
-              />
-            </el-form-item>
-            
-            <!-- 【前端可选字段】验证码 - 选填（不传递给后端） -->
-            <el-form-item prop="captcha" label="验证码（选填）">
-              <div class="captcha-wrapper">
+          <!-- 【表单布局区域】横向展开布局 -->
+          <div class="form-content">
+            <!-- 左侧：必填项区域（固定展示） -->
+            <div class="form-left">
+              <div class="section-title">必填信息</div>
+              
+              <!-- 【接口字段：username】用户名 - 必填 -->
+              <el-form-item prop="username" label="用户名">
                 <el-input 
-                  v-model="registerForm.captcha" 
-                  placeholder="请输入验证码（选填）"
+                  v-model="registerForm.username" 
+                  placeholder="请设置用户名"
                   size="large"
-                  prefix-icon="Key"
-                  class="captcha-input"
+                  prefix-icon="User"
                 />
+              </el-form-item>
+              
+              <!-- 【接口字段：password】密码 - 必填 -->
+              <el-form-item prop="password" label="密码">
+                <el-input 
+                  v-model="registerForm.password" 
+                  type="password" 
+                  placeholder="请设置6-20位密码"
+                  size="large"
+                  prefix-icon="Lock"
+                  show-password
+                />
+              </el-form-item>
+              
+              <!-- 【前端校验字段】确认密码 - 必填（不传递给后端） -->
+              <el-form-item prop="confirmPassword" label="确认密码">
+                <el-input 
+                  v-model="registerForm.confirmPassword" 
+                  type="password" 
+                  placeholder="请再次输入密码"
+                  size="large"
+                  prefix-icon="Lock"
+                  show-password
+                />
+              </el-form-item>
+              
+              <!-- 用户协议 -->
+              <el-form-item prop="agreement">
+                <el-checkbox v-model="registerForm.agreement">
+                  我已阅读并同意
+                  <span class="agreement-link">《用户服务协议》</span>
+                  和
+                  <span class="agreement-link">《隐私政策》</span>
+                </el-checkbox>
+              </el-form-item>
+              
+              <!-- 注册按钮 -->
+              <el-form-item>
                 <el-button 
                   type="primary" 
-                  size="large"
-                  class="captcha-btn"
-                  :disabled="countdown > 0"
-                  @click="handleGetCaptcha"
+                  size="large" 
+                  class="register-submit-btn"
+                  @click="handleRegister"
+                  :loading="registerLoading"
                 >
-                  {{ countdown > 0 ? `${countdown}s` : '获取验证码' }}
+                  立即注册
                 </el-button>
-              </div>
-            </el-form-item>
+              </el-form-item>
+            </div>
             
-            <!-- 【接口字段：province/city/district】所在地 - 选填 -->
-            <el-form-item prop="region" label="所在地（选填）">
-              <el-cascader
-                v-model="registerForm.region"
-                :options="regionOptions"
-                placeholder="选择省/市/区（选填）"
-                size="large"
-                style="width: 100%"
-                @change="handleRegionChange"
-              />
-            </el-form-item>
+            <!-- 【修复关键】右侧：选填项区域（v-show控制显示/隐藏） -->
+            <div class="form-right" v-show="isShowOptional">
+              <div class="section-title">选填信息</div>
+              
+              <!-- 【接口字段：nickname】昵称 - 选填 -->
+              <el-form-item prop="nickname" label="昵称（选填）">
+                <el-input 
+                  v-model="registerForm.nickname" 
+                  placeholder="请设置昵称（选填）"
+                  size="large"
+                  prefix-icon="UserFilled"
+                />
+              </el-form-item>
+              
+              <!-- 【接口字段：avatarUrl】头像 - 选填 -->
+              <el-form-item prop="avatar" label="头像（选填）">
+                <div class="avatar-upload-wrapper">
+                  <el-upload
+                    class="avatar-uploader"
+                    :show-file-list="false"
+                    :before-upload="beforeAvatarUpload"
+                    :http-request="handleAvatarUpload"
+                    accept="image/*"
+                  >
+                    <el-avatar v-if="registerForm.avatarUrl" :size="80" :src="registerForm.avatarUrl" />
+                    <div v-else class="avatar-placeholder">
+                      <el-icon class="avatar-icon"><Plus /></el-icon>
+                      <span class="avatar-text">上传</span>
+                    </div>
+                  </el-upload>
+                  <div class="avatar-tips">
+                    <span>JPG/PNG/GIF，≤2MB</span>
+                  </div>
+                </div>
+              </el-form-item>
+              
+              <!-- 【接口字段：gender】性别 - 选填 -->
+              <el-form-item prop="gender" label="性别（选填）">
+                <el-radio-group v-model="registerForm.gender" size="large">
+                  <el-radio :value="0">未知</el-radio>
+                  <el-radio :value="1">男</el-radio>
+                  <el-radio :value="2">女</el-radio>
+                </el-radio-group>
+              </el-form-item>
+              
+              <!-- 【接口字段：birthday】生日 - 选填 -->
+              <el-form-item prop="birthday" label="生日（选填）">
+                <el-date-picker
+                  v-model="registerForm.birthday"
+                  type="date"
+                  placeholder="选择生日（选填）"
+                  format="YYYY-MM-DD"
+                  value-format="YYYY-MM-DD"
+                  size="large"
+                  style="width: 100%"
+                />
+              </el-form-item>
+              
+              <!-- 【接口字段：phone】手机号 - 选填 -->
+              <el-form-item prop="phone" label="手机号（选填）">
+                <el-input 
+                  v-model="registerForm.phone" 
+                  placeholder="请输入手机号（选填）"
+                  size="large"
+                  prefix-icon="Phone"
+                />
+              </el-form-item>
+              
+              <!-- 【前端可选字段】验证码 - 选填（不传递给后端） -->
+              <el-form-item prop="captcha" label="验证码（选填）">
+                <div class="captcha-wrapper">
+                  <el-input 
+                    v-model="registerForm.captcha" 
+                    placeholder="验证码（选填）"
+                    size="large"
+                    prefix-icon="Key"
+                    class="captcha-input"
+                  />
+                  <el-button 
+                    type="primary" 
+                    size="large"
+                    class="captcha-btn"
+                    :disabled="countdown > 0"
+                    @click="handleGetCaptcha"
+                  >
+                    {{ countdown > 0 ? `${countdown}s` : '获取' }}
+                  </el-button>
+                </div>
+              </el-form-item>
+              
+              <!-- 【接口字段：province/city/district】所在地 - 选填 -->
+              <el-form-item prop="region" label="所在地（选填）">
+                <el-cascader
+                  v-model="registerForm.region"
+                  :options="regionOptions"
+                  placeholder="选择省/市/区（选填）"
+                  size="large"
+                  style="width: 100%"
+                  @change="handleRegionChange"
+                />
+              </el-form-item>
+            </div>
           </div>
-          
-          <!-- 【表单字段区域结束】 -->
-          
-          <!-- 用户协议 -->
-          <el-form-item prop="agreement">
-            <el-checkbox v-model="registerForm.agreement">
-              我已阅读并同意
-              <span class="agreement-link">《用户服务协议》</span>
-              和
-              <span class="agreement-link">《隐私政策》</span>
-            </el-checkbox>
-          </el-form-item>
-          
-          <!-- 注册按钮 -->
-          <el-form-item>
-            <el-button 
-              type="primary" 
-              size="large" 
-              class="register-submit-btn"
-              @click="handleRegister"
-              :loading="registerLoading"
-            >
-              立即注册
-            </el-button>
-          </el-form-item>
         </el-form>
       </div>
     </div>
@@ -196,7 +205,7 @@
 import { ref, reactive } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
-import { User, Lock, Phone, Key, Plus, UserFilled } from '@element-plus/icons-vue'
+import { User, Lock, Phone, Key, Plus, UserFilled, ArrowRight } from '@element-plus/icons-vue'
 import { register, uploadImage, getCaptcha } from '@/api/user'
 import md5 from 'blueimp-md5'
 // 【关键位置】引入本地背景图片，请将 register-bg.jpg 放入 src/assets/images/ 目录
@@ -207,6 +216,14 @@ const registerFormRef = ref(null)
 const registerLoading = ref(false)
 const countdown = ref(0)
 let countdownTimer = null
+
+// 【修复关键】选填信息展开/收起状态 - 使用更明确的命名
+const isShowOptional = ref(false)
+
+// 【修复关键】切换展开/收起状态
+const toggleOptional = () => {
+  isShowOptional.value = !isShowOptional.value
+}
 
 // 【样式修改相关】全屏背景图样式
 const bgStyle = reactive({
@@ -507,69 +524,119 @@ const goToLogin = () => {
   background-repeat: no-repeat;
 }
 
-/* 【样式修改区域】右侧表单区 - 透明背景 */
-.right-section {
+/* 【样式修改区域】表单水平垂直居中 */
+.form-wrapper {
   width: 100%;
   height: 100%;
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   align-items: center;
-  overflow-y: auto;
-  padding: 40px 60px;
 }
 
-/* 【样式修改区域】表单卡片 - 完全透明 */
+/* 【样式修改区域】表单卡片 - 半透明白色背景 */
 .form-card {
-  width: 450px;
-  max-height: 90vh;
-  background: transparent;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 16px;
   padding: 40px 36px;
-  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
 }
 
-/* 保留原有表单结构样式，仅修改背景相关 */
+/* 表单头部 */
 .form-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 32px;
+  margin-bottom: 24px;
 }
 
 .form-title {
   font-size: 28px;
   font-weight: 700;
-  color: #fff;
+  color: #1f2937;
   margin: 0;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .form-link {
   font-size: 14px;
-  color: #fff;
+  color: #6366f1;
   cursor: pointer;
   font-weight: 500;
   transition: color 0.2s;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .form-link:hover {
-  color: #e0e7ff;
+  color: #4f46e5;
 }
 
-.form-section {
-  margin-bottom: 24px;
+/* 【修复关键】展开/收起按钮（始终可见，不受折叠影响） */
+.toggle-btn-wrapper {
+  margin-bottom: 20px;
 }
 
+.toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: #fff;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.3s;
+}
+
+.toggle-btn:hover {
+  background: linear-gradient(135deg, #4f46e5, #7c3aed);
+  transform: translateY(-1px);
+}
+
+.toggle-icon {
+  font-size: 16px;
+  transition: transform 0.3s;
+}
+
+.toggle-icon.rotated {
+  transform: rotate(90deg);
+}
+
+/* 【布局核心】表单内容区域 - 横向布局 */
+.form-content {
+  display: flex;
+  gap: 32px;
+}
+
+/* 左侧必填项区域 */
+.form-left {
+  width: 320px;
+  flex-shrink: 0;
+}
+
+/* 【修复关键】右侧选填项区域 - 默认完全隐藏，展开时显示 */
+.form-right {
+  width: 320px;
+  flex-shrink: 0;
+  display: none;  /* 默认隐藏 */
+}
+
+.form-right[v-show="true"],
+.form-right:not([v-show]) {
+  display: block; /* 展开时显示 */
+}
+
+/* 分区标题 */
 .section-title {
   font-size: 14px;
   font-weight: 600;
-  color: #fff;
+  color: #374151;
   margin-bottom: 16px;
-  padding-left: 4px;
-  border-left: 3px solid #fff;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  padding-left: 8px;
+  border-left: 3px solid #6366f1;
 }
 
+/* 表单项样式 */
 .register-form :deep(.el-form-item) {
   margin-bottom: 20px;
 }
@@ -577,27 +644,25 @@ const goToLogin = () => {
 .register-form :deep(.el-form-item__label) {
   font-size: 14px;
   font-weight: 500;
-  color: #fff;
+  color: #374151;
   padding-bottom: 6px;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .register-form :deep(.el-input__wrapper) {
   border-radius: 12px;
   padding: 12px 16px;
   transition: all 0.3s;
-  background: rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(10px);
 }
 
 .register-form :deep(.el-input__wrapper:hover) {
-  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.5);
+  box-shadow: 0 0 0 1px #d1d5db;
 }
 
 .register-form :deep(.el-input__wrapper.is-focus) {
-  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.5);
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.3);
 }
 
+/* 验证码 */
 .captcha-wrapper {
   display: flex;
   gap: 12px;
@@ -608,7 +673,7 @@ const goToLogin = () => {
 }
 
 .captcha-btn {
-  width: 140px;
+  width: 80px;
   flex-shrink: 0;
   border-radius: 12px;
   background: linear-gradient(135deg, #6366f1, #8b5cf6);
@@ -621,10 +686,11 @@ const goToLogin = () => {
 }
 
 .captcha-btn:disabled {
-  background: rgba(255, 255, 255, 0.3);
-  color: rgba(255, 255, 255, 0.7);
+  background: #e5e7eb;
+  color: #9ca3af;
 }
 
+/* 头像上传 */
 .avatar-upload-wrapper {
   width: 100%;
 }
@@ -634,61 +700,56 @@ const goToLogin = () => {
 }
 
 .avatar-placeholder {
-  width: 100px;
-  height: 100px;
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
-  border: 2px dashed rgba(255, 255, 255, 0.7);
+  border: 2px dashed #d1d5db;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   cursor: pointer;
   transition: all 0.3s;
-  background: rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(10px);
 }
 
 .avatar-placeholder:hover {
-  border-color: #fff;
-  background: rgba(255, 255, 255, 0.3);
+  border-color: #6366f1;
 }
 
 .avatar-icon {
-  font-size: 32px;
-  color: rgba(255, 255, 255, 0.9);
+  font-size: 24px;
+  color: #9ca3af;
   margin-bottom: 4px;
 }
 
 .avatar-text {
   font-size: 12px;
-  color: rgba(255, 255, 255, 0.9);
+  color: #9ca3af;
 }
 
 .avatar-tips {
-  margin-top: 12px;
+  margin-top: 8px;
   font-size: 12px;
-  color: rgba(255, 255, 255, 0.9);
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  color: #9ca3af;
 }
 
+/* 用户协议 */
 .agreement-link {
-  color: #e0e7ff;
+  color: #6366f1;
   cursor: pointer;
   font-weight: 500;
 }
 
 .agreement-link:hover {
-  color: #c7d2fe;
+  color: #4f46e5;
 }
 
 .register-form :deep(.el-checkbox__label) {
-  color: #fff;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  color: #374151;
 }
 
 .register-form :deep(.el-radio__label) {
-  color: #fff;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  color: #374151;
 }
 
 .register-form :deep(.el-cascader) {
@@ -699,6 +760,7 @@ const goToLogin = () => {
   width: 100%;
 }
 
+/* 注册按钮 */
 .register-submit-btn {
   width: 100%;
   height: 48px;
