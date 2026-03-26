@@ -2,44 +2,20 @@ import request from './index'
 
 // 登录
 export const login = (data) => {
-  // TODO: 对接后端时取消注释，移除模拟数据
-  // return request.post('/login', data)
-  
-  // 模拟数据
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve({
-        code: 200,
-        message: 'success',
-        data: {
-          token: 'mock-token-' + Date.now(),
-          expiresIn: 1800,
-          userVO: {
-            id: 1,
-            username: data.username,
-            nickname: '心云用户',
-            avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=' + data.username
-          }
-        }
-      })
-    }, 500)
-  })
+  return request.post('/login', data)
 }
 
 // 注册
 export const register = (data) => {
-  // TODO: 对接后端时取消注释，移除模拟数据
-  // return request.post('/login/register', data)
-  
-  // 模拟数据
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve({
-        code: 200,
-        message: 'success',
-        data: null
-      })
-    }, 500)
+  return request.post('/login/register', data)
+}
+
+// 上传图片
+export const uploadImage = (formData) => {
+  return request.post('/common/upload/image', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
   })
 }
 
