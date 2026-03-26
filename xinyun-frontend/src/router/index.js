@@ -7,12 +7,11 @@ const routes = [
     name: 'Home',
     component: Home
   },
-  // TODO: 对接后端时添加登录页路由
-  // {
-  //   path: '/login',
-  //   name: 'Login',
-  //   component: () => import('../views/Login.vue')
-  // }
+  {
+    path: '/register',
+    name: 'Register',
+    component: () => import('../views/Register.vue')
+  }
 ]
 
 const router = createRouter({

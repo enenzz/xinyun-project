@@ -53,65 +53,49 @@
 
     <el-dialog
       v-model="showLoginDialog"
-      title="登录"
-      width="400px"
+      width="480px"
       :close-on-click-modal="true"
       destroy-on-close
+      class="login-dialog"
     >
-      <el-form :model="loginForm" label-width="80px">
-        <el-form-item label="用户名">
-          <el-input v-model="loginForm.username" placeholder="请输入用户名" />
-        </el-form-item>
-        <el-form-item label="密码">
-          <el-input v-model="loginForm.password" type="password" placeholder="请输入密码" show-password />
-        </el-form-item>
-      </el-form>
-      <template #footer>
-        <span class="dialog-footer">
-          <el-button @click="goToRegister">去注册</el-button>
-          <el-button type="primary" @click="handleLogin" :loading="loginLoading">登录</el-button>
-        </span>
+      <template #header>
+        <div class="dialog-header">
+          <h2 class="dialog-title">登录心云</h2>
+          <p class="dialog-subtitle">欢迎回来，继续你的精彩</p>
+        </div>
       </template>
-    </el-dialog>
-
-    <el-dialog
-      v-model="showRegisterDialog"
-      title="注册"
-      width="400px"
-      :close-on-click-modal="true"
-      destroy-on-close
-    >
-      <el-form :model="registerForm" label-width="80px">
-        <el-form-item label="用户名">
-          <el-input v-model="registerForm.username" placeholder="请输入用户名" />
+      
+      <el-form :model="loginForm" :rules="loginRules" ref="loginFormRef" class="login-form">
+        <el-form-item prop="username">
+          <el-input 
+            v-model="loginForm.username" 
+            placeholder="请输入用户名"
+            size="large"
+            prefix-icon="User"
+          />
         </el-form-item>
-        <el-form-item label="密码">
-          <el-input v-model="registerForm.password" type="password" placeholder="请输入密码" show-password />
+        <el-form-item prop="password">
+          <el-input 
+            v-model="loginForm.password" 
+            type="password" 
+            placeholder="请输入密码"
+            size="large"
+            prefix-icon="Lock"
+            show-password
+          />
         </el-form-item>
-        <el-form-item label="确认密码">
-          <el-input v-model="registerForm.confirmPassword" type="password" placeholder="请再次输入密码" show-password />
-        </el-form-item>
-        <el-form-item label="昵称">
-          <el-input v-model="registerForm.nickname" placeholder="请输入昵称（可选）" />
-        </el-form-item>
-        <el-form-item label="头像">
-          <el-upload
-            class="avatar-uploader"
-            :show-file-list="false"
-            :before-upload="beforeAvatarUpload"
-            :http-request="handleAvatarUpload"
-            accept="image/*"
-          >
-            <el-avatar v-if="registerForm.avatarUrl" :size="80" :src="registerForm.avatarUrl" />
-            <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
-          </el-upload>
+        <el-form-item>
+          <el-button type="primary" size="large" class="login-submit-btn" @click="handleLogin" :loading="loginLoading">
+            登录
+          </el-button>
         </el-form-item>
       </el-form>
+      
       <template #footer>
-        <span class="dialog-footer">
-          <el-button @click="goToLogin">去登录</el-button>
-          <el-button type="primary" @click="handleRegister" :loading="registerLoading">注册</el-button>
-        </span>
+        <div class="dialog-footer">
+          <span class="footer-text">还没有账号？</span>
+          <span class="footer-link" @click="goToRegister">立即注册</span>
+        </div>
       </template>
     </el-dialog>
   </header>
@@ -119,29 +103,33 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import { Search, Bell, Star, Clock, Plus } from '@element-plus/icons-vue'
-import { login, register, logout, uploadImage } from '@/api/user'
+import { Search, Bell, Star, Clock, User, Lock } from '@element-plus/icons-vue'
+import { login, logout } from '@/api/user'
 import md5 from 'blueimp-md5'
 
+const router = useRouter()
 const searchKeyword = ref('')
 const showLoginDialog = ref(false)
-const showRegisterDialog = ref(false)
 const loginLoading = ref(false)
-const registerLoading = ref(false)
+const loginFormRef = ref(null)
 
 const loginForm = ref({
   username: '',
   password: ''
 })
 
-const registerForm = ref({
-  username: '',
-  password: '',
-  confirmPassword: '',
-  nickname: '',
-  avatarUrl: ''
-})
+const loginRules = {
+  username: [
+    { required: true, message: '请输入用户名', trigger: 'blur' },
+    { min: 4, max: 16, message: '用户名长度为4-16位', trigger: 'blur' }
+  ],
+  password: [
+    { required: true, message: '请输入密码', trigger: 'blur' },
+    { min: 6, max: 20, message: '密码长度为6-20位', trigger: 'blur' }
+  ]
+}
 
 const isLoggedIn = computed(() => {
   return !!localStorage.getItem('token')
@@ -185,8 +173,11 @@ const handleCommand = async (command) => {
 }
 
 const handleLogin = async () => {
-  if (!loginForm.value.username || !loginForm.value.password) {
-    ElMessage.warning('请输入用户名和密码')
+  if (!loginFormRef.value) return
+  
+  try {
+    await loginFormRef.value.validate()
+  } catch {
     return
   }
 
@@ -216,97 +207,7 @@ const handleLogin = async () => {
 
 const goToRegister = () => {
   showLoginDialog.value = false
-  showRegisterDialog.value = true
-}
-
-const goToLogin = () => {
-  showRegisterDialog.value = false
-  showLoginDialog.value = true
-}
-
-const beforeAvatarUpload = (file) => {
-  const isImage = file.type.startsWith('image/')
-  const isLt2M = file.size / 1024 / 1024 < 2
-
-  if (!isImage) {
-    ElMessage.error('只能上传图片文件!')
-    return false
-  }
-  if (!isLt2M) {
-    ElMessage.error('图片大小不能超过 2MB!')
-    return false
-  }
-  return true
-}
-
-const handleAvatarUpload = async (options) => {
-  const formData = new FormData()
-  formData.append('file', options.file)
-  formData.append('type', 'avatar')
-
-  try {
-    const res = await uploadImage(formData)
-    if (res.code === 200) {
-      registerForm.value.avatarUrl = res.data.url
-      ElMessage.success('头像上传成功')
-    } else {
-      ElMessage.error(res.message || '头像上传失败')
-    }
-  } catch (error) {
-    console.error('头像上传失败:', error)
-    ElMessage.error(error.response?.data?.message || '头像上传失败，请重试')
-  }
-}
-
-const handleRegister = async () => {
-  if (!registerForm.value.username || !registerForm.value.password) {
-    ElMessage.warning('请输入用户名和密码')
-    return
-  }
-
-  if (registerForm.value.password !== registerForm.value.confirmPassword) {
-    ElMessage.warning('两次输入的密码不一致')
-    return
-  }
-
-  try {
-    registerLoading.value = true
-    const data = {
-      username: registerForm.value.username,
-      password: md5(registerForm.value.password)
-    }
-    
-    if (registerForm.value.nickname) {
-      data.nickname = registerForm.value.nickname
-    }
-    if (registerForm.value.avatarUrl) {
-      data.avatarUrl = registerForm.value.avatarUrl
-    }
-
-    const res = await register(data)
-
-    if (res.code === 200) {
-      ElMessage.success('注册成功')
-      showRegisterDialog.value = false
-      
-      registerForm.value = {
-        username: '',
-        password: '',
-        confirmPassword: '',
-        nickname: '',
-        avatarUrl: ''
-      }
-      
-      showLoginDialog.value = true
-    } else {
-      ElMessage.error(res.message || '注册失败')
-    }
-  } catch (error) {
-    console.error('注册失败:', error)
-    ElMessage.error(error.response?.data?.message || '注册失败，请重试')
-  } finally {
-    registerLoading.value = false
-  }
+  router.push('/register')
 }
 
 onMounted(() => {
@@ -414,15 +315,18 @@ onMounted(() => {
 }
 
 .login-btn {
-  background: #2385bb;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
   color: #fff;
   font-size: 14px;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: all 0.3s;
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
 }
 
 .login-btn:hover {
-  background: #1e75a6 !important;
+  background: linear-gradient(135deg, #4f46e5, #7c3aed) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
 }
 
 .user-avatar-wrapper {
@@ -431,34 +335,104 @@ onMounted(() => {
   overflow: hidden;
 }
 
-.avatar-uploader {
-  display: inline-block;
+.login-dialog :deep(.el-dialog) {
+  border-radius: 20px;
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.15);
 }
 
-.avatar-uploader :deep(.el-avatar) {
-  cursor: pointer;
+.login-dialog :deep(.el-dialog__header) {
+  padding: 40px 40px 0;
+  margin: 0;
+  border-bottom: none;
 }
 
-.avatar-uploader-icon {
-  font-size: 28px;
-  color: #8c939d;
-  width: 80px;
-  height: 80px;
+.login-dialog :deep(.el-dialog__body) {
+  padding: 32px 40px 24px;
+}
+
+.login-dialog :deep(.el-dialog__footer) {
+  padding: 0 40px 40px;
+  border-top: none;
+}
+
+.dialog-header {
   text-align: center;
-  line-height: 80px;
-  border: 1px dashed #d9d9d9;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: border-color 0.2s;
 }
 
-.avatar-uploader-icon:hover {
-  border-color: #2385bb;
+.dialog-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 8px 0;
+}
+
+.dialog-subtitle {
+  font-size: 14px;
+  color: #6b7280;
+  margin: 0;
+}
+
+.login-form {
+  margin-top: 8px;
+}
+
+.login-form :deep(.el-form-item) {
+  margin-bottom: 24px;
+}
+
+.login-form :deep(.el-input__wrapper) {
+  border-radius: 12px;
+  padding: 12px 16px;
+  transition: all 0.3s;
+}
+
+.login-form :deep(.el-input__wrapper:hover) {
+  box-shadow: 0 0 0 1px #d1d5db;
+}
+
+.login-form :deep(.el-input__wrapper.is-focus) {
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+}
+
+.login-submit-btn {
+  width: 100%;
+  height: 48px;
+  border-radius: 24px;
+  font-size: 16px;
+  font-weight: 600;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  border: none;
+  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.4);
+  transition: all 0.3s;
+}
+
+.login-submit-btn:hover {
+  background: linear-gradient(135deg, #4f46e5, #7c3aed) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(99, 102, 241, 0.5);
 }
 
 .dialog-footer {
   display: flex;
-  justify-content: flex-end;
-  gap: 12px;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+}
+
+.footer-text {
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.footer-link {
+  font-size: 14px;
+  color: #6366f1;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.footer-link:hover {
+  color: #4f46e5;
 }
 </style>
