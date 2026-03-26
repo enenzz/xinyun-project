@@ -102,14 +102,15 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref, computed, onMounted, watch } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Search, Bell, Star, Clock, User, Lock } from '@element-plus/icons-vue'
 import { login, logout } from '@/api/user'
 import md5 from 'blueimp-md5'
 
 const router = useRouter()
+const route = useRoute()
 const searchKeyword = ref('')
 const showLoginDialog = ref(false)
 const loginLoading = ref(false)
@@ -209,6 +210,17 @@ const goToRegister = () => {
   showLoginDialog.value = false
   router.push('/register')
 }
+
+// 检测路由参数 openLogin，自动弹出登录框
+watch(
+  () => route.query,
+  (query) => {
+    if (query.openLogin === 'true' && !isLoggedIn.value) {
+      showLoginDialog.value = true
+    }
+  },
+  { immediate: true }
+)
 
 onMounted(() => {
 })

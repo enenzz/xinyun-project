@@ -21,19 +21,7 @@ export const uploadImage = (formData) => {
 
 // 获取验证码
 export const getCaptcha = (username) => {
-  // TODO: 对接后端时取消注释，移除模拟数据
-  // return request.get('/login/captcha', { params: { username } })
-  
-  // 模拟数据
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve({
-        code: 200,
-        message: 'success',
-        data: '123456'
-      })
-    }, 300)
-  })
+  return request.get('/login/captcha', { params: { username } })
 }
 
 // 退出登录
