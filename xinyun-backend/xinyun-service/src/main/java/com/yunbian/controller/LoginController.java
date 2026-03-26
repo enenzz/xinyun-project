@@ -39,16 +39,19 @@ public class LoginController {
     public Result<String> captcha(@RequestParam("username") String username) {
         log.info("获取验证码请求 - 用户名：{}", username);
         
-        String captcha = loginService.generateCaptcha(username);
+        String captcha = loginService.getCaptcha(username);
         
         return Result.success(captcha);
     }
 
     @PostMapping("/refresh")
-    public Result<RefreshTokenVO> refresh(@RequestParam("refreshToken") String refreshToken) {
+    public Result<RefreshTokenVO> refresh(@RequestHeader("Authorization") String authorization) {
         log.info("刷新 Token 请求");
         
-        RefreshTokenVO refreshTokenVO = loginService.refreshToken(refreshToken);
+        // 从 Authorization header 中提取 token
+        String token = authorization.replace("Bearer ", "");
+        
+        RefreshTokenVO refreshTokenVO = loginService.refreshToken(token);
         
         return Result.success(refreshTokenVO);
     }

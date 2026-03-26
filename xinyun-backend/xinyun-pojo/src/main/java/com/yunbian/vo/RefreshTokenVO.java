@@ -17,10 +17,10 @@ public class RefreshTokenVO {
     /**
      * 新的 JWT 访问令牌
      */
-    private String accessToken;
+    private String token;
 
     /**
-     * accessToken 有效期（秒）
+     * token 有效期（秒）
      */
     private Long expiresIn;
 }

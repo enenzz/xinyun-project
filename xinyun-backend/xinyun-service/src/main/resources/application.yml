@@ -54,6 +54,7 @@ file:
 jwt:
   secret-key: ${jwt.secret-key}
   access-expiration-time: ${jwt.expiration-time}
+  refresh-expiration-time: ${jwt.refresh-expiration-time}
 
 
 

@@ -31,6 +31,8 @@ public class ExceptionConstants {
     public static final String USER_NOT_FOUND_LOGIN = "用户名不存在";
     public static final String PASSWORD_ERROR = "密码错误";
     public static final String PASSWORD_LENGTH_ERROR = "密码长度必须在 6-20 位之间";
+    public static final String CAPTCHA_EMPTY = "验证码不能为空";
+    public static final String CAPTCHA_EXPIRED = "验证码已过期";
     public static final String CAPTCHA_ERROR = "验证码错误";
     public static final String TOKEN_INVALID = "Token 已失效";
 

@@ -174,4 +174,20 @@ public class JwtUtils {
             return true;
         }
     }
+    
+    /**
+     * 获取 Token 的剩余有效期（毫秒）
+     * @param token JWT Token
+     * @return 剩余有效期（毫秒），如果已过期返回 0
+     */
+    public long getRemainingTTL(String token) {
+        try {
+            Claims claims = parseToken(token);
+            Date expiration = claims.getExpiration();
+            long remaining = expiration.getTime() - System.currentTimeMillis();
+            return Math.max(0, remaining);
+        } catch (Exception e) {
+            return 0;
+        }
+    }
 }

@@ -1,6 +1,7 @@
 package com.yunbian.interceptor;
 
 import com.yunbian.constant.ExceptionConstants;
+import com.yunbian.constant.RedisConstants;
 import com.yunbian.exception.BusinessException;
 import com.yunbian.exception.TokenException;
 import com.yunbian.utils.JwtUtils;
@@ -10,6 +11,7 @@ import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -25,37 +27,45 @@ public class JwtInterceptor implements HandlerInterceptor {
     
     @Resource
     private JwtUtils jwtUtils;
+    
+    @Resource
+    private StringRedisTemplate stringRedisTemplate;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        //这里获取的都是短期token，刷新token只有在刷新请求时才会传过来
-
         // 1. 从请求头获取 Token
         String token = request.getHeader(TOKEN_HEADER);
-
+        
         // 2. Token 为空
         if (StrUtils.isBlank(token)) {
             throw new BusinessException(ExceptionConstants.NOT_LOGIN);
         }
-
-        // 3. 验证 Token 有效性
+        
+        // 3. 验证 Token 有效性（签名）
         if (!jwtUtils.isTokenValid(token)) {
             log.warn("无效的 Token: {}", token);
             throw new BusinessException(ExceptionConstants.NOT_LOGIN);
         }
-
+        
         // 4. 验证 Token 是否过期
         if (jwtUtils.isTokenExpired(token)) {
-            log.warn("Token 已过期: {}", token);
+            log.warn("Token 已过期：{}", token);
             throw new TokenException(ExceptionConstants.NOT_LOGIN);
         }
-
-        // 5. 解析 Token，存入 UserContext
+        
+        // 5. 检查 Redis 中 Token 是否存在（判断是否已退出登录）
         Long userId = jwtUtils.getUserIdFromToken(token);
+        String savedToken = stringRedisTemplate.opsForValue().get(RedisConstants.USER_TOKEN + userId);
+        if (savedToken == null) {
+            log.warn("Token 已在 Redis 中失效 - userId: {}", userId);
+            throw new BusinessException(ExceptionConstants.NOT_LOGIN);
+        }
+        
+        // 6. 解析 Token，存入 UserContext
         String username = jwtUtils.getUsernameFromToken(token);
         UserContext.setUser(userId, username);
-
-        log.debug("用户登录信息已存入上下文: userId={}, username={}", userId, username);
+        
+        log.debug("用户登录信息已存入上下文：userId={}, username={}", userId, username);
         return true;
     }
 

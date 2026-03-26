@@ -18,23 +18,23 @@ public interface LoginService extends IService<User> {
     /**
      * 用户登录
      * @param loginDTO 登录信息
-     * @return 登录响应（包含 Token、Refresh Token、有效期和用户信息）
+     * @return 登录响应（包含 Token、有效期和用户信息）
      */
     LoginVO login(LoginDTO loginDTO);
 
     /**
-     * 生成并发送验证码
+     * 获取并发送验证码
      * @param username 用户名
-     * @return 验证码 VO
+     * @return 验证码
      */
-    String generateCaptcha(String username);
+    String getCaptcha(String username);
 
     /**
      * 刷新 Token
-     * @param refreshToken 刷新令牌
-     * @return 新的访问令牌和有效期
+     * @param oldToken 旧的 token
+     * @return 新的 token 和有效期
      */
-    RefreshTokenVO refreshToken(String refreshToken);
+    RefreshTokenVO refreshToken(String oldToken);
 
     /**
      * 退出登录

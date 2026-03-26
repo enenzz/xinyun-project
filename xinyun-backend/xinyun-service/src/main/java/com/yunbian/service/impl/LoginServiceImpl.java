@@ -290,51 +290,61 @@ public class LoginServiceImpl extends ServiceImpl<UserMapper, User> implements L
     /**
      * 用户登录
      * @param loginDTO 登录信息
-     * @return 登录响应（包含 Token、Refresh Token、有效期和用户信息）
+     * @return 登录响应（包含 Token、有效期和用户信息）
      */
     @Override
     public LoginVO login(LoginDTO loginDTO) {
         String username = loginDTO.getUsername();
         String password = loginDTO.getPassword();
         String captcha = loginDTO.getCaptcha();
-        
-        // 校验验证码（如果提供了）
-        if (StrUtils.isNotBlank(captcha)) {
-            String savedCaptcha = stringRedisTemplate.opsForValue().get(RedisConstants.CAPTCHA_USERNAME + username);
-            if (savedCaptcha == null || !captcha.equals(savedCaptcha)) {
-                throw new BusinessException(ExceptionConstants.CAPTCHA_ERROR);
-            }
-            // 验证成功后删除验证码，防止重复使用
-            stringRedisTemplate.delete(RedisConstants.CAPTCHA_USERNAME + username);
+            
+        // 校验验证码
+        if (StrUtils.isBlank(captcha)) {
+            throw new BusinessException(ExceptionConstants.CAPTCHA_ERROR);
         }
         
+        // 从 Redis 中获取验证码
+        String savedCaptcha = stringRedisTemplate.opsForValue().get(RedisConstants.CAPTCHA_USERNAME + username);
+        if (savedCaptcha == null) {
+            throw new BusinessException(ExceptionConstants.CAPTCHA_ERROR);
+        }
+        
+        // 比对验证码
+        if (!captcha.equals(savedCaptcha)) {
+            throw new BusinessException(ExceptionConstants.CAPTCHA_ERROR);
+        }
+        
+        // 验证成功后删除验证码，防止重复使用
+        stringRedisTemplate.delete(RedisConstants.CAPTCHA_USERNAME + username);
+            
         // 根据用户名查询用户
         LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(User::getUsername, username);
         User user = this.getOne(queryWrapper);
-
+    
         // 判断用户是否存在
         if (user == null) {
             throw new BusinessException(ExceptionConstants.USER_NOT_FOUND_LOGIN);
         }
-
+    
         // 验证密码
         if (!Md5Utils.matches(password, user.getPassword())) {
             throw new BusinessException(ExceptionConstants.PASSWORD_ERROR);
         }
-
-        // 生成 Token 和 Refresh Token
+    
+        // 生成 Token
         Long userId = user.getId();
         String token = jwtUtils.createToken(userId, username);
-        String refreshToken = jwtUtils.createRefreshToken(userId, username);
         Long expiresIn = jwtUtils.getJwtProperties().getAccessExpirationTime() / 1000; // 转换为秒
-
-        //将刷新token存入redis中
-        stringRedisTemplate.opsForValue().set(RedisConstants.REFRESH_TOKEN + userId,
-                refreshToken,
-                jwtUtils.getJwtProperties().getRefreshExpirationTime(),
-                TimeUnit.MILLISECONDS);
-
+        
+        // 将 token 存入 Redis，设置过期时间（值为空字符串，只利用 key 的存在性）
+        stringRedisTemplate.opsForValue().set(
+            RedisConstants.USER_TOKEN + userId,
+            "",
+            jwtUtils.getJwtProperties().getAccessExpirationTime(),
+            TimeUnit.MILLISECONDS
+        );
+        
         // 构建 UserVO
         UserVO userVO = UserVO.builder()
                 .id(userId)
@@ -342,89 +352,52 @@ public class LoginServiceImpl extends ServiceImpl<UserMapper, User> implements L
                 .nickname(user.getNickname())
                 .avatar(user.getAvatar())
                 .build();
-
-        // 返回登录响应（不返回密码）
+    
+        // 返回登录响应
         return LoginVO.builder()
                 .token(token)
-                .refreshToken(refreshToken)
                 .expiresIn(expiresIn)
                 .userVO(userVO)
                 .build();
     }
-
-    /**
-     * 生成并发送验证码
-     * @param username 用户名
-     * @return 验证码 VO
-     */
-    @Override
-    public String generateCaptcha(String username) {
-        // 校验用户名
-        if (StrUtils.isBlank(username)) {
-            throw new BusinessException(ExceptionConstants.USERNAME_EMPTY);
-        }
-        
-        // 生成 6 位数字验证码
-        String captcha = String.valueOf(100000 + new Random().nextInt(900000));
-        
-        // 通过日志输出验证码（模拟发送）
-        log.info("===========================================");
-        log.info("验证码发送 - 用户名：{}", username);
-        log.info("验证码：{}", captcha);
-        log.info("===========================================");
-
-        // 将验证码保存到 Redis 中，并设置过期时间（1 分钟）
-        stringRedisTemplate.opsForValue().set(RedisConstants.CAPTCHA_USERNAME + username, captcha, 1, TimeUnit.MINUTES);
-        
-        return captcha;
-    }
-
+    
     /**
      * 刷新 Token
-     * @param refreshToken 刷新令牌
-     * @return 新的访问令牌和有效期
+     * @param oldToken 旧的 token
+     * @return 新的 token 和有效期
      */
     @Override
-    public RefreshTokenVO refreshToken(String refreshToken) {
-        // 验证 refresh token 是否为空
-        if (StrUtils.isBlank(refreshToken)) {
+    public RefreshTokenVO refreshToken(String oldToken) {
+        // 验证旧 token 是否有效（签名验证）
+        if (!jwtUtils.isTokenValid(oldToken)) {
             throw new BusinessException(ExceptionConstants.TOKEN_INVALID);
         }
-        
-        // 验证 refresh token 是否有效
-        if (!jwtUtils.isTokenValid(refreshToken)) {
-            throw new BusinessException(ExceptionConstants.TOKEN_INVALID);
+            
+        // 从旧 token 中获取用户信息
+        Long userId = jwtUtils.getUserIdFromToken(oldToken);
+        String username = jwtUtils.getUsernameFromToken(oldToken);
+            
+        // 检查 Redis 中的 token 是否存在（判断是否已退出登录）
+        String savedToken = stringRedisTemplate.opsForValue().get(RedisConstants.USER_TOKEN + userId);
+        if (savedToken == null) {
+            throw new BusinessException(ExceptionConstants.NOT_LOGIN);
         }
-
-        //从redis中查询刷新token是否过期
-        Long userId = jwtUtils.getUserIdFromToken(refreshToken);
-        if (!stringRedisTemplate.hasKey(RedisConstants.REFRESH_TOKEN + userId)) {
-            throw new BusinessException(ExceptionConstants.TOKEN_INVALID);
-        }
-
-        // 从 refresh token 中获取用户信息
-        String username = jwtUtils.getUsernameFromToken(refreshToken);
-        
+            
         // 根据用户 ID 查询用户，确认用户状态正常
         User user = this.getById(userId);
         if (user == null || user.getStatus() == null || user.getStatus() != SystemConstants.USER_STATUS_NORMAL) {
             throw new BusinessException(ExceptionConstants.USER_STATUS_ERROR);
         }
-        
-        // 检查用户名是否匹配（防止 token 被篡改）
-        if (!username.equals(user.getUsername())) {
-            throw new BusinessException(ExceptionConstants.TOKEN_INVALID);
-        }
-        
-        // 生成新的 access token
-        String newAccessToken = jwtUtils.createToken(userId, username);
+            
+        // 生成新的 token（不更新 Redis，让新旧 token 并存一段时间）
+        String newToken = jwtUtils.createToken(userId, username);
         Long expiresIn = jwtUtils.getJwtProperties().getAccessExpirationTime() / 1000; // 转换为秒
-        
+            
         log.info("Token 刷新成功 - userId: {}, username: {}", userId, username);
-        
+            
         // 返回新的 token 信息
         return RefreshTokenVO.builder()
-                .accessToken(newAccessToken)
+                .token(newToken)
                 .expiresIn(expiresIn)
                 .build();
     }
@@ -438,12 +411,44 @@ public class LoginServiceImpl extends ServiceImpl<UserMapper, User> implements L
         // 从 Authorization header 中提取 token
         String token = authorization.replace("Bearer ", "");
         
-        // 从 token 中获取用户 ID（即使 token 已过期）
+        // 从 token 中获取用户 ID
         Long userId = jwtUtils.getUserIdFromExpiredToken(token);
         
-        // 删除 Redis 中的 refresh token
-        stringRedisTemplate.delete(RedisConstants.REFRESH_TOKEN + userId);
+        // 删除 Redis 中的 token
+        stringRedisTemplate.delete(RedisConstants.USER_TOKEN + userId);
         
         log.info("用户退出登录 - userId: {}", userId);
+    }
+    
+    /**
+     * 获取并发送验证码
+     * @param username 用户名
+     * @return 验证码
+     */
+    @Override
+    public String getCaptcha(String username) {
+        // 校验用户名
+        if (StrUtils.isBlank(username)) {
+            throw new BusinessException(ExceptionConstants.USERNAME_EMPTY);
+        }
+        
+        // 生成 6 位数字验证码
+        String captcha = String.valueOf(100000 + new java.util.Random().nextInt(900000));
+        
+        // 通过日志输出验证码（模拟发送）
+        log.info("===========================================");
+        log.info("验证码发送 - 用户名：{}", username);
+        log.info("验证码：{}", captcha);
+        log.info("===========================================");
+
+        // 将验证码保存到 Redis 中，并设置过期时间（60 秒）
+        stringRedisTemplate.opsForValue().set(
+            RedisConstants.CAPTCHA_USERNAME + username, 
+            captcha, 
+            60, 
+            TimeUnit.SECONDS
+        );
+        
+        return captcha;
     }
 }
