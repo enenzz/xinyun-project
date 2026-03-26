@@ -6,6 +6,8 @@ package com.yunbian.constant;
  */
 public class RedisConstants {
 
+
+
     private RedisConstants() {}
 
     // ========== 项目前缀 ==========
@@ -33,6 +35,8 @@ public class RedisConstants {
      * 示例：xinyun:user:info:123
      */
     public static final String USER_INFO = KEY_PREFIX + "user:info:";
+
+    public static final String REFRESH_TOKEN = KEY_PREFIX + "token:refresh:";
 
     // ========== 通用前缀 ==========
     /**

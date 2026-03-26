@@ -5,6 +5,9 @@ package com.yunbian.constant;
  */
 public class ExceptionConstants {
 
+
+    public static final String USER_STATUS_ERROR = "用户状态异常";
+
     private ExceptionConstants() {}
 
     public static final int UNAUTHORIZED = 401;
@@ -29,6 +32,7 @@ public class ExceptionConstants {
     public static final String PASSWORD_ERROR = "密码错误";
     public static final String PASSWORD_LENGTH_ERROR = "密码长度必须在 6-20 位之间";
     public static final String CAPTCHA_ERROR = "验证码错误";
+    public static final String TOKEN_INVALID = "Token 已失效";
 
     // ========== 通用相关 ==========
     public static final String SYSTEM_ERROR = "系统繁忙，请稍后重试";

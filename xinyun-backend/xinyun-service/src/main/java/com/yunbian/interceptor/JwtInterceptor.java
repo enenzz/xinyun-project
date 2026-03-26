@@ -28,7 +28,7 @@ public class JwtInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        //TODO 俩个token的疑问
+        //这里获取的都是短期token，刷新token只有在刷新请求时才会传过来
 
         // 1. 从请求头获取 Token
         String token = request.getHeader(TOKEN_HEADER);

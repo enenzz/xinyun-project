@@ -5,6 +5,7 @@ import com.yunbian.dto.RegisterDTO;
 import com.yunbian.result.Result;
 import com.yunbian.service.LoginService;
 import com.yunbian.vo.LoginVO;
+import com.yunbian.vo.RefreshTokenVO;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -42,9 +43,18 @@ public class LoginController {
         return Result.success(captcha);
     }
 
+    @PostMapping("/refresh")
+    public Result<RefreshTokenVO> refresh(@RequestParam("refreshToken") String refreshToken) {
+        log.info("刷新 Token 请求");
+        
+        RefreshTokenVO refreshTokenVO = loginService.refreshToken(refreshToken);
+        
+        return Result.success(refreshTokenVO);
+    }
+
     private Result logout() {
         log.info("退出登录");
-
+        //TODO 退出时讲redis中的token删除
         return Result.success("退出登录");
     }
 }

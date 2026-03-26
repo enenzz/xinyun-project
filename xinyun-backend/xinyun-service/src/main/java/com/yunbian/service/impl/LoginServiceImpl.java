@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yunbian.constant.ExceptionConstants;
 import com.yunbian.constant.RedisConstants;
 import com.yunbian.constant.SystemConstants;
+import com.yunbian.context.UserContext;
 import com.yunbian.dto.LoginDTO;
 import com.yunbian.dto.RegisterDTO;
 import com.yunbian.entity.User;
@@ -15,6 +16,7 @@ import com.yunbian.mapper.UserMapper;
 import com.yunbian.service.LoginService;
 import com.yunbian.utils.*;
 import com.yunbian.vo.LoginVO;
+import com.yunbian.vo.RefreshTokenVO;
 import com.yunbian.vo.UserVO;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -327,6 +329,12 @@ public class LoginServiceImpl extends ServiceImpl<UserMapper, User> implements L
         String refreshToken = jwtUtils.createRefreshToken(userId, username);
         Long expiresIn = jwtUtils.getJwtProperties().getAccessExpirationTime() / 1000; // 转换为秒
 
+        //将刷新token存入redis中
+        stringRedisTemplate.opsForValue().set(RedisConstants.REFRESH_TOKEN + userId,
+                refreshToken,
+                jwtUtils.getJwtProperties().getRefreshExpirationTime(),
+                TimeUnit.MILLISECONDS);
+
         // 构建 UserVO
         UserVO userVO = UserVO.builder()
                 .id(userId)
@@ -369,5 +377,55 @@ public class LoginServiceImpl extends ServiceImpl<UserMapper, User> implements L
         stringRedisTemplate.opsForValue().set(RedisConstants.CAPTCHA_USERNAME + username, captcha, 1, TimeUnit.MINUTES);
         
         return captcha;
+    }
+
+    /**
+     * 刷新 Token
+     * @param refreshToken 刷新令牌
+     * @return 新的访问令牌和有效期
+     */
+    @Override
+    public RefreshTokenVO refreshToken(String refreshToken) {
+        // 验证 refresh token 是否为空
+        if (StrUtils.isBlank(refreshToken)) {
+            throw new BusinessException(ExceptionConstants.TOKEN_INVALID);
+        }
+        
+        // 验证 refresh token 是否有效
+        if (!jwtUtils.isTokenValid(refreshToken)) {
+            throw new BusinessException(ExceptionConstants.TOKEN_INVALID);
+        }
+
+        //从redis中查询刷新token是否过期
+        Long userId = jwtUtils.getUserIdFromToken(refreshToken);
+        if (!stringRedisTemplate.hasKey(RedisConstants.REFRESH_TOKEN + userId)) {
+            throw new BusinessException(ExceptionConstants.TOKEN_INVALID);
+        }
+
+        // 从 refresh token 中获取用户信息
+        String username = jwtUtils.getUsernameFromToken(refreshToken);
+        
+        // 根据用户 ID 查询用户，确认用户状态正常
+        User user = this.getById(userId);
+        if (user == null || user.getStatus() == null || user.getStatus() != SystemConstants.USER_STATUS_NORMAL) {
+            throw new BusinessException(ExceptionConstants.USER_STATUS_ERROR);
+        }
+        
+        // 检查用户名是否匹配（防止 token 被篡改）
+        if (!username.equals(user.getUsername())) {
+            throw new BusinessException(ExceptionConstants.TOKEN_INVALID);
+        }
+        
+        // 生成新的 access token
+        String newAccessToken = jwtUtils.createToken(userId, username);
+        Long expiresIn = jwtUtils.getJwtProperties().getAccessExpirationTime() / 1000; // 转换为秒
+        
+        log.info("Token 刷新成功 - userId: {}, username: {}", userId, username);
+        
+        // 返回新的 token 信息
+        return RefreshTokenVO.builder()
+                .accessToken(newAccessToken)
+                .expiresIn(expiresIn)
+                .build();
     }
 }

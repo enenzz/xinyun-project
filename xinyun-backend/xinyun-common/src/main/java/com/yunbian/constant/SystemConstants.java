@@ -37,7 +37,9 @@ public class SystemConstants {
      */
     public static final String OSS_BASE_PATH = "xinyun/images/";
 
-    public static final Integer USER_STATUS_NORMAL = 1;
+    public static final Integer USER_STATUS_DISABLED = 0;      // 禁用
+    public static final Integer USER_STATUS_NORMAL = 1;        // 正常
+    public static final Integer USER_STATUS_UNACTIVATED = 2;   // 未激活
 
     public static final Integer DEFAULT_GENDER = 0;
 }
