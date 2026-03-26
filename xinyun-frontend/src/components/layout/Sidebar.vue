@@ -41,18 +41,17 @@ const bars = ref([
 
 <style scoped>
 .sidebar {
-  width: 220px;
+  width: 100%;
   position: sticky;
-  top: 70px;
+  top: 80px;
   align-self: flex-start;
-  padding-top: 8px;
 }
 
 .nav-item {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 10px 16px;
+  padding: 12px 16px;
   border-radius: 8px;
   cursor: pointer;
   color: #333;
@@ -78,27 +77,27 @@ const bars = ref([
 .divider {
   height: 1px;
   background: #e5e6eb;
-  margin: 12px 0;
+  margin: 16px 0;
 }
 
 .section-title {
   font-size: 12px;
   color: #999;
   padding: 0 16px;
-  margin-bottom: 8px;
+  margin-bottom: 12px;
 }
 
 .bar-list {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 4px;
 }
 
 .bar-item {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 10px 16px;
+  gap: 12px;
+  padding: 12px 16px;
   border-radius: 8px;
   cursor: pointer;
   transition: background 0.2s;

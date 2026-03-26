@@ -87,12 +87,13 @@ const handleCommand = async (command) => {
   position: sticky;
   top: 0;
   z-index: 100;
+  min-width: 1000px;
 }
 
 .header-content {
   max-width: 1400px;
   margin: 0 auto;
-  padding: 0 24px;
+  padding: 0 20px;
   height: 60px;
   display: flex;
   justify-content: space-between;

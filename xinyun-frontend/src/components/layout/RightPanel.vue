@@ -60,17 +60,16 @@ const recommendBars = ref([
 
 <style scoped>
 .right-panel {
-  width: 300px;
+  width: 100%;
   position: sticky;
-  top: 70px;
+  top: 80px;
   align-self: flex-start;
-  padding-top: 8px;
 }
 
 .ad-banner {
   border-radius: 12px;
   overflow: hidden;
-  margin-bottom: 16px;
+  margin-bottom: 20px;
 }
 
 .ad-banner img {
@@ -81,8 +80,8 @@ const recommendBars = ref([
 .panel-section {
   background: #fff;
   border-radius: 12px;
-  padding: 16px;
-  margin-bottom: 16px;
+  padding: 20px;
+  margin-bottom: 20px;
 }
 
 .section-header {
@@ -98,7 +97,7 @@ const recommendBars = ref([
 .hot-list {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 14px;
 }
 
 .hot-item {
@@ -150,7 +149,7 @@ const recommendBars = ref([
   font-size: 13px;
   color: #999;
   text-align: right;
-  margin-top: 12px;
+  margin-top: 16px;
   cursor: pointer;
 }
 
@@ -161,7 +160,7 @@ const recommendBars = ref([
 .bar-list {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 14px;
 }
 
 .bar-item {

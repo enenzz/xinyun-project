@@ -76,8 +76,8 @@ const handleClick = () => {
 .post-card {
   background: #fff;
   border-radius: 12px;
-  padding: 16px;
-  margin-bottom: 16px;
+  padding: 20px;
+  margin-bottom: 20px;
   cursor: pointer;
   transition: box-shadow 0.2s;
 }
@@ -90,7 +90,7 @@ const handleClick = () => {
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-bottom: 12px;
+  margin-bottom: 16px;
 }
 
 .bar-avatar {
@@ -139,7 +139,7 @@ const handleClick = () => {
   font-weight: 500;
   color: #222;
   line-height: 1.5;
-  margin-bottom: 12px;
+  margin-bottom: 16px;
 }
 
 .post-title:hover {
@@ -147,7 +147,7 @@ const handleClick = () => {
 }
 
 .post-media {
-  margin-bottom: 12px;
+  margin-bottom: 16px;
 }
 
 .video-preview {
@@ -207,7 +207,7 @@ const handleClick = () => {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-top: 12px;
+  padding-top: 16px;
   border-top: 1px solid #f0f0f0;
 }
 

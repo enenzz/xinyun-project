@@ -1,22 +1,24 @@
 <template>
   <div class="home">
     <Header />
-    <div class="home-content">
-      <Sidebar />
-      <div class="main-area">
-        <div v-loading="loading" class="post-list">
-          <el-skeleton v-if="loading" :rows="5" animated />
-          <PostCard 
-            v-else 
-            v-for="post in postList" 
-            :key="post.id" 
-            :post="post"
-            @click="handlePostClick"
-          />
-          <el-empty v-if="!loading && postList.length === 0" description="暂无动态" />
+    <div class="home-wrapper">
+      <div class="home-content">
+        <Sidebar class="sidebar-wrapper" />
+        <div class="main-area">
+          <div v-loading="loading" class="post-list">
+            <el-skeleton v-if="loading" :rows="5" animated />
+            <PostCard 
+              v-else 
+              v-for="post in postList" 
+              :key="post.id" 
+              :post="post"
+              @click="handlePostClick"
+            />
+            <el-empty v-if="!loading && postList.length === 0" description="暂无动态" />
+          </div>
         </div>
+        <RightPanel class="right-panel-wrapper" />
       </div>
-      <RightPanel />
     </div>
   </div>
 </template>
@@ -61,21 +63,51 @@ onMounted(() => {
   background: #f5f6f7;
 }
 
+.home-wrapper {
+  width: 100%;
+  min-width: 1000px;
+  padding: 0 20px;
+}
+
 .home-content {
+  display: flex;
   max-width: 1400px;
   margin: 0 auto;
-  padding: 0 24px;
-  display: flex;
+  padding-top: 20px;
   gap: 24px;
+}
+
+.sidebar-wrapper {
+  width: 240px;
+  flex-shrink: 0;
 }
 
 .main-area {
   flex: 1;
-  min-width: 0;
-  padding-top: 8px;
+  min-width: 600px;
+  max-width: 800px;
+  flex-shrink: 0;
+}
+
+.right-panel-wrapper {
+  width: 300px;
+  flex-shrink: 0;
+  margin-left: 8px;
 }
 
 .post-list {
   min-height: 400px;
+}
+
+@media (max-width: 1200px) {
+  .right-panel-wrapper {
+    display: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .sidebar-wrapper {
+    display: none;
+  }
 }
 </style>
