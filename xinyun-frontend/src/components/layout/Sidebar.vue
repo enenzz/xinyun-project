@@ -43,10 +43,23 @@ const bars = ref([
 /* 【布局优化】侧边栏容器 - 统一内边距 */
 .sidebar {
   width: 100%;
-  background: #ffffff;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
-  padding: 20px 16px;
+  background: transparent;
+  padding: 20px 24px;
   box-sizing: border-box;
+}
+
+/* 中屏状态（900px ≤ 宽度 < 1200px）：左右内边距一致 */
+@media (max-width: 1199px) {
+  .sidebar {
+    padding: 20px 20px;
+  }
+}
+
+/* 小屏/窄窗口状态（宽度 < 900px）：左右内边距一致 */
+@media (max-width: 899px) {
+  .sidebar {
+    padding: 20px 16px;
+  }
 }
 
 /* 【布局优化】首页按钮 - 饱满不拥挤 */
@@ -88,7 +101,7 @@ const bars = ref([
 .section-title {
   font-size: 12px;
   color: #888888;
-  padding-left: 16px;
+  padding-left: 0;
   margin-bottom: 16px;
   font-weight: 600;
 }

@@ -5,7 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a3772287-d375-46a1-8af5-0cbcc7b72545" name="更改" comment="重构：用户登录和登出功能&#10;&#10;- 采用单token+redis机制&#10;- 用户3天内强制重新登录">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../xinyun-frontend/src/components/layout/RightPanel.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../xinyun-frontend/src/components/layout/RightPanel.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../xinyun-frontend/src/components/layout/Sidebar.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../xinyun-frontend/src/components/layout/Sidebar.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../xinyun-frontend/src/views/Home.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../xinyun-frontend/src/views/Home.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -240,6 +242,7 @@
       <workItem from="1774492891713" duration="9480000" />
       <workItem from="1774504444605" duration="3345000" />
       <workItem from="1774519208410" duration="147000" />
+      <workItem from="1774603224013" duration="155000" />
     </task>
     <task id="LOCAL-00001" summary="后端项目初始化">
       <option name="closed" value="true" />

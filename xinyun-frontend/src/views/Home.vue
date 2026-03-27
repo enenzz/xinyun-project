@@ -1,42 +1,45 @@
 <template>
   <div class="home">
-    <!-- 墨水溅射背景效果 - 固定在页面最底层 -->
-    <div class="bg-spots">
-      <div class="spot spot-1"></div>
-      <div class="spot spot-2"></div>
-      <div class="spot spot-3"></div>
-      <div class="spot spot-4"></div>
-    </div>
-    
     <!-- 顶部导航栏 - 通栏固定 -->
     <Header />
     
-    <!-- 左侧边栏 - 25% 宽度，fixed 定位，内部独立滚动 -->
-    <aside class="sidebar-fixed">
-      <Sidebar />
-    </aside>
-    
-    <!-- 中间主内容区 - 50% 宽度，页面唯一全局滚动主体 -->
-    <main class="main-content">
-      <div v-loading="loading" class="post-list">
-        <el-skeleton v-if="loading" :rows="5" animated />
-        <PostCard 
-          v-else 
-          v-for="post in postList" 
-          :key="post.id" 
-          :post="post"
-          @click="handlePostClick"
-        />
-        <el-empty v-if="!loading && postList.length === 0" description="暂无动态" />
+    <!-- 四模块布局容器 -->
+    <div class="layout-container">
+      <!-- 模块1：左侧边栏 - 导航与发现 -->
+      <aside class="sidebar-fixed">
+        <Sidebar />
+      </aside>
+      
+      <!-- 模块2：中间左 - 用户信息卡片（fixed定位，独立滚动） -->
+      <div class="user-info-area">
+        <div class="user-info-scroll">
+          <UserInfoCard />
+        </div>
       </div>
-    </main>
-
-    <!-- 右侧边栏 - 25% 宽度，fixed 定位，内部独立滚动 -->
-    <aside class="right-panel-fixed">
-      <div class="right-panel-scroll">
-        <RightPanel />
+      
+      <!-- 右侧内容容器 - 包含中间右和右侧栏，占65% -->
+      <div class="right-content-wrapper">
+        <!-- 模块3：中间右 - 帖子流（全局滚动） -->
+        <div class="post-area">
+          <div v-loading="loading" class="post-list">
+            <el-skeleton v-if="loading" :rows="5" animated />
+            <PostCard 
+              v-else 
+              v-for="post in postList" 
+              :key="post.id" 
+              :post="post"
+              @click="handlePostClick"
+            />
+            <el-empty v-if="!loading && postList.length === 0" description="暂无动态" />
+          </div>
+        </div>
+        
+        <!-- 模块4：右侧边栏 - 推荐与互动 -->
+        <aside class="right-panel">
+          <RightPanel />
+        </aside>
       </div>
-    </aside>
+    </div>
   </div>
 </template>
 
@@ -47,6 +50,7 @@ import Header from '@/components/layout/Header.vue'
 import Sidebar from '@/components/layout/Sidebar.vue'
 import RightPanel from '@/components/layout/RightPanel.vue'
 import PostCard from '@/components/PostCard.vue'
+import UserInfoCard from '@/components/UserInfoCard.vue'
 import { getPostList } from '@/api/post'
 
 const loading = ref(true)
@@ -77,83 +81,34 @@ onMounted(() => {
 <style scoped>
 /* ========== 基础容器 ========== */
 .home {
-  min-height: 100vh;
+  height: 100vh;
   position: relative;
-  overflow-x: hidden;
-  background: #ffffff;
-}
-
-/* ========== 墨水溅射背景效果 - 固定在页面最底层 ========== */
-.bg-spots {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 0;
-  pointer-events: none;
   overflow: hidden;
+  background: #F7F9FC;
 }
 
-.spot {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(60px);
+/* ========== 四模块布局容器 ========== */
+.layout-container {
+  display: flex;
+  padding-top: 64px;
+  position: relative;
+  z-index: 1;
+  height: 100%;
 }
 
-/* 左上角 - 淡粉 */
-.spot-1 {
-  width: 400px;
-  height: 400px;
-  top: -100px;
-  left: -100px;
-  background: rgba(255, 182, 193, 0.2);
-}
-
-/* 右下角 - 淡紫 */
-.spot-2 {
-  width: 500px;
-  height: 500px;
-  bottom: -150px;
-  right: -150px;
-  background: rgba(147, 112, 219, 0.15);
-}
-
-/* 左下角 - 浅黄 */
-.spot-3 {
-  width: 350px;
-  height: 350px;
-  bottom: -80px;
-  left: 10%;
-  background: rgba(255, 248, 220, 0.18);
-}
-
-/* 右上角 - 浅蓝 */
-.spot-4 {
-  width: 300px;
-  height: 300px;
-  top: 10%;
-  right: -50px;
-  background: rgba(173, 216, 230, 0.15);
-}
-
-/* ========== 核心布局架构 - 1:2:1 比例 ========== */
-
-/* 【左侧边栏】25% 视口宽度，fixed 定位，内部独立滚动 */
+/* 【模块1】左侧边栏 - 15% 视口宽度 */
 .sidebar-fixed {
-  position: fixed;
-  top: 64px;
-  left: 0;
-  width: 25vw;
-  min-width: 240px;
-  max-width: 480px;
+  width: 15vw;
+  min-width: 200px;
+  max-width: 280px;
   height: calc(100vh - 64px);
   overflow-y: auto;
   z-index: 99;
-  background: #ffffff;
-  box-shadow: 2px 0 12px rgba(0, 0, 0, 0.06);
-  transition: width 0.2s ease-in-out, min-width 0.2s ease-in-out, max-width 0.2s ease-in-out;
+  background: #E6F9E6;
+  border-right: 1px solid #E8ECF4;
   box-sizing: border-box;
+  flex-shrink: 0;
+  transition: width 0.2s ease-in-out, min-width 0.2s ease-in-out, max-width 0.2s ease-in-out;
 }
 
 .sidebar-fixed::-webkit-scrollbar {
@@ -165,142 +120,153 @@ onMounted(() => {
 }
 
 .sidebar-fixed::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.1);
+  background: rgba(0, 0, 0, 0.08);
   border-radius: 3px;
 }
 
-/* 【右侧边栏】25% 视口宽度，fixed 定位，内部独立滚动 */
-.right-panel-fixed {
-  position: fixed;
-  top: 64px;
-  right: 0;
-  width: 25vw;
-  min-width: 280px;
-  max-width: 480px;
+/* 【模块2】中间左 - 用户信息卡片区域 */
+.user-info-area {
+  width: 20vw;
+  min-width: 240px;
+  max-width: 320px;
   height: calc(100vh - 64px);
-  overflow: hidden;
-  z-index: 99;
-  background: #ffffff;
-  box-shadow: -2px 0 12px rgba(0, 0, 0, 0.06);
-  box-sizing: border-box;
-  transition: width 0.2s ease-in-out, min-width 0.2s ease-in-out, max-width 0.2s ease-in-out;
-  pointer-events: auto;
+  z-index: 98;
+  background: #FAFAF5;
+  flex-shrink: 0;
 }
 
-/* 右侧边栏内层滚动容器 */
-.right-panel-scroll {
+.user-info-scroll {
   width: 100%;
   height: 100%;
-  overflow-x: hidden;
+  padding: 8px 12px;
   overflow-y: auto;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.user-info-scroll > * {
+  max-width: 100%;
   box-sizing: border-box;
 }
 
-.right-panel-scroll::-webkit-scrollbar {
+/* 隐藏滚动条 */
+.user-info-scroll {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.user-info-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+/* 【右侧内容容器】包含中间右和右侧栏，占65% */
+.right-content-wrapper {
+  flex: 1;
+  display: flex;
+  background: linear-gradient(to right, #F0FBEF, #FFFFFF);
+  height: calc(100vh - 64px);
+  overflow: hidden;
+}
+
+/* 【模块3】中间右 - 帖子流区域（独立滚动） */
+.post-area {
+  width: 60%;
+  min-width: 400px;
+  padding: 24px 16px 40px;
+  box-sizing: border-box;
+  flex-shrink: 0;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.post-area::-webkit-scrollbar {
   width: 6px;
 }
 
-.right-panel-scroll::-webkit-scrollbar-track {
+.post-area::-webkit-scrollbar-track {
   background: transparent;
 }
 
-.right-panel-scroll::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.1);
+.post-area::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.08);
   border-radius: 3px;
-}
-
-/* 【中间主内容区】50% 视口宽度，页面唯一全局滚动主体 */
-.main-content {
-  width: 50vw;
-  min-width: 600px;
-  max-width: 960px;
-  margin: 64px auto 0;
-  padding: 20px 24px 40px;
-  box-sizing: border-box;
-  position: relative;
-  z-index: 10;
-  transition: width 0.2s ease-in-out, min-width 0.2s ease-in-out, max-width 0.2s ease-in-out, margin 0.2s ease-in-out;
 }
 
 .post-list {
   min-height: 400px;
 }
 
-/* ========== 4 阶段响应式缩放逻辑 ========== */
-
-/* 【第一阶段】超大屏状态（≥1920px）：三栏严格 25%/50%/25% 比例 */
-@media (min-width: 1920px) {
-  .sidebar-fixed {
-    width: 480px;
-    min-width: 480px;
-    max-width: 480px;
-  }
-  
-  .right-panel-fixed {
-    width: 480px;
-    min-width: 480px;
-    max-width: 480px;
-  }
-  
-  .main-content {
-    width: 960px;
-    min-width: 960px;
-    max-width: 960px;
-  }
+/* 【模块4】右侧边栏（固定不动） */
+.right-panel {
+  width: 40%;
+  min-width: 280px;
+  height: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
+  padding: 16px;
+  flex-shrink: 0;
 }
 
-/* 【第二阶段】大屏状态（1280px ≤ 宽度 < 1920px）：1:2:1 比例，无重叠 */
-@media (min-width: 1280px) and (max-width: 1919px) {
-  .sidebar-fixed {
-    width: 25vw;
-    min-width: 320px;
-    max-width: 480px;
-  }
-  
-  .right-panel-fixed {
-    width: 25vw;
-    min-width: 320px;
-    max-width: 480px;
-  }
-  
-  .main-content {
-    width: 50vw;
-    min-width: 640px;
-    max-width: 960px;
-  }
-}
+/* ========== 响应式逻辑 ========== */
 
-/* 【第三阶段】中屏状态（900px ≤ 宽度 < 1280px）：隐藏右侧边栏 */
-@media (max-width: 1279px) {
-  .right-panel-fixed {
+/* 中屏状态（1000px ≤ 宽度 < 1400px）：隐藏右侧边栏 */
+@media (max-width: 1399px) {
+  .right-panel {
     display: none;
   }
   
-  .sidebar-fixed {
-    width: 240px;
-    min-width: 240px;
-  }
-  
-  .main-content {
-    width: calc(100% - 240px - 24px);
-    margin-left: calc(240px + 24px);
-    margin-right: 24px;
-    min-width: auto;
+  .post-area {
+    width: 100%;
+    min-width: 400px;
     max-width: none;
   }
 }
 
-/* 【第四阶段】小屏/窄窗口状态（宽度 < 900px）：隐藏左侧边栏 */
-@media (max-width: 899px) {
+/* 小屏状态（800px ≤ 宽度 < 1000px）：隐藏右侧边栏 */
+@media (max-width: 999px) {
+  .right-panel {
+    display: none;
+  }
+  
+  .sidebar-fixed {
+    width: 20vw;
+    min-width: 180px;
+    max-width: 260px;
+  }
+  
+  .user-info-area {
+    width: 25vw;
+    min-width: 220px;
+    max-width: 300px;
+  }
+  
+  .post-area {
+    width: 100%;
+    min-width: 340px;
+  }
+}
+
+/* 超小屏/窄窗口状态（宽度 < 800px）：隐藏左侧边栏和用户信息，只保留帖子流 */
+@media (max-width: 799px) {
   .sidebar-fixed {
     display: none;
   }
   
-  .main-content {
+  .user-info-area {
+    display: none;
+  }
+  
+  .post-area {
     width: 100%;
-    max-width: calc(100% - 48px);
-    margin: 64px 24px 0;
     min-width: auto;
+    max-width: none;
+    padding: 24px 20px 40px;
+  }
+  
+  .layout-container {
+    flex-direction: column;
   }
 }
 </style>

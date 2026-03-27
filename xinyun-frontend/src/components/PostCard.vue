@@ -75,7 +75,7 @@ const handleClick = () => {
 <style scoped>
 /* 【视觉优化】帖子卡片 - 纯白背景+轻微柔化阴影 */
 .post-card {
-  background: #ffffff;
+  background: #FAFAF5;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
   border-radius: 16px;
   padding: 20px;
