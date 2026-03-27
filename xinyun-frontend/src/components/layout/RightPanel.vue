@@ -63,11 +63,12 @@ const recommendBars = ref([
   width: 100%;
 }
 
+/* 【视觉优化】广告横幅 - 纯白卡片阴影 */
 .ad-banner {
   border-radius: 16px;
   overflow: hidden;
   margin-bottom: 20px;
-  box-shadow: 0 4px 20px rgba(147, 129, 255, 0.15);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
 }
 
 .ad-banner img {
@@ -76,23 +77,24 @@ const recommendBars = ref([
   border-radius: 16px;
 }
 
+/* 【视觉优化】模块卡片 - 纯白背景+轻微柔化阴影 */
 .panel-section {
-  background: rgba(255, 255, 255, 0.75);
-  backdrop-filter: blur(12px);
+  background: #ffffff;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
   border-radius: 16px;
   padding: 20px;
   margin-bottom: 20px;
-  box-shadow: 0 4px 20px rgba(147, 129, 255, 0.15);
 }
 
 .section-header {
   margin-bottom: 16px;
 }
 
+/* 【视觉优化】模块标题 - 标题黑 */
 .section-title {
   font-size: 15px;
   font-weight: 700;
-  color: #6366f1;
+  color: #1a1a1a;
 }
 
 .hot-list {
@@ -111,47 +113,51 @@ const recommendBars = ref([
 }
 
 .hot-item:hover .hot-text {
-  color: #6366f1;
+  color: #7b61ff;
 }
 
+/* 【视觉优化】热点排名 - 浅灰色 */
 .hot-rank {
   width: 20px;
   font-size: 14px;
   font-weight: 700;
-  color: #9ca3af;
+  color: #888888;
 }
 
 .hot-rank.rank-1 {
-  color: #6366f1;
+  color: #7b61ff;
 }
 
 .hot-rank.rank-2 {
-  color: #8b5cf6;
+  color: #9b8aff;
 }
 
 .hot-rank.rank-3 {
-  color: #a78bfa;
+  color: #b8b0ff;
 }
 
+/* 【视觉优化】热点文字 - 正文中灰 */
 .hot-text {
   flex: 1;
   font-size: 14px;
-  color: #374151;
+  color: #333333;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   transition: color 0.3s;
 }
 
+/* 【视觉优化】热点标签 - 紫色 */
 .hot-tag {
   font-size: 14px;
-  color: #6366f1;
+  color: #7b61ff;
   flex-shrink: 0;
 }
 
+/* 【视觉优化】查看更多 - 紫色 */
 .see-more {
   font-size: 13px;
-  color: #9381ff;
+  color: #7b61ff;
   text-align: right;
   margin-top: 16px;
   cursor: pointer;
@@ -159,7 +165,7 @@ const recommendBars = ref([
 }
 
 .see-more:hover {
-  color: #6366f1;
+  color: #5b41ef;
 }
 
 .bar-list {
@@ -177,7 +183,7 @@ const recommendBars = ref([
 }
 
 .bar-item:hover .bar-name {
-  color: #6366f1;
+  color: #7b61ff;
 }
 
 .bar-info {
@@ -185,32 +191,35 @@ const recommendBars = ref([
   min-width: 0;
 }
 
+/* 【视觉优化】吧名称 - 正文中灰 */
 .bar-name {
   font-size: 14px;
-  color: #374151;
+  color: #333333;
   display: block;
   transition: color 0.3s;
 }
 
+/* 【视觉优化】吧描述 - 辅助灰色 */
 .bar-desc {
   font-size: 12px;
-  color: #9ca3af;
+  color: #888888;
   margin-top: 4px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
+/* 【视觉优化】查看按钮 - 浅紫色描边 */
 .bar-item :deep(.el-button--primary.is-plain) {
-  border-color: #9381ff;
-  color: #9381ff;
-  border-radius: 12px;
+  border-color: rgba(123, 97, 255, 0.3);
+  color: #7b61ff;
+  border-radius: 24px;
   transition: all 0.3s;
 }
 
 .bar-item :deep(.el-button--primary.is-plain:hover) {
-  background: linear-gradient(135deg, #6366f1, #8b5cf6);
-  border-color: #6366f1;
+  background: linear-gradient(135deg, #7b61ff, #9b8aff);
+  border-color: #7b61ff;
   color: #fff;
 }
 </style>

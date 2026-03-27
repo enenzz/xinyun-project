@@ -248,9 +248,9 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
+/* 【视觉优化】导航栏 - 纯白背景+轻微柔化阴影 */
 .header {
-  background: rgba(255, 255, 255, 0.75);
-  backdrop-filter: blur(12px);
+  background: #ffffff;
   border-bottom: none;
   position: fixed;
   top: 0;
@@ -258,15 +258,15 @@ onUnmounted(() => {
   width: 100%;
   z-index: 999;
   min-width: 1000px;
-  border-radius: 0 0 12px 12px;
-  box-shadow: 0 4px 20px rgba(147, 129, 255, 0.15);
+  border-radius: 0 0 16px 16px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
 }
 
 .header-content {
   max-width: 1600px;
   margin: 0 auto;
   padding: 0 50px;
-  height: 60px;
+  height: 64px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -283,9 +283,8 @@ onUnmounted(() => {
 .logo-text {
   font-size: 20px;
   font-weight: 700;
-  color: #fff;
+  color: #7b61ff;
   user-select: none;
-  text-shadow: 0 2px 4px rgba(147, 129, 255, 0.5);
 }
 
 .search-box {
@@ -294,28 +293,28 @@ onUnmounted(() => {
   min-width: 200px;
 }
 
+/* 【视觉优化】搜索框 - 纯白背景+浅灰色描边 */
 .search-box :deep(.el-input__wrapper) {
   border-radius: 24px;
   box-shadow: none;
-  background: rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(147, 129, 255, 0.3);
+  background: #ffffff;
+  border: 1px solid #e0e0e0;
   transition: all 0.3s;
 }
 
 .search-box :deep(.el-input__wrapper:hover) {
-  background: rgba(255, 255, 255, 0.95);
-  border-color: rgba(147, 129, 255, 0.5);
+  background: #ffffff;
+  border-color: #c0c0c0;
 }
 
 .search-box :deep(.el-input__wrapper.is-focus) {
-  background: #fff;
-  border-color: #9381ff;
-  box-shadow: 0 0 0 3px rgba(147, 129, 255, 0.2);
+  background: #ffffff;
+  border-color: #7b61ff;
+  box-shadow: 0 0 0 3px rgba(123, 97, 255, 0.15);
 }
 
 .search-box :deep(.el-input__inner::placeholder) {
-  color: #9ca3af;
+  color: #888888;
 }
 
 .header-right {
@@ -325,20 +324,21 @@ onUnmounted(() => {
   flex-shrink: 0;
 }
 
+/* 【视觉优化】发帖按钮 - 低饱和紫色渐变 */
 .publish-btn {
   border-radius: 24px;
   font-weight: 600;
-  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  background: linear-gradient(135deg, #7b61ff, #9b8aff);
   border: none;
   padding: 8px 20px;
-  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.4);
+  box-shadow: 0 4px 16px rgba(123, 97, 255, 0.25);
   transition: all 0.3s;
 }
 
 .publish-btn:hover {
-  background: linear-gradient(135deg, #4f46e5, #7c3aed) !important;
+  background: linear-gradient(135deg, #6b51ef, #8b7aff) !important;
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(99, 102, 241, 0.5);
+  box-shadow: 0 8px 24px rgba(123, 97, 255, 0.35);
 }
 
 .header-icons {
@@ -347,16 +347,17 @@ onUnmounted(() => {
   gap: 12px;
 }
 
+/* 【视觉优化】图标按钮 - 深灰色 */
 .icon-btn {
   font-size: 20px;
-  color: #9381ff;
+  color: #333333;
   cursor: pointer;
   padding: 4px;
   transition: all 0.3s;
 }
 
 .icon-btn:hover {
-  color: #6366f1;
+  color: #7b61ff;
   transform: scale(1.1);
 }
 
@@ -364,19 +365,20 @@ onUnmounted(() => {
   cursor: pointer;
 }
 
+/* 【视觉优化】登录按钮 - 低饱和紫色渐变 */
 .login-btn {
-  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  background: linear-gradient(135deg, #7b61ff, #9b8aff);
   color: #fff;
   font-size: 14px;
   cursor: pointer;
   transition: all 0.3s;
-  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+  box-shadow: 0 4px 16px rgba(123, 97, 255, 0.25);
 }
 
 .login-btn:hover {
-  background: linear-gradient(135deg, #4f46e5, #7c3aed) !important;
+  background: linear-gradient(135deg, #6b51ef, #8b7aff) !important;
   transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+  box-shadow: 0 6px 20px rgba(123, 97, 255, 0.35);
 }
 
 .user-avatar-wrapper {
@@ -393,7 +395,7 @@ onUnmounted(() => {
 /* 【修复】登录弹窗层级 - 最高级别99999 */
 .login-dialog :deep(.el-dialog) {
   border-radius: 20px;
-  box-shadow: 0 25px 80px rgba(147, 129, 255, 0.25);
+  box-shadow: 0 25px 80px rgba(123, 97, 255, 0.15);
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(12px);
   position: fixed !important;
@@ -412,7 +414,7 @@ onUnmounted(() => {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(0, 0, 0, 0.5) !important;
+  background: rgba(45, 38, 75, 0.5) !important;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -437,16 +439,17 @@ onUnmounted(() => {
   text-align: center;
 }
 
+/* 【视觉优化】弹窗标题 - 低饱和紫色 */
 .dialog-title {
   font-size: 28px;
   font-weight: 700;
-  color: #6366f1;
+  color: #7b61ff;
   margin: 0 0 8px 0;
 }
 
 .dialog-subtitle {
   font-size: 14px;
-  color: #9ca3af;
+  color: #868399;
   margin: 0;
 }
 
@@ -463,34 +466,35 @@ onUnmounted(() => {
   padding: 12px 16px;
   transition: all 0.3s;
   background: rgba(255, 255, 255, 0.9);
-  border: 1px solid rgba(147, 129, 255, 0.2);
+  border: 1px solid rgba(123, 97, 255, 0.15);
 }
 
 .login-form :deep(.el-input__wrapper:hover) {
-  border-color: rgba(147, 129, 255, 0.4);
+  border-color: rgba(123, 97, 255, 0.3);
 }
 
 .login-form :deep(.el-input__wrapper.is-focus) {
-  box-shadow: 0 0 0 3px rgba(147, 129, 255, 0.2);
-  border-color: #9381ff;
+  box-shadow: 0 0 0 3px rgba(123, 97, 255, 0.15);
+  border-color: #7b61ff;
 }
 
+/* 【视觉优化】登录按钮 - 低饱和紫色渐变 */
 .login-submit-btn {
   width: 100%;
   height: 48px;
   border-radius: 24px;
   font-size: 16px;
   font-weight: 600;
-  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  background: linear-gradient(135deg, #7b61ff, #9b8aff);
   border: none;
-  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.4);
+  box-shadow: 0 4px 16px rgba(123, 97, 255, 0.25);
   transition: all 0.3s;
 }
 
 .login-submit-btn:hover {
-  background: linear-gradient(135deg, #4f46e5, #7c3aed) !important;
+  background: linear-gradient(135deg, #6b51ef, #8b7aff) !important;
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(99, 102, 241, 0.5);
+  box-shadow: 0 8px 24px rgba(123, 97, 255, 0.35);
 }
 
 .dialog-footer {
@@ -502,18 +506,19 @@ onUnmounted(() => {
 
 .footer-text {
   font-size: 14px;
-  color: #6b7280;
+  color: #4a4658;
 }
 
+/* 【视觉优化】注册链接 - 低饱和紫色 */
 .footer-link {
   font-size: 14px;
-  color: #6366f1;
+  color: #7b61ff;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s;
 }
 
 .footer-link:hover {
-  color: #4f46e5;
+  color: #5b41ef;
 }
 </style>

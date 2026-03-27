@@ -1,13 +1,10 @@
 <template>
   <div class="home">
-    <div class="bg-gradient"></div>
-    
     <div class="bg-spots">
       <div class="spot spot-1"></div>
       <div class="spot spot-2"></div>
       <div class="spot spot-3"></div>
       <div class="spot spot-4"></div>
-      <div class="spot spot-5"></div>
     </div>
     
     <Header />
@@ -79,25 +76,19 @@ onMounted(() => {
   min-height: 100vh;
   position: relative;
   overflow-x: hidden;
+  background: #ffffff;
 }
 
-.bg-gradient {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(135deg, #9381ff 0%, #f8b1d8 100%);
-  z-index: -2;
-}
+/* 【视觉优化】纯白背景 - 彻底删除粉紫渐变背景 */
 
+/* 【视觉优化】边角颜料泼洒点缀效果 - 低饱和柔和色调，铺满整个窗口不随滚动 */
 .bg-spots {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: -1;
+  z-index: 0;
   pointer-events: none;
   overflow: hidden;
 }
@@ -105,55 +96,51 @@ onMounted(() => {
 .spot {
   position: absolute;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0) 70%);
+  filter: blur(60px);
 }
 
+/* 左上角 - 淡粉 */
 .spot-1 {
+  width: 400px;
+  height: 400px;
+  top: -100px;
+  left: -100px;
+  background: rgba(255, 182, 193, 0.2);
+}
+
+/* 右下角 - 淡紫 */
+.spot-2 {
+  width: 500px;
+  height: 500px;
+  bottom: -150px;
+  right: -150px;
+  background: rgba(147, 112, 219, 0.15);
+}
+
+/* 左下角 - 浅黄 */
+.spot-3 {
+  width: 350px;
+  height: 350px;
+  bottom: -80px;
+  left: 10%;
+  background: rgba(255, 248, 220, 0.18);
+}
+
+/* 右上角 - 浅蓝 */
+.spot-4 {
   width: 300px;
   height: 300px;
   top: 10%;
-  left: 5%;
-  opacity: 0.4;
+  right: -50px;
+  background: rgba(173, 216, 230, 0.15);
 }
 
-.spot-2 {
-  width: 200px;
-  height: 200px;
-  top: 60%;
-  right: 10%;
-  opacity: 0.3;
-}
-
-.spot-3 {
-  width: 150px;
-  height: 150px;
-  bottom: 20%;
-  left: 15%;
-  opacity: 0.35;
-}
-
-.spot-4 {
-  width: 250px;
-  height: 250px;
-  top: 30%;
-  right: 25%;
-  opacity: 0.25;
-}
-
-.spot-5 {
-  width: 180px;
-  height: 180px;
-  bottom: 40%;
-  right: 5%;
-  opacity: 0.3;
-}
-
-/* 【修复】左侧边栏fixed定位 - 固定在视口左侧 */
+/* 【布局调整】左侧边栏fixed定位 - 往左移100px */
 .sidebar-fixed {
   position: fixed;
   top: 64px;
-  left: calc((100vw - 700px) / 2 - 240px - 24px);
-  width: 240px;
+  left: calc((100vw - 600px) / 2 - 240px - 48px - 100px);
+  width: 280px;
   height: calc(100vh - 64px);
   overflow-y: auto;
   z-index: 99;
@@ -168,15 +155,15 @@ onMounted(() => {
 }
 
 .sidebar-fixed::-webkit-scrollbar-thumb {
-  background: rgba(147, 129, 255, 0.3);
+  background: rgba(0, 0, 0, 0.1);
   border-radius: 3px;
 }
 
-/* 【修复】右侧边栏fixed定位 - 固定在视口右侧 */
+/* 【布局调整】右侧边栏fixed定位 - 加大间距 */
 .right-panel-fixed {
   position: fixed;
   top: 64px;
-  right: calc((100vw - 700px) / 2 - 300px - 24px);
+  right: calc((100vw - 650px) / 2 - 300px - 48px);
   width: 300px;
   height: calc(100vh - 64px);
   overflow-y: auto;
@@ -192,24 +179,23 @@ onMounted(() => {
 }
 
 .right-panel-fixed::-webkit-scrollbar-thumb {
-  background: rgba(147, 129, 255, 0.3);
+  background: rgba(0, 0, 0, 0.1);
   border-radius: 3px;
 }
 
-/* 【修复】主容器 - 顶部留出导航栏空间 */
+/* 【布局调整】主容器 - 固定600px宽度 */
 .home-wrapper {
-  width: 100%;
-  min-width: 700px;
-  padding: 84px 50px 40px;
+  width: 1000px;
+  margin: 0 auto;
+  padding: 84px 0 40px;
   position: relative;
   z-index: 1;
   box-sizing: border-box;
 }
 
-/* 【修复】中间内容区 - 固定宽度700px，精准居中 */
+/* 【布局调整】中间内容区 - 固定宽度600px */
 .main-area {
-  width: 700px;
-  max-width: 700px;
+  width: 650px;
   margin: 0 auto;
 }
 

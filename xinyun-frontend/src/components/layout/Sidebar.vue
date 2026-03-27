@@ -40,15 +40,16 @@ const bars = ref([
 </script>
 
 <style scoped>
+/* 【视觉优化】侧边栏 - 纯白背景+轻微柔化阴影 */
 .sidebar {
   width: 100%;
-  background: rgba(255, 255, 255, 0.75);
-  backdrop-filter: blur(12px);
+  background: #ffffff;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
   border-radius: 16px;
   padding: 16px;
-  box-shadow: 0 4px 20px rgba(147, 129, 255, 0.15);
 }
 
+/* 【视觉优化】导航项 - 淡紫色半透明背景 */
 .nav-item {
   display: flex;
   align-items: center;
@@ -56,19 +57,19 @@ const bars = ref([
   padding: 12px 16px;
   border-radius: 12px;
   cursor: pointer;
-  color: #4b5563;
+  color: #333333;
   font-size: 14px;
   margin-bottom: 4px;
   transition: all 0.3s;
 }
 
 .nav-item:hover {
-  background: rgba(147, 129, 255, 0.1);
+  background: rgba(123, 97, 255, 0.08);
 }
 
 .nav-item.active {
-  background: rgba(147, 129, 255, 0.2);
-  color: #6366f1;
+  background: rgba(123, 97, 255, 0.08);
+  color: #7b61ff;
   font-weight: 600;
 }
 
@@ -76,15 +77,17 @@ const bars = ref([
   font-size: 18px;
 }
 
+/* 【视觉优化】分割线 - 浅灰色 */
 .divider {
   height: 1px;
-  background: rgba(147, 129, 255, 0.2);
+  background: #e0e0e0;
   margin: 16px 0;
 }
 
+/* 【视觉优化】分区标题 - 辅助灰色 */
 .section-title {
   font-size: 12px;
-  color: #9381ff;
+  color: #888888;
   padding: 0 16px;
   margin-bottom: 12px;
   font-weight: 600;
@@ -107,7 +110,7 @@ const bars = ref([
 }
 
 .bar-item:hover {
-  background: rgba(147, 129, 255, 0.1);
+  background: rgba(123, 97, 255, 0.08);
   transform: translateX(4px);
 }
 
@@ -118,9 +121,10 @@ const bars = ref([
   object-fit: cover;
 }
 
+/* 【视觉优化】吧名称 - 中灰色 */
 .bar-name {
   font-size: 14px;
-  color: #374151;
+  color: #333333;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
