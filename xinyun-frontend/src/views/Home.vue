@@ -1,5 +1,6 @@
 <template>
   <div class="home">
+    <!-- 墨水溅射背景效果 - 固定在页面最底层 -->
     <div class="bg-spots">
       <div class="spot spot-1"></div>
       <div class="spot spot-2"></div>
@@ -7,32 +8,34 @@
       <div class="spot spot-4"></div>
     </div>
     
+    <!-- 顶部导航栏 - 通栏固定 -->
     <Header />
     
-    <!-- 【修复】左侧边栏fixed定位 -->
+    <!-- 左侧边栏 - 25% 宽度，fixed 定位，内部独立滚动 -->
     <aside class="sidebar-fixed">
       <Sidebar />
     </aside>
     
-    <div class="home-wrapper">
-      <div class="main-area">
-        <div v-loading="loading" class="post-list">
-          <el-skeleton v-if="loading" :rows="5" animated />
-          <PostCard 
-            v-else 
-            v-for="post in postList" 
-            :key="post.id" 
-            :post="post"
-            @click="handlePostClick"
-          />
-          <el-empty v-if="!loading && postList.length === 0" description="暂无动态" />
-        </div>
+    <!-- 中间主内容区 - 50% 宽度，页面唯一全局滚动主体 -->
+    <main class="main-content">
+      <div v-loading="loading" class="post-list">
+        <el-skeleton v-if="loading" :rows="5" animated />
+        <PostCard 
+          v-else 
+          v-for="post in postList" 
+          :key="post.id" 
+          :post="post"
+          @click="handlePostClick"
+        />
+        <el-empty v-if="!loading && postList.length === 0" description="暂无动态" />
       </div>
-    </div>
-    
-    <!-- 【修复】右侧边栏fixed定位 -->
+    </main>
+
+    <!-- 右侧边栏 - 25% 宽度，fixed 定位，内部独立滚动 -->
     <aside class="right-panel-fixed">
-      <RightPanel />
+      <div class="right-panel-scroll">
+        <RightPanel />
+      </div>
     </aside>
   </div>
 </template>
@@ -72,6 +75,7 @@ onMounted(() => {
 </script>
 
 <style scoped>
+/* ========== 基础容器 ========== */
 .home {
   min-height: 100vh;
   position: relative;
@@ -79,9 +83,7 @@ onMounted(() => {
   background: #ffffff;
 }
 
-/* 【视觉优化】纯白背景 - 彻底删除粉紫渐变背景 */
-
-/* 【视觉优化】边角颜料泼洒点缀效果 - 低饱和柔和色调，铺满整个窗口不随滚动 */
+/* ========== 墨水溅射背景效果 - 固定在页面最底层 ========== */
 .bg-spots {
   position: fixed;
   top: 0;
@@ -135,15 +137,23 @@ onMounted(() => {
   background: rgba(173, 216, 230, 0.15);
 }
 
-/* 【布局调整】左侧边栏fixed定位 - 往左移100px */
+/* ========== 核心布局架构 - 1:2:1 比例 ========== */
+
+/* 【左侧边栏】25% 视口宽度，fixed 定位，内部独立滚动 */
 .sidebar-fixed {
   position: fixed;
   top: 64px;
-  left: calc((100vw - 600px) / 2 - 240px - 48px - 100px);
-  width: 280px;
+  left: 0;
+  width: 25vw;
+  min-width: 240px;
+  max-width: 480px;
   height: calc(100vh - 64px);
   overflow-y: auto;
   z-index: 99;
+  background: #ffffff;
+  box-shadow: 2px 0 12px rgba(0, 0, 0, 0.06);
+  transition: width 0.2s ease-in-out, min-width 0.2s ease-in-out, max-width 0.2s ease-in-out;
+  box-sizing: border-box;
 }
 
 .sidebar-fixed::-webkit-scrollbar {
@@ -159,69 +169,138 @@ onMounted(() => {
   border-radius: 3px;
 }
 
-/* 【布局调整】右侧边栏fixed定位 - 加大间距 */
+/* 【右侧边栏】25% 视口宽度，fixed 定位，内部独立滚动 */
 .right-panel-fixed {
   position: fixed;
   top: 64px;
-  right: calc((100vw - 650px) / 2 - 300px - 48px);
-  width: 300px;
+  right: 0;
+  width: 25vw;
+  min-width: 280px;
+  max-width: 480px;
   height: calc(100vh - 64px);
-  overflow-y: auto;
+  overflow: hidden;
   z-index: 99;
+  background: #ffffff;
+  box-shadow: -2px 0 12px rgba(0, 0, 0, 0.06);
+  box-sizing: border-box;
+  transition: width 0.2s ease-in-out, min-width 0.2s ease-in-out, max-width 0.2s ease-in-out;
+  pointer-events: auto;
 }
 
-.right-panel-fixed::-webkit-scrollbar {
+/* 右侧边栏内层滚动容器 */
+.right-panel-scroll {
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+.right-panel-scroll::-webkit-scrollbar {
   width: 6px;
 }
 
-.right-panel-fixed::-webkit-scrollbar-track {
+.right-panel-scroll::-webkit-scrollbar-track {
   background: transparent;
 }
 
-.right-panel-fixed::-webkit-scrollbar-thumb {
+.right-panel-scroll::-webkit-scrollbar-thumb {
   background: rgba(0, 0, 0, 0.1);
   border-radius: 3px;
 }
 
-/* 【布局调整】主容器 - 固定600px宽度 */
-.home-wrapper {
-  width: 1000px;
-  margin: 0 auto;
-  padding: 84px 0 40px;
-  position: relative;
-  z-index: 1;
+/* 【中间主内容区】50% 视口宽度，页面唯一全局滚动主体 */
+.main-content {
+  width: 50vw;
+  min-width: 600px;
+  max-width: 960px;
+  margin: 64px auto 0;
+  padding: 20px 24px 40px;
   box-sizing: border-box;
-}
-
-/* 【布局调整】中间内容区 - 固定宽度600px */
-.main-area {
-  width: 650px;
-  margin: 0 auto;
+  position: relative;
+  z-index: 10;
+  transition: width 0.2s ease-in-out, min-width 0.2s ease-in-out, max-width 0.2s ease-in-out, margin 0.2s ease-in-out;
 }
 
 .post-list {
   min-height: 400px;
 }
 
-/* 【响应式逻辑保留】浏览器缩放时先隐藏右边栏 */
-@media (max-width: 1300px) {
+/* ========== 4 阶段响应式缩放逻辑 ========== */
+
+/* 【第一阶段】超大屏状态（≥1920px）：三栏严格 25%/50%/25% 比例 */
+@media (min-width: 1920px) {
+  .sidebar-fixed {
+    width: 480px;
+    min-width: 480px;
+    max-width: 480px;
+  }
+  
+  .right-panel-fixed {
+    width: 480px;
+    min-width: 480px;
+    max-width: 480px;
+  }
+  
+  .main-content {
+    width: 960px;
+    min-width: 960px;
+    max-width: 960px;
+  }
+}
+
+/* 【第二阶段】大屏状态（1280px ≤ 宽度 < 1920px）：1:2:1 比例，无重叠 */
+@media (min-width: 1280px) and (max-width: 1919px) {
+  .sidebar-fixed {
+    width: 25vw;
+    min-width: 320px;
+    max-width: 480px;
+  }
+  
+  .right-panel-fixed {
+    width: 25vw;
+    min-width: 320px;
+    max-width: 480px;
+  }
+  
+  .main-content {
+    width: 50vw;
+    min-width: 640px;
+    max-width: 960px;
+  }
+}
+
+/* 【第三阶段】中屏状态（900px ≤ 宽度 < 1280px）：隐藏右侧边栏 */
+@media (max-width: 1279px) {
   .right-panel-fixed {
     display: none;
   }
-}
-
-/* 【响应式逻辑保留】再隐藏左边栏，最窄时保留中间卡片 */
-@media (max-width: 1000px) {
+  
   .sidebar-fixed {
-    display: none;
+    width: 240px;
+    min-width: 240px;
+  }
+  
+  .main-content {
+    width: calc(100% - 240px - 24px);
+    margin-left: calc(240px + 24px);
+    margin-right: 24px;
+    min-width: auto;
+    max-width: none;
   }
 }
 
-/* 最小屏幕宽度下，中间内容区自适应 */
-@media (max-width: 750px) {
-  .main-area {
+/* 【第四阶段】小屏/窄窗口状态（宽度 < 900px）：隐藏左侧边栏 */
+@media (max-width: 899px) {
+  .sidebar-fixed {
+    display: none;
+  }
+  
+  .main-content {
     width: 100%;
-    max-width: 100%;
+    max-width: calc(100% - 48px);
+    margin: 64px 24px 0;
+    min-width: auto;
   }
 }
 </style>

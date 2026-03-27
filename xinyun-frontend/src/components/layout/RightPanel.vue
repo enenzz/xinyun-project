@@ -59,15 +59,18 @@ const recommendBars = ref([
 </script>
 
 <style scoped>
+/* 【布局优化】右侧边栏容器 */
 .right-panel {
   width: 100%;
+  padding: 20px 16px;
+  box-sizing: border-box;
 }
 
-/* 【视觉优化】广告横幅 - 纯白卡片阴影 */
+/* 【布局优化】广告横幅 */
 .ad-banner {
   border-radius: 16px;
   overflow: hidden;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
 }
 
@@ -77,51 +80,63 @@ const recommendBars = ref([
   border-radius: 16px;
 }
 
-/* 【视觉优化】模块卡片 - 纯白背景+轻微柔化阴影 */
+/* 【布局优化】模块卡片 - 统一间距 */
 .panel-section {
   background: #ffffff;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
   border-radius: 16px;
   padding: 20px;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
+}
+
+.panel-section:last-child {
+  margin-bottom: 0;
 }
 
 .section-header {
   margin-bottom: 16px;
 }
 
-/* 【视觉优化】模块标题 - 标题黑 */
+/* 【布局优化】模块标题 */
 .section-title {
   font-size: 15px;
   font-weight: 700;
   color: #1a1a1a;
+  padding-left: 4px;
 }
 
 .hot-list {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 12px;
 }
 
+/* 【布局优化】热点列表项 */
 .hot-item {
   display: flex;
   align-items: center;
   gap: 10px;
   cursor: pointer;
   transition: all 0.3s;
-  padding: 4px 0;
+  padding: 12px 8px;
+  border-radius: 8px;
+}
+
+.hot-item:hover {
+  background: rgba(123, 97, 255, 0.06);
 }
 
 .hot-item:hover .hot-text {
   color: #7b61ff;
 }
 
-/* 【视觉优化】热点排名 - 浅灰色 */
+/* 【布局优化】热点排名 */
 .hot-rank {
   width: 20px;
   font-size: 14px;
   font-weight: 700;
   color: #888888;
+  flex-shrink: 0;
 }
 
 .hot-rank.rank-1 {
@@ -136,7 +151,7 @@ const recommendBars = ref([
   color: #b8b0ff;
 }
 
-/* 【视觉优化】热点文字 - 正文中灰 */
+/* 【布局优化】热点文字 - 文字截断 */
 .hot-text {
   flex: 1;
   font-size: 14px;
@@ -147,14 +162,14 @@ const recommendBars = ref([
   transition: color 0.3s;
 }
 
-/* 【视觉优化】热点标签 - 紫色 */
+/* 【布局优化】热点标签 */
 .hot-tag {
   font-size: 14px;
   color: #7b61ff;
   flex-shrink: 0;
 }
 
-/* 【视觉优化】查看更多 - 紫色 */
+/* 【布局优化】查看更多 */
 .see-more {
   font-size: 13px;
   color: #7b61ff;
@@ -171,15 +186,21 @@ const recommendBars = ref([
 .bar-list {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 12px;
 }
 
+/* 【布局优化】推荐吧列表项 */
 .bar-item {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 8px 0;
+  padding: 12px 8px;
+  border-radius: 8px;
   transition: all 0.3s;
+}
+
+.bar-item:hover {
+  background: rgba(123, 97, 255, 0.06);
 }
 
 .bar-item:hover .bar-name {
@@ -191,15 +212,18 @@ const recommendBars = ref([
   min-width: 0;
 }
 
-/* 【视觉优化】吧名称 - 正文中灰 */
+/* 【布局优化】吧名称 - 文字截断 */
 .bar-name {
   font-size: 14px;
   color: #333333;
   display: block;
   transition: color 0.3s;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-/* 【视觉优化】吧描述 - 辅助灰色 */
+/* 【布局优化】吧描述 - 文字截断 */
 .bar-desc {
   font-size: 12px;
   color: #888888;
@@ -209,12 +233,13 @@ const recommendBars = ref([
   white-space: nowrap;
 }
 
-/* 【视觉优化】查看按钮 - 浅紫色描边 */
+/* 【布局优化】查看按钮 */
 .bar-item :deep(.el-button--primary.is-plain) {
   border-color: rgba(123, 97, 255, 0.3);
   color: #7b61ff;
   border-radius: 24px;
   transition: all 0.3s;
+  flex-shrink: 0;
 }
 
 .bar-item :deep(.el-button--primary.is-plain:hover) {

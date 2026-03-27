@@ -258,7 +258,6 @@ onUnmounted(() => {
   width: 100%;
   z-index: 999;
   min-width: 1000px;
-  border-radius: 0 0 16px 16px;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
 }
 
@@ -268,12 +267,14 @@ onUnmounted(() => {
   padding: 0 50px;
   height: 64px;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   gap: 24px;
 }
 
 .logo {
+  position: absolute;
+  left: 116px;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -288,9 +289,17 @@ onUnmounted(() => {
 }
 
 .search-box {
-  flex: 1;
+  width: 520px;
   max-width: 520px;
-  min-width: 200px;
+}
+
+.header-right {
+  position: absolute;
+  right: 116px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-shrink: 0;
 }
 
 /* 【视觉优化】搜索框 - 纯白背景+浅灰色描边 */
