@@ -2,55 +2,37 @@
   <div class="right-panel-outer">
     <div class="right-panel-inner">
       <div class="panel-scroll">
-        <div class="module active-users-module">
-          <div class="module-header">
-            <span class="module-title">
-              <el-icon><UserFilled /></el-icon>
-              活跃用户
-            </span>
-            <span class="module-more">更多</span>
+        <div class="section active-users-section">
+          <div class="section-header">
+            <span class="section-title">活跃用户</span>
+            <span class="section-more">更多</span>
           </div>
-          <div class="module-content">
-            <div v-loading="activeUsersLoading" class="users-grid">
+          <div class="section-content">
+            <div v-loading="activeUsersLoading" class="users-horizontal">
               <div
-                v-for="user in activeUsers"
+                v-for="user in firstSixUsers"
                 :key="user.id"
-                class="user-item"
+                class="user-horizontal-item"
                 @click="goToUserProfile(user.id)"
               >
-                <div class="user-avatar-wrapper">
-                  <img :src="user.avatar" :alt="user.nickname" class="user-avatar">
-                  <span v-if="user.isOnline" class="online-dot"></span>
-                </div>
-                <div class="user-info">
-                  <span class="user-nickname">{{ user.nickname }}</span>
-                  <el-button
-                    :type="user.isFollowed ? 'default' : 'primary'"
-                    size="small"
-                    class="follow-btn"
-                    :class="{ followed: user.isFollowed }"
-                    @click.stop="handleFollowUser(user)"
-                  >
-                    {{ user.isFollowed ? '已关注' : '关注' }}
-                  </el-button>
-                </div>
+                <img :src="user.avatar" :alt="user.nickname" class="user-avatar-horizontal">
+                <span class="user-nickname-horizontal">{{ user.nickname }}</span>
               </div>
             </div>
           </div>
         </div>
 
-        <div class="module hot-topics-module">
-          <div class="module-header">
-            <span class="module-title">
-              <el-icon><TrendCharts /></el-icon>
-              热点信息
-            </span>
-            <span class="module-more">更多</span>
+        <div class="divider"></div>
+
+        <div class="section hot-topics-section">
+          <div class="section-header">
+            <span class="section-title">热点信息</span>
+            <span class="section-more">更多</span>
           </div>
-          <div class="module-content">
+          <div class="section-content">
             <div v-loading="hotTopicsLoading" class="topics-list">
               <div
-                v-for="(topic, index) in hotTopics"
+                v-for="(topic, index) in firstFiveTopics"
                 :key="topic.id"
                 class="topic-item"
                 @click="goToPostDetail(topic.id)"
@@ -75,18 +57,17 @@
           </div>
         </div>
 
-        <div class="module active-bars-module">
-          <div class="module-header">
-            <span class="module-title">
-              <el-icon><Collection /></el-icon>
-              活跃的吧
-            </span>
-            <span class="module-more">更多</span>
+        <div class="divider"></div>
+
+        <div class="section active-bars-section">
+          <div class="section-header">
+            <span class="section-title">活跃的吧</span>
+            <span class="section-more">更多</span>
           </div>
-          <div class="module-content">
+          <div class="section-content">
             <div v-loading="activeBarsLoading" class="bars-list">
               <div
-                v-for="bar in activeBars"
+                v-for="bar in firstFiveBars"
                 :key="bar.id"
                 class="bar-item"
                 @click="goToBarDetail(bar.id)"
@@ -115,9 +96,9 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { ElMessage } from 'element-plus'
-import { UserFilled, TrendCharts, Collection, View, Top, Bottom, Minus } from '@element-plus/icons-vue'
+import { View, Top, Bottom, Minus } from '@element-plus/icons-vue'
 import { getActiveUsers, followUser, unfollowUser, getHotTopics, getActiveBars, followBar, unfollowBar } from '@/api/rightPanel'
 
 const activeUsersLoading = ref(false)
@@ -127,6 +108,18 @@ const activeBarsLoading = ref(false)
 const activeUsers = ref([])
 const hotTopics = ref([])
 const activeBars = ref([])
+
+const firstSixUsers = computed(() => {
+  return activeUsers.value.slice(0, 6)
+})
+
+const firstFiveTopics = computed(() => {
+  return hotTopics.value.slice(0, 5)
+})
+
+const firstFiveBars = computed(() => {
+  return activeBars.value.slice(0, 5)
+})
 
 const loadActiveUsers = async () => {
   try {
@@ -259,7 +252,7 @@ onMounted(() => {
   width: 100%;
   height: 100%;
   overflow-y: auto;
-  padding: 12px;
+  padding: 12px 8px;
   box-sizing: border-box;
 }
 
@@ -276,132 +269,89 @@ onMounted(() => {
   border-radius: 2px;
 }
 
-.module {
-  background: #ffffff;
-  border-radius: 12px;
-  padding: 14px;
+.section {
+  padding: 0 4px;
   margin-bottom: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
-.module:last-child {
+.section:last-child {
   margin-bottom: 0;
 }
 
-.module-header {
+.section-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 12px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid #f0f0f0;
+  margin-bottom: 10px;
 }
 
-.module-title {
-  font-size: 14px;
+.section-title {
+  font-size: 15px;
   font-weight: 600;
   color: #333333;
-  display: flex;
-  align-items: center;
-  gap: 6px;
 }
 
-.module-title .el-icon {
-  font-size: 16px;
-  color: #7b61ff;
-}
-
-.module-more {
+.section-more {
   font-size: 12px;
   color: #999999;
   cursor: pointer;
   transition: color 0.3s;
 }
 
-.module-more:hover {
+.section-more:hover {
   color: #7b61ff;
 }
 
-.users-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
+.divider {
+  height: 1px;
+  background: linear-gradient(to right, transparent, #e0e0e0, transparent);
+  margin: 0 4px 12px 4px;
 }
 
-.user-item {
+.users-horizontal {
   display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: all 0.3s;
-  background: #fafafa;
+  justify-content: space-between;
+  gap: 10px;
+  overflow-x: auto;
+  padding: 4px 0;
 }
 
-.user-item:hover {
-  background: #f5f5f5;
-  transform: translateY(-1px);
+.users-horizontal::-webkit-scrollbar {
+  display: none;
 }
 
-.user-avatar-wrapper {
-  position: relative;
-  flex-shrink: 0;
-}
-
-.user-avatar {
-  width: 36px;
-  height: 36px;
-  border-radius: 10px;
-  object-fit: cover;
-}
-
-.online-dot {
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  width: 10px;
-  height: 10px;
-  background: #52c41a;
-  border: 2px solid #ffffff;
-  border-radius: 50%;
-}
-
-.user-info {
-  flex: 1;
-  min-width: 0;
+.user-horizontal-item {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.3s;
+  flex-shrink: 0;
+  min-width: 0;
 }
 
-.user-nickname {
+.user-horizontal-item:hover {
+  transform: translateY(-2px);
+}
+
+.user-avatar-horizontal {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.user-nickname-horizontal {
   font-size: 12px;
-  font-weight: 500;
   color: #333333;
+  text-align: center;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-}
-
-.follow-btn {
-  font-size: 11px !important;
-  padding: 2px 8px !important;
-  height: 22px !important;
-  border-radius: 10px !important;
-  min-width: 48px;
-}
-
-.follow-btn.followed {
-  background: #f5f5f5;
-  border-color: #e0e0e0;
-  color: #999999;
-}
-
-.follow-btn:not(.followed) {
-  background: linear-gradient(135deg, #98E4D0, #87CEEB);
-  border: none;
-  color: #ffffff;
+  max-width: 56px;
 }
 
 .topics-list {
@@ -414,27 +364,27 @@ onMounted(() => {
   display: flex;
   align-items: flex-start;
   gap: 10px;
-  padding: 8px 10px;
+  padding: 6px 4px;
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.3s;
 }
 
 .topic-item:hover {
-  background: #f8f8f8;
+  background: rgba(123, 97, 255, 0.04);
 }
 
 .topic-rank {
-  width: 20px;
-  height: 20px;
+  width: 22px;
+  height: 22px;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 700;
   color: #999999;
   background: #f0f0f0;
-  border-radius: 4px;
+  border-radius: 6px;
   flex-shrink: 0;
 }
 
@@ -461,7 +411,7 @@ onMounted(() => {
 .topic-title {
   font-size: 13px;
   color: #333333;
-  line-height: 1.4;
+  line-height: 1.5;
   display: -webkit-box;
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
@@ -507,29 +457,27 @@ onMounted(() => {
 .bars-list {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
 }
 
 .bar-item {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 10px;
+  padding: 6px 4px;
   border-radius: 10px;
   cursor: pointer;
   transition: all 0.3s;
-  background: #fafafa;
 }
 
 .bar-item:hover {
-  background: #f5f5f5;
-  transform: translateY(-1px);
+  background: rgba(123, 97, 255, 0.04);
 }
 
 .bar-avatar {
-  width: 40px;
-  height: 40px;
-  border-radius: 10px;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
   object-fit: cover;
   flex-shrink: 0;
 }
@@ -554,5 +502,26 @@ onMounted(() => {
 .bar-members {
   font-size: 11px;
   color: #999999;
+}
+
+.follow-btn {
+  font-size: 12px !important;
+  padding: 4px 12px !important;
+  height: 28px !important;
+  border-radius: 14px !important;
+  min-width: 56px;
+  font-weight: 500;
+}
+
+.follow-btn.followed {
+  background: #f5f5f5;
+  border-color: #e0e0e0;
+  color: #999999;
+}
+
+.follow-btn:not(.followed) {
+  background: linear-gradient(135deg, #98E4D0, #87CEEB);
+  border: none;
+  color: #ffffff;
 }
 </style>

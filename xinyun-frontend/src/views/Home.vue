@@ -205,7 +205,7 @@ onMounted(() => {
   height: 100%;
   overflow: hidden;
   box-sizing: border-box;
-  padding: 16px;
+  padding: 16px 50px;
   flex-shrink: 0;
 }
 
