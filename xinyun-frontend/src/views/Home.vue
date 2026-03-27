@@ -13,31 +13,37 @@
       <!-- 模块2：中间左 - 用户信息卡片（fixed定位，独立滚动） -->
       <div class="user-info-area">
         <div class="user-info-scroll">
-          <UserInfoCard />
+          <UserInfoCard @private-chat="handlePrivateChat" />
         </div>
       </div>
       
       <!-- 右侧内容容器 - 包含中间右和右侧栏，占65% -->
       <div class="right-content-wrapper">
-        <!-- 模块3：中间右 - 帖子流（全局滚动） -->
-        <div class="post-area">
-          <div v-loading="loading" class="post-list">
-            <el-skeleton v-if="loading" :rows="5" animated />
-            <PostCard 
-              v-else 
-              v-for="post in postList" 
-              :key="post.id" 
-              :post="post"
-              @click="handlePostClick"
-            />
-            <el-empty v-if="!loading && postList.length === 0" description="暂无动态" />
-          </div>
+        <!-- 聊天窗口或帖子流 + 右侧栏 -->
+        <div v-if="isChatMode" class="chat-area">
+          <ChatWindow :chat-user="currentChatUser" @close="handleCloseChat" />
         </div>
-        
-        <!-- 模块4：右侧边栏 - 推荐与互动 -->
-        <aside class="right-panel">
-          <RightPanel />
-        </aside>
+        <template v-else>
+          <!-- 模块3：中间右 - 帖子流（全局滚动） -->
+          <div class="post-area">
+            <div v-loading="loading" class="post-list">
+              <el-skeleton v-if="loading" :rows="5" animated />
+              <PostCard 
+                v-else 
+                v-for="post in postList" 
+                :key="post.id" 
+                :post="post"
+                @click="handlePostClick"
+              />
+              <el-empty v-if="!loading && postList.length === 0" description="暂无动态" />
+            </div>
+          </div>
+          
+          <!-- 模块4：右侧边栏 - 推荐与互动 -->
+          <aside class="right-panel">
+            <RightPanel />
+          </aside>
+        </template>
       </div>
     </div>
   </div>
@@ -51,10 +57,13 @@ import Sidebar from '@/components/layout/Sidebar.vue'
 import RightPanel from '@/components/layout/RightPanel.vue'
 import PostCard from '@/components/PostCard.vue'
 import UserInfoCard from '@/components/UserInfoCard.vue'
+import ChatWindow from '@/components/ChatWindow.vue'
 import { getPostList } from '@/api/post'
 
 const loading = ref(true)
 const postList = ref([])
+const isChatMode = ref(false)
+const currentChatUser = ref(null)
 
 const loadPosts = async () => {
   try {
@@ -71,6 +80,16 @@ const loadPosts = async () => {
 
 const handlePostClick = (post) => {
   console.log('点击帖子:', post)
+}
+
+const handlePrivateChat = (user) => {
+  currentChatUser.value = user
+  isChatMode.value = true
+}
+
+const handleCloseChat = () => {
+  isChatMode.value = false
+  currentChatUser.value = null
 }
 
 onMounted(() => {
@@ -170,6 +189,14 @@ onMounted(() => {
   overflow: hidden;
 }
 
+/* 聊天区域 */
+.chat-area {
+  width: 100%;
+  height: 100%;
+  padding: 16px;
+  box-sizing: border-box;
+}
+
 /* 【模块3】中间右 - 帖子流区域（独立滚动） */
 .post-area {
   width: 60%;
@@ -179,19 +206,12 @@ onMounted(() => {
   flex-shrink: 0;
   height: 100%;
   overflow-y: auto;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 .post-area::-webkit-scrollbar {
-  width: 6px;
-}
-
-.post-area::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.post-area::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.08);
-  border-radius: 3px;
+  display: none;
 }
 
 .post-list {
@@ -205,7 +225,7 @@ onMounted(() => {
   height: 100%;
   overflow: hidden;
   box-sizing: border-box;
-  padding: 16px 50px;
+  padding: 16px 40px;
   flex-shrink: 0;
 }
 

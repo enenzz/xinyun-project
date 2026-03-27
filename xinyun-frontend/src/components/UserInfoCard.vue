@@ -1,11 +1,9 @@
 <template>
   <div class="user-info-container" ref="containerRef" @wheel="handleWheel">
-    <!-- 上箭头 -->
     <div class="arrow-btn arrow-up" @click="goPrev" :class="{ disabled: currentPage === 0 }">
       <el-icon><ArrowUp /></el-icon>
     </div>
 
-    <!-- 用户卡片列表 -->
     <div class="user-cards-wrapper">
       <div
         v-for="(user, index) in currentUsers"
@@ -24,9 +22,8 @@
           </div>
         </div>
 
-        <!-- 用户图片区域 -->
-        <div class="user-images">
-          <img v-for="(img, idx) in user.images" :key="idx" :src="img" class="user-image" alt="用户照片">
+        <div class="user-image-single">
+          <img :src="user.image" class="user-image" alt="用户照片">
         </div>
 
         <div class="user-bio">
@@ -43,7 +40,7 @@
           <el-button type="primary" class="action-btn detail-btn">
             详情
           </el-button>
-          <el-button type="default" class="action-btn message-btn">
+          <el-button type="default" class="action-btn message-btn" @click="handlePrivateChat(user)">
             <el-icon><ChatDotRound /></el-icon>
             私聊
           </el-button>
@@ -51,7 +48,6 @@
       </div>
     </div>
 
-    <!-- 下箭头 -->
     <div class="arrow-btn arrow-down" @click="goNext" :class="{ disabled: currentPage >= totalPages - 1 }">
       <el-icon><ArrowDown /></el-icon>
     </div>
@@ -62,11 +58,12 @@
 import { ref, computed } from 'vue'
 import { ChatDotRound, ArrowUp, ArrowDown } from '@element-plus/icons-vue'
 
+const emit = defineEmits(['private-chat'])
+
 const containerRef = ref(null)
 const currentPage = ref(0)
 const pageSize = 2
 
-// 多个用户数据
 const users = ref([
   {
     id: 1,
@@ -77,11 +74,7 @@ const users = ref([
     bio: '喜欢运动和美食，找志同道合的朋友一起分享生活',
     isFollowed: false,
     tags: ['运动', '美食', '旅行'],
-    images: [
-      'https://picsum.photos/200/150?random=1',
-      'https://picsum.photos/200/150?random=2',
-      'https://picsum.photos/200/150?random=3'
-    ]
+    image: 'https://picsum.photos/300/200?random=1'
   },
   {
     id: 2,
@@ -92,11 +85,7 @@ const users = ref([
     bio: '热爱生活，喜欢看书和画画',
     isFollowed: true,
     tags: ['阅读', '绘画', '咖啡'],
-    images: [
-      'https://picsum.photos/200/150?random=4',
-      'https://picsum.photos/200/150?random=5',
-      'https://picsum.photos/200/150?random=6'
-    ]
+    image: 'https://picsum.photos/300/200?random=4'
   },
   {
     id: 3,
@@ -107,11 +96,7 @@ const users = ref([
     bio: '程序员一枚，喜欢科技和游戏',
     isFollowed: false,
     tags: ['编程', '游戏', '科技'],
-    images: [
-      'https://picsum.photos/200/150?random=7',
-      'https://picsum.photos/200/150?random=8',
-      'https://picsum.photos/200/150?random=9'
-    ]
+    image: 'https://picsum.photos/300/200?random=7'
   },
   {
     id: 4,
@@ -122,11 +107,7 @@ const users = ref([
     bio: '喜欢旅行和美食，探索世界的美好',
     isFollowed: false,
     tags: ['旅行', '美食', '摄影'],
-    images: [
-      'https://picsum.photos/200/150?random=10',
-      'https://picsum.photos/200/150?random=11',
-      'https://picsum.photos/200/150?random=12'
-    ]
+    image: 'https://picsum.photos/300/200?random=10'
   },
   {
     id: 5,
@@ -137,11 +118,7 @@ const users = ref([
     bio: '健身达人，分享运动心得',
     isFollowed: true,
     tags: ['健身', '跑步', '瑜伽'],
-    images: [
-      'https://picsum.photos/200/150?random=13',
-      'https://picsum.photos/200/150?random=14',
-      'https://picsum.photos/200/150?random=15'
-    ]
+    image: 'https://picsum.photos/300/200?random=13'
   },
   {
     id: 6,
@@ -152,11 +129,7 @@ const users = ref([
     bio: '吃货一枚，寻找成都美食',
     isFollowed: false,
     tags: ['美食', '火锅', '川菜'],
-    images: [
-      'https://picsum.photos/200/150?random=16',
-      'https://picsum.photos/200/150?random=17',
-      'https://picsum.photos/200/150?random=18'
-    ]
+    image: 'https://picsum.photos/300/200?random=16'
   },
   {
     id: 7,
@@ -167,11 +140,7 @@ const users = ref([
     bio: '喜欢历史和文化，逛博物馆',
     isFollowed: false,
     tags: ['历史', '文化', '旅行'],
-    images: [
-      'https://picsum.photos/200/150?random=19',
-      'https://picsum.photos/200/150?random=20',
-      'https://picsum.photos/200/150?random=21'
-    ]
+    image: 'https://picsum.photos/300/200?random=19'
   },
   {
     id: 8,
@@ -182,11 +151,7 @@ const users = ref([
     bio: '音乐爱好者，弹吉他',
     isFollowed: true,
     tags: ['音乐', '吉他', '摇滚'],
-    images: [
-      'https://picsum.photos/200/150?random=22',
-      'https://picsum.photos/200/150?random=23',
-      'https://picsum.photos/200/150?random=24'
-    ]
+    image: 'https://picsum.photos/300/200?random=22'
   },
   {
     id: 9,
@@ -197,11 +162,7 @@ const users = ref([
     bio: '汉服爱好者，喜欢传统文化',
     isFollowed: false,
     tags: ['汉服', '传统文化', '茶道'],
-    images: [
-      'https://picsum.photos/200/150?random=25',
-      'https://picsum.photos/200/150?random=26',
-      'https://picsum.photos/200/150?random=27'
-    ]
+    image: 'https://picsum.photos/300/200?random=25'
   }
 ])
 
@@ -230,6 +191,10 @@ const handleWheel = (e) => {
   } else {
     goPrev()
   }
+}
+
+const handlePrivateChat = (user) => {
+  emit('private-chat', user)
 }
 </script>
 
@@ -291,7 +256,7 @@ const handleWheel = (e) => {
 .user-info-card {
   background: #ffffff;
   border-radius: 14px;
-  padding: 18px;
+  padding: 14px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
   flex-shrink: 0;
   animation: fadeInUp 0.4s ease-out forwards;
@@ -314,7 +279,7 @@ const handleWheel = (e) => {
 .user-header {
   display: flex;
   gap: 12px;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
   flex-shrink: 0;
 }
 
@@ -345,16 +310,14 @@ const handleWheel = (e) => {
   color: #999999;
 }
 
-.user-images {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 12px;
+.user-image-single {
+  margin-bottom: 10px;
   flex-shrink: 0;
 }
 
 .user-image {
-  width: calc(33.333% - 5px);
-  height: 80px;
+  width: 100%;
+  height: 140px;
   border-radius: 10px;
   object-fit: cover;
   flex-shrink: 0;
@@ -364,9 +327,9 @@ const handleWheel = (e) => {
   font-size: 13px;
   color: #666666;
   line-height: 1.5;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
   overflow: hidden;
   flex-shrink: 0;
