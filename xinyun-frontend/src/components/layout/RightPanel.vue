@@ -61,27 +61,28 @@ const recommendBars = ref([
 <style scoped>
 .right-panel {
   width: 100%;
-  position: sticky;
-  top: 80px;
-  align-self: flex-start;
 }
 
 .ad-banner {
-  border-radius: 12px;
+  border-radius: 16px;
   overflow: hidden;
   margin-bottom: 20px;
+  box-shadow: 0 4px 20px rgba(147, 129, 255, 0.15);
 }
 
 .ad-banner img {
   width: 100%;
   display: block;
+  border-radius: 16px;
 }
 
 .panel-section {
-  background: #fff;
-  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(12px);
+  border-radius: 16px;
   padding: 20px;
   margin-bottom: 20px;
+  box-shadow: 0 4px 20px rgba(147, 129, 255, 0.15);
 }
 
 .section-header {
@@ -90,8 +91,8 @@ const recommendBars = ref([
 
 .section-title {
   font-size: 15px;
-  font-weight: 600;
-  color: #333;
+  font-weight: 700;
+  color: #6366f1;
 }
 
 .hot-list {
@@ -105,56 +106,60 @@ const recommendBars = ref([
   align-items: center;
   gap: 10px;
   cursor: pointer;
+  transition: all 0.3s;
+  padding: 4px 0;
+}
+
+.hot-item:hover .hot-text {
+  color: #6366f1;
 }
 
 .hot-rank {
   width: 20px;
   font-size: 14px;
-  font-weight: 600;
-  color: #999;
+  font-weight: 700;
+  color: #9ca3af;
 }
 
 .hot-rank.rank-1 {
-  color: #ff6b00;
+  color: #6366f1;
 }
 
 .hot-rank.rank-2 {
-  color: #ff8a00;
+  color: #8b5cf6;
 }
 
 .hot-rank.rank-3 {
-  color: #ffaa00;
+  color: #a78bfa;
 }
 
 .hot-text {
   flex: 1;
   font-size: 14px;
-  color: #333;
+  color: #374151;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-}
-
-.hot-text:hover {
-  color: #2385bb;
+  transition: color 0.3s;
 }
 
 .hot-tag {
   font-size: 14px;
-  color: #ff6b00;
+  color: #6366f1;
   flex-shrink: 0;
 }
 
 .see-more {
   font-size: 13px;
-  color: #999;
+  color: #9381ff;
   text-align: right;
   margin-top: 16px;
   cursor: pointer;
+  transition: color 0.3s;
 }
 
 .see-more:hover {
-  color: #2385bb;
+  color: #6366f1;
 }
 
 .bar-list {
@@ -167,6 +172,12 @@ const recommendBars = ref([
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding: 8px 0;
+  transition: all 0.3s;
+}
+
+.bar-item:hover .bar-name {
+  color: #6366f1;
 }
 
 .bar-info {
@@ -176,16 +187,30 @@ const recommendBars = ref([
 
 .bar-name {
   font-size: 14px;
-  color: #333;
+  color: #374151;
   display: block;
+  transition: color 0.3s;
 }
 
 .bar-desc {
   font-size: 12px;
-  color: #999;
+  color: #9ca3af;
   margin-top: 4px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.bar-item :deep(.el-button--primary.is-plain) {
+  border-color: #9381ff;
+  color: #9381ff;
+  border-radius: 12px;
+  transition: all 0.3s;
+}
+
+.bar-item :deep(.el-button--primary.is-plain:hover) {
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  border-color: #6366f1;
+  color: #fff;
 }
 </style>

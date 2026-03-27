@@ -73,17 +73,21 @@ const handleClick = () => {
 </script>
 
 <style scoped>
+/* 【风格统一】帖子卡片 - 半透明毛玻璃效果 */
 .post-card {
-  background: #fff;
-  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
   padding: 20px;
   margin-bottom: 20px;
   cursor: pointer;
-  transition: box-shadow 0.2s;
+  transition: all 0.3s;
+  box-shadow: 0 4px 20px rgba(147, 129, 255, 0.12);
 }
 
 .post-card:hover {
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 8px 30px rgba(147, 129, 255, 0.25);
+  transform: translateY(-2px);
 }
 
 .bar-info {
@@ -93,6 +97,7 @@ const handleClick = () => {
   margin-bottom: 16px;
 }
 
+/* 【风格统一】吧头像 - 圆角12px */
 .bar-avatar {
   width: 48px;
   height: 48px;
@@ -104,55 +109,62 @@ const handleClick = () => {
   flex: 1;
 }
 
+/* 【风格统一】吧名称 - 深紫色 */
 .bar-name {
   font-size: 15px;
   font-weight: 600;
-  color: #333;
+  color: #374151;
   margin-bottom: 4px;
 }
 
+/* 【风格统一】吧元数据 - 浅灰色 */
 .bar-meta {
   font-size: 12px;
-  color: #999;
+  color: #9ca3af;
 }
 
 .bar-meta .dot {
   margin: 0 6px;
 }
 
+/* 【风格统一】关注按钮 - 浅紫色描边 */
 .follow-btn {
   border-radius: 16px;
   padding: 4px 12px;
   font-size: 12px;
-  border-color: #2385bb;
-  color: #2385bb;
+  border-color: #9381ff;
+  color: #9381ff;
+  transition: all 0.3s;
 }
 
 .follow-btn:hover {
-  background: #2385bb !important;
-  border-color: #2385bb !important;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6) !important;
+  border-color: #6366f1 !important;
   color: #fff !important;
 }
 
+/* 【风格统一】帖子标题 - 深灰色 */
 .post-title {
   font-size: 16px;
   font-weight: 500;
-  color: #222;
+  color: #1f2937;
   line-height: 1.5;
   margin-bottom: 16px;
+  transition: color 0.3s;
 }
 
 .post-title:hover {
-  color: #2385bb;
+  color: #6366f1;
 }
 
 .post-media {
   margin-bottom: 16px;
 }
 
+/* 【风格统一】视频预览 - 圆角12px */
 .video-preview {
   position: relative;
-  border-radius: 8px;
+  border-radius: 12px;
   overflow: hidden;
 }
 
@@ -169,7 +181,8 @@ const handleClick = () => {
   display: flex;
   align-items: center;
   gap: 8px;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(99, 102, 241, 0.8);
+  backdrop-filter: blur(8px);
   padding: 4px 10px;
   border-radius: 12px;
 }
@@ -184,6 +197,7 @@ const handleClick = () => {
   color: #fff;
 }
 
+/* 【风格统一】帖子图片 - 圆角12px */
 .post-images {
   display: flex;
   gap: 8px;
@@ -194,7 +208,7 @@ const handleClick = () => {
   width: 160px;
   height: 120px;
   object-fit: cover;
-  border-radius: 8px;
+  border-radius: 12px;
 }
 
 .post-image.single-image {
@@ -203,12 +217,13 @@ const handleClick = () => {
   max-height: 360px;
 }
 
+/* 【风格统一】帖子底部 */
 .post-footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding-top: 16px;
-  border-top: 1px solid #f0f0f0;
+  border-top: 1px solid rgba(147, 129, 255, 0.15);
 }
 
 .footer-left {
@@ -216,20 +231,27 @@ const handleClick = () => {
   gap: 24px;
 }
 
+/* 【风格统一】互动按钮 - 浅紫色 */
 .action-item {
   display: flex;
   align-items: center;
   gap: 6px;
   font-size: 13px;
-  color: #999;
+  color: #9ca3af;
+  transition: all 0.3s;
 }
 
 .action-item .el-icon {
   font-size: 16px;
 }
 
+.action-item:hover {
+  color: #6366f1;
+}
+
+/* 【风格统一】帖子时间 - 浅灰色 */
 .post-time {
   font-size: 12px;
-  color: #ccc;
+  color: #d1d5db;
 }
 </style>

@@ -31,7 +31,7 @@
         </div>
         
         <div v-if="!isLoggedIn" class="login-btn-wrapper">
-          <el-avatar :size="32" class="login-btn" @click="showLoginDialog = true">
+          <el-avatar :size="32" class="login-btn" @click="handleOpenLogin">
             登录
           </el-avatar>
         </div>
@@ -50,59 +50,62 @@
         </el-dropdown>
       </div>
     </div>
-
-    <el-dialog
-      v-model="showLoginDialog"
-      width="480px"
-      :close-on-click-modal="true"
-      destroy-on-close
-      class="login-dialog"
-    >
-      <template #header>
-        <div class="dialog-header">
-          <h2 class="dialog-title">登录心云</h2>
-          <p class="dialog-subtitle">欢迎回来，继续你的精彩</p>
-        </div>
-      </template>
-      
-      <el-form :model="loginForm" :rules="loginRules" ref="loginFormRef" class="login-form">
-        <el-form-item prop="username">
-          <el-input 
-            v-model="loginForm.username" 
-            placeholder="请输入用户名"
-            size="large"
-            prefix-icon="User"
-          />
-        </el-form-item>
-        <el-form-item prop="password">
-          <el-input 
-            v-model="loginForm.password" 
-            type="password" 
-            placeholder="请输入密码"
-            size="large"
-            prefix-icon="Lock"
-            show-password
-          />
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" size="large" class="login-submit-btn" @click="handleLogin" :loading="loginLoading">
-            登录
-          </el-button>
-        </el-form-item>
-      </el-form>
-      
-      <template #footer>
-        <div class="dialog-footer">
-          <span class="footer-text">还没有账号？</span>
-          <span class="footer-link" @click="goToRegister">立即注册</span>
-        </div>
-      </template>
-    </el-dialog>
   </header>
+
+  <!-- 【修复】登录弹窗移到header外部，避免受父容器堆叠上下文影响 -->
+  <el-dialog
+    v-model="showLoginDialog"
+    width="480px"
+    :close-on-click-modal="true"
+    destroy-on-close
+    class="login-dialog"
+    @open="handleDialogOpen"
+    @closed="handleDialogClosed"
+  >
+    <template #header>
+      <div class="dialog-header">
+        <h2 class="dialog-title">登录心云</h2>
+        <p class="dialog-subtitle">欢迎回来，继续你的精彩</p>
+      </div>
+    </template>
+    
+    <el-form :model="loginForm" :rules="loginRules" ref="loginFormRef" class="login-form">
+      <el-form-item prop="username">
+        <el-input 
+          v-model="loginForm.username" 
+          placeholder="请输入用户名"
+          size="large"
+          prefix-icon="User"
+        />
+      </el-form-item>
+      <el-form-item prop="password">
+        <el-input 
+          v-model="loginForm.password" 
+          type="password" 
+          placeholder="请输入密码"
+          size="large"
+          prefix-icon="Lock"
+          show-password
+        />
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" size="large" class="login-submit-btn" @click="handleLogin" :loading="loginLoading">
+          登录
+        </el-button>
+      </el-form-item>
+    </el-form>
+    
+    <template #footer>
+      <div class="dialog-footer">
+        <span class="footer-text">还没有账号？</span>
+        <span class="footer-link" @click="goToRegister">立即注册</span>
+      </div>
+    </template>
+  </el-dialog>
 </template>
 
 <script setup>
-import { ref, computed, onMounted, watch } from 'vue'
+import { ref, computed, onMounted, watch, onUnmounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Search, Bell, Star, Clock, User, Lock } from '@element-plus/icons-vue'
@@ -211,12 +214,26 @@ const goToRegister = () => {
   router.push('/register')
 }
 
-// 检测路由参数 openLogin，自动弹出登录框
+const handleOpenLogin = () => {
+  showLoginDialog.value = true
+}
+
+const handleDialogOpen = () => {
+  document.body.style.overflow = 'hidden'
+}
+
+const handleDialogClosed = () => {
+  document.body.style.overflow = ''
+}
+
 watch(
   () => route.query,
   (query) => {
     if (query.openLogin === 'true' && !isLoggedIn.value) {
       showLoginDialog.value = true
+      const newQuery = { ...route.query }
+      delete newQuery.openLogin
+      router.replace({ query: newQuery })
     }
   },
   { immediate: true }
@@ -224,22 +241,31 @@ watch(
 
 onMounted(() => {
 })
+
+onUnmounted(() => {
+  document.body.style.overflow = ''
+})
 </script>
 
 <style scoped>
 .header {
-  background: #fff;
-  border-bottom: 1px solid #e5e6eb;
-  position: sticky;
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(12px);
+  border-bottom: none;
+  position: fixed;
   top: 0;
-  z-index: 100;
+  left: 0;
+  width: 100%;
+  z-index: 999;
   min-width: 1000px;
+  border-radius: 0 0 12px 12px;
+  box-shadow: 0 4px 20px rgba(147, 129, 255, 0.15);
 }
 
 .header-content {
   max-width: 1600px;
   margin: 0 auto;
-  padding: 0 8px 0 8px;
+  padding: 0 50px;
   height: 60px;
   display: flex;
   justify-content: space-between;
@@ -257,8 +283,9 @@ onMounted(() => {
 .logo-text {
   font-size: 20px;
   font-weight: 700;
-  color: #2385bb;
+  color: #fff;
   user-select: none;
+  text-shadow: 0 2px 4px rgba(147, 129, 255, 0.5);
 }
 
 .search-box {
@@ -268,21 +295,27 @@ onMounted(() => {
 }
 
 .search-box :deep(.el-input__wrapper) {
-  border-radius: 20px;
+  border-radius: 24px;
   box-shadow: none;
-  background: #f5f6f7;
-  border: 1px solid #e5e6eb;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(147, 129, 255, 0.3);
+  transition: all 0.3s;
 }
 
 .search-box :deep(.el-input__wrapper:hover) {
-  background: #fff;
-  border-color: #c9cdd4;
+  background: rgba(255, 255, 255, 0.95);
+  border-color: rgba(147, 129, 255, 0.5);
 }
 
 .search-box :deep(.el-input__wrapper.is-focus) {
   background: #fff;
-  border-color: #2385bb;
-  box-shadow: 0 0 0 2px rgba(35, 133, 187, 0.1);
+  border-color: #9381ff;
+  box-shadow: 0 0 0 3px rgba(147, 129, 255, 0.2);
+}
+
+.search-box :deep(.el-input__inner::placeholder) {
+  color: #9ca3af;
 }
 
 .header-right {
@@ -293,15 +326,19 @@ onMounted(() => {
 }
 
 .publish-btn {
-  border-radius: 6px;
-  font-weight: 500;
-  background: #2385bb;
+  border-radius: 24px;
+  font-weight: 600;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
   border: none;
   padding: 8px 20px;
+  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.4);
+  transition: all 0.3s;
 }
 
 .publish-btn:hover {
-  background: #1e75a6 !important;
+  background: linear-gradient(135deg, #4f46e5, #7c3aed) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(99, 102, 241, 0.5);
 }
 
 .header-icons {
@@ -312,14 +349,15 @@ onMounted(() => {
 
 .icon-btn {
   font-size: 20px;
-  color: #666;
+  color: #9381ff;
   cursor: pointer;
   padding: 4px;
-  transition: color 0.2s;
+  transition: all 0.3s;
 }
 
 .icon-btn:hover {
-  color: #2385bb;
+  color: #6366f1;
+  transform: scale(1.1);
 }
 
 .login-btn-wrapper {
@@ -345,11 +383,39 @@ onMounted(() => {
   cursor: pointer;
   border-radius: 50%;
   overflow: hidden;
+  transition: all 0.3s;
 }
 
+.user-avatar-wrapper:hover {
+  transform: scale(1.05);
+}
+
+/* 【修复】登录弹窗层级 - 最高级别99999 */
 .login-dialog :deep(.el-dialog) {
   border-radius: 20px;
-  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 25px 80px rgba(147, 129, 255, 0.25);
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(12px);
+  position: fixed !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  margin: 0 !important;
+  z-index: 99999 !important;
+}
+
+/* 【修复】登录弹窗遮罩层 - 全屏黑色半透明遮罩 */
+.login-dialog :deep(.el-overlay) {
+  z-index: 99998 !important;
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5) !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .login-dialog :deep(.el-dialog__header) {
@@ -374,13 +440,13 @@ onMounted(() => {
 .dialog-title {
   font-size: 28px;
   font-weight: 700;
-  color: #111827;
+  color: #6366f1;
   margin: 0 0 8px 0;
 }
 
 .dialog-subtitle {
   font-size: 14px;
-  color: #6b7280;
+  color: #9ca3af;
   margin: 0;
 }
 
@@ -396,14 +462,17 @@ onMounted(() => {
   border-radius: 12px;
   padding: 12px 16px;
   transition: all 0.3s;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(147, 129, 255, 0.2);
 }
 
 .login-form :deep(.el-input__wrapper:hover) {
-  box-shadow: 0 0 0 1px #d1d5db;
+  border-color: rgba(147, 129, 255, 0.4);
 }
 
 .login-form :deep(.el-input__wrapper.is-focus) {
-  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+  box-shadow: 0 0 0 3px rgba(147, 129, 255, 0.2);
+  border-color: #9381ff;
 }
 
 .login-submit-btn {
@@ -441,7 +510,7 @@ onMounted(() => {
   color: #6366f1;
   font-weight: 600;
   cursor: pointer;
-  transition: color 0.2s;
+  transition: all 0.3s;
 }
 
 .footer-link:hover {

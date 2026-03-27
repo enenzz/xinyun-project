@@ -42,30 +42,11 @@ const bars = ref([
 <style scoped>
 .sidebar {
   width: 100%;
-  position: sticky;
-  top: 80px;
-  align-self: flex-start;
-  height: calc(100vh - 80px);
-  overflow-y: auto;
-  padding-top: 10px;
-  padding-bottom: 10px;
-}
-
-.sidebar::-webkit-scrollbar {
-  width: 6px;
-}
-
-.sidebar::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.sidebar::-webkit-scrollbar-thumb {
-  background: #d1d5db;
-  border-radius: 3px;
-}
-
-.sidebar::-webkit-scrollbar-thumb:hover {
-  background: #9ca3af;
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(12px);
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 4px 20px rgba(147, 129, 255, 0.15);
 }
 
 .nav-item {
@@ -73,22 +54,22 @@ const bars = ref([
   align-items: center;
   gap: 10px;
   padding: 12px 16px;
-  border-radius: 8px;
+  border-radius: 12px;
   cursor: pointer;
-  color: #333;
+  color: #4b5563;
   font-size: 14px;
   margin-bottom: 4px;
-  transition: background 0.2s;
+  transition: all 0.3s;
 }
 
 .nav-item:hover {
-  background: #f5f6f7;
+  background: rgba(147, 129, 255, 0.1);
 }
 
 .nav-item.active {
-  background: #e8f3f9;
-  color: #2385bb;
-  font-weight: 500;
+  background: rgba(147, 129, 255, 0.2);
+  color: #6366f1;
+  font-weight: 600;
 }
 
 .nav-icon {
@@ -97,15 +78,16 @@ const bars = ref([
 
 .divider {
   height: 1px;
-  background: #e5e6eb;
+  background: rgba(147, 129, 255, 0.2);
   margin: 16px 0;
 }
 
 .section-title {
   font-size: 12px;
-  color: #999;
+  color: #9381ff;
   padding: 0 16px;
   margin-bottom: 12px;
+  font-weight: 600;
 }
 
 .bar-list {
@@ -119,25 +101,26 @@ const bars = ref([
   align-items: center;
   gap: 12px;
   padding: 12px 16px;
-  border-radius: 8px;
+  border-radius: 12px;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: all 0.3s;
 }
 
 .bar-item:hover {
-  background: #f5f6f7;
+  background: rgba(147, 129, 255, 0.1);
+  transform: translateX(4px);
 }
 
 .bar-avatar {
   width: 32px;
   height: 32px;
-  border-radius: 8px;
+  border-radius: 12px;
   object-fit: cover;
 }
 
 .bar-name {
   font-size: 14px;
-  color: #333;
+  color: #374151;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
