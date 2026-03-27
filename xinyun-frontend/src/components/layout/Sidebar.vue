@@ -40,7 +40,6 @@ const bars = ref([
 </script>
 
 <style scoped>
-/* 【布局优化】侧边栏容器 - 统一内边距 */
 .sidebar {
   width: 100%;
   background: transparent;
@@ -62,7 +61,6 @@ const bars = ref([
   }
 }
 
-/* 【布局优化】首页按钮 - 饱满不拥挤 */
 .nav-item {
   display: flex;
   align-items: center;
@@ -70,19 +68,19 @@ const bars = ref([
   padding: 12px 16px;
   border-radius: 12px;
   cursor: pointer;
-  color: #333333;
+  color: #6B7280;
   font-size: 14px;
   margin-bottom: 24px;
   transition: all 0.3s;
 }
 
 .nav-item:hover {
-  background: rgba(123, 97, 255, 0.08);
+  background: #E8F3FF;
 }
 
 .nav-item.active {
-  background: rgba(123, 97, 255, 0.08);
-  color: #7b61ff;
+  background: #165DFF;
+  color: #FFFFFF;
   font-weight: 600;
 }
 
@@ -90,17 +88,15 @@ const bars = ref([
   font-size: 18px;
 }
 
-/* 【布局优化】分割线 */
 .divider {
   height: 1px;
-  background: #e0e0e0;
+  background: #E5E7EB;
   margin: 16px 0;
 }
 
-/* 【布局优化】分类标题 - 统一左对齐 */
 .section-title {
   font-size: 12px;
-  color: #888888;
+  color: #6B7280;
   padding-left: 0;
   margin-bottom: 16px;
   font-weight: 600;
@@ -112,7 +108,6 @@ const bars = ref([
   gap: 4px;
 }
 
-/* 【布局优化】列表项 - 统一间距对齐 */
 .bar-item {
   display: flex;
   align-items: center;
@@ -124,7 +119,7 @@ const bars = ref([
 }
 
 .bar-item:hover {
-  background: rgba(123, 97, 255, 0.08);
+  background: #E8F3FF;
   transform: translateX(4px);
 }
 
@@ -136,10 +131,9 @@ const bars = ref([
   flex-shrink: 0;
 }
 
-/* 【布局优化】吧名称 - 文字截断规范 */
 .bar-name {
   font-size: 14px;
-  color: #333333;
+  color: #1F2937;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

@@ -215,14 +215,14 @@ const handlePrivateChat = (user) => {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  color: #7b61ff;
+  color: #165DFF;
   transition: all 0.3s;
   flex-shrink: 0;
 }
 
 .arrow-btn:hover:not(.disabled) {
-  background: rgba(123, 97, 255, 0.08);
-  color: #7b61ff;
+  background: #E8F3FF;
+  color: #165DFF;
 }
 
 .arrow-btn.disabled {
@@ -299,7 +299,7 @@ const handlePrivateChat = (user) => {
 .user-nickname {
   font-size: 15px;
   font-weight: 700;
-  color: #333333;
+  color: #1F2937;
   margin: 0 0 5px 0;
 }
 
@@ -307,7 +307,7 @@ const handlePrivateChat = (user) => {
   display: flex;
   gap: 10px;
   font-size: 12px;
-  color: #999999;
+  color: #6B7280;
 }
 
 .user-image-single {
@@ -325,7 +325,7 @@ const handlePrivateChat = (user) => {
 
 .user-bio {
   font-size: 13px;
-  color: #666666;
+  color: #6B7280;
   line-height: 1.5;
   margin-bottom: 10px;
   display: -webkit-box;
@@ -345,8 +345,8 @@ const handlePrivateChat = (user) => {
 
 .tag-item {
   padding: 4px 10px;
-  background: linear-gradient(135deg, #98E4D0, #87CEEB);
-  color: #ffffff;
+  background: #E8F3FF;
+  color: #165DFF;
   font-size: 11px;
   border-radius: 12px;
   cursor: pointer;
@@ -356,7 +356,7 @@ const handlePrivateChat = (user) => {
 
 .tag-item:hover {
   transform: translateY(-1px);
-  box-shadow: 0 2px 6px rgba(152, 228, 208, 0.4);
+  background: #D6E8FF;
 }
 
 .user-actions {
@@ -377,24 +377,24 @@ const handlePrivateChat = (user) => {
 }
 
 .detail-btn {
-  background: linear-gradient(135deg, #98E4D0, #87CEEB);
+  background: #165DFF;
   color: #ffffff;
 }
 
 .detail-btn:hover {
-  background: linear-gradient(135deg, #7dd4c0, #72c4e0);
+  background: #0E42D2;
   transform: translateY(-1px);
 }
 
 .message-btn {
-  background: #ffffff;
-  color: #666666;
-  border: 1px solid #e0e0e0;
+  background: #F5F8FF;
+  color: #165DFF;
+  border: 1px solid #E8F3FF;
 }
 
 .message-btn:hover {
-  background: #f8f8f8;
-  border-color: #98E4D0;
-  color: #98E4D0;
+  background: #E8F3FF;
+  border-color: #165DFF;
+  color: #165DFF;
 }
 </style>

@@ -241,9 +241,9 @@ onMounted(() => {
 .right-panel-inner {
   width: 100%;
   height: 100%;
-  background: #FAFAF5;
+  background: #F5F7FA;
   border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  box-shadow: none;
   box-sizing: border-box;
   overflow: hidden;
 }
@@ -288,23 +288,23 @@ onMounted(() => {
 .section-title {
   font-size: 15px;
   font-weight: 600;
-  color: #333333;
+  color: #165DFF;
 }
 
 .section-more {
   font-size: 12px;
-  color: #999999;
+  color: #6B7280;
   cursor: pointer;
   transition: color 0.3s;
 }
 
 .section-more:hover {
-  color: #7b61ff;
+  color: #165DFF;
 }
 
 .divider {
   height: 1px;
-  background: linear-gradient(to right, transparent, #e0e0e0, transparent);
+  background: #E5E7EB;
   margin: 0 4px 12px 4px;
 }
 
@@ -346,7 +346,7 @@ onMounted(() => {
 
 .user-nickname-horizontal {
   font-size: 12px;
-  color: #333333;
+  color: #1F2937;
   text-align: center;
   white-space: nowrap;
   overflow: hidden;
@@ -382,25 +382,25 @@ onMounted(() => {
   justify-content: center;
   font-size: 12px;
   font-weight: 700;
-  color: #999999;
-  background: #f0f0f0;
+  color: #6B7280;
+  background: #F5F7FA;
   border-radius: 6px;
   flex-shrink: 0;
 }
 
 .topic-rank.rank-first {
-  background: linear-gradient(135deg, #ff6b6b, #ff8e53);
-  color: #ffffff;
+  background: transparent;
+  color: #F53F3F;
 }
 
 .topic-rank.rank-second {
-  background: linear-gradient(135deg, #ffa940, #ffc53d);
-  color: #ffffff;
+  background: transparent;
+  color: #FF7D00;
 }
 
 .topic-rank.rank-third {
-  background: linear-gradient(135deg, #ffc53d, #ffec3d);
-  color: #ffffff;
+  background: transparent;
+  color: #00B42A;
 }
 
 .topic-content {
@@ -410,7 +410,7 @@ onMounted(() => {
 
 .topic-title {
   font-size: 13px;
-  color: #333333;
+  color: #1F2937;
   line-height: 1.5;
   display: -webkit-box;
   -webkit-line-clamp: 1;
@@ -427,7 +427,7 @@ onMounted(() => {
 
 .heat-value {
   font-size: 11px;
-  color: #999999;
+  color: #6B7280;
   display: flex;
   align-items: center;
   gap: 3px;
@@ -493,7 +493,7 @@ onMounted(() => {
 .bar-name {
   font-size: 13px;
   font-weight: 500;
-  color: #333333;
+  color: #1F2937;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -501,7 +501,7 @@ onMounted(() => {
 
 .bar-members {
   font-size: 11px;
-  color: #999999;
+  color: #6B7280;
 }
 
 .follow-btn {
@@ -514,14 +514,20 @@ onMounted(() => {
 }
 
 .follow-btn.followed {
-  background: #f5f5f5;
-  border-color: #e0e0e0;
-  color: #999999;
+  background: #E5E7EB;
+  border-color: #E5E7EB;
+  color: #1F2937;
 }
 
 .follow-btn:not(.followed) {
-  background: linear-gradient(135deg, #98E4D0, #87CEEB);
-  border: none;
-  color: #ffffff;
+  background: #F5F8FF;
+  border: 1px solid #165DFF;
+  color: #165DFF;
+}
+
+.follow-btn:not(.followed):hover {
+  background: #165DFF !important;
+  border-color: #165DFF !important;
+  color: #FFFFFF !important;
 }
 </style>

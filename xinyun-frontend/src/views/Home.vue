@@ -98,12 +98,11 @@ onMounted(() => {
 </script>
 
 <style scoped>
-/* ========== 基础容器 ========== */
 .home {
   height: 100vh;
   position: relative;
   overflow: hidden;
-  background: #F7F9FC;
+  background: #F9FAFB;
 }
 
 /* ========== 四模块布局容器 ========== */
@@ -115,7 +114,6 @@ onMounted(() => {
   height: 100%;
 }
 
-/* 【模块1】左侧边栏 - 15% 视口宽度 */
 .sidebar-fixed {
   width: 15vw;
   min-width: 200px;
@@ -123,8 +121,8 @@ onMounted(() => {
   height: calc(100vh - 64px);
   overflow-y: auto;
   z-index: 99;
-  background: #E6F9E6;
-  border-right: 1px solid #E8ECF4;
+  background: #F5F8FF;
+  border-right: 1px solid #E5E7EB;
   box-sizing: border-box;
   flex-shrink: 0;
   transition: width 0.2s ease-in-out, min-width 0.2s ease-in-out, max-width 0.2s ease-in-out;
@@ -143,14 +141,13 @@ onMounted(() => {
   border-radius: 3px;
 }
 
-/* 【模块2】中间左 - 用户信息卡片区域 */
 .user-info-area {
   width: 20vw;
   min-width: 240px;
   max-width: 320px;
   height: calc(100vh - 64px);
   z-index: 98;
-  background: #FAFAF5;
+  background: #FFFFFF;
   flex-shrink: 0;
 }
 
@@ -180,11 +177,10 @@ onMounted(() => {
   display: none;
 }
 
-/* 【右侧内容容器】包含中间右和右侧栏，占65% */
 .right-content-wrapper {
   flex: 1;
   display: flex;
-  background: linear-gradient(to right, #F0FBEF, #FFFFFF);
+  background: #F9FAFB;
   height: calc(100vh - 64px);
   overflow: hidden;
 }
@@ -195,6 +191,14 @@ onMounted(() => {
   height: 100%;
   padding: 16px;
   box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.chat-area .chat-window {
+  width: 90%;
+  height: 90%;
 }
 
 /* 【模块3】中间右 - 帖子流区域（独立滚动） */

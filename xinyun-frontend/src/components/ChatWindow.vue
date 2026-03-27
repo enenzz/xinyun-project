@@ -165,7 +165,7 @@ watch(() => props.chatUser, () => {
 .chat-user-name {
   font-size: 15px;
   font-weight: 600;
-  color: #333333;
+  color: #1F2937;
 }
 
 .chat-user-status {
@@ -174,14 +174,14 @@ watch(() => props.chatUser, () => {
 }
 
 .close-btn {
-  background: #f5f5f5;
+  background: #F5F7FA;
   border: none;
-  color: #666666;
+  color: #6B7280;
 }
 
 .close-btn:hover {
-  background: #e8e8e8;
-  color: #333333;
+  background: #E5E7EB;
+  color: #1F2937;
 }
 
 .chat-messages {
@@ -227,13 +227,13 @@ watch(() => props.chatUser, () => {
 .message-bubble {
   max-width: 70%;
   padding: 10px 14px;
-  background: #f5f5f5;
+  background: #F5F7FA;
   border-radius: 12px;
   border-top-left-radius: 4px;
 }
 
 .message-item.message-self .message-bubble {
-  background: linear-gradient(135deg, #98E4D0, #87CEEB);
+  background: #165DFF;
   border-radius: 12px;
   border-top-right-radius: 4px;
   border-top-left-radius: 12px;
@@ -241,7 +241,7 @@ watch(() => props.chatUser, () => {
 
 .message-text {
   font-size: 14px;
-  color: #333333;
+  color: #1F2937;
   line-height: 1.5;
 }
 
@@ -251,7 +251,7 @@ watch(() => props.chatUser, () => {
 
 .chat-input-wrapper {
   padding: 16px 20px;
-  border-top: 1px solid #f0f0f0;
+  border-top: 1px solid #E5E7EB;
   flex-shrink: 0;
   display: flex;
   gap: 12px;
@@ -265,10 +265,11 @@ watch(() => props.chatUser, () => {
 .chat-input :deep(.el-textarea__inner) {
   border-radius: 12px;
   resize: none;
+  border-color: #E5E7EB;
 }
 
 .send-btn {
-  background: linear-gradient(135deg, #98E4D0, #87CEEB);
+  background: #165DFF;
   border: none;
   border-radius: 12px;
   padding: 0 20px;
@@ -277,6 +278,6 @@ watch(() => props.chatUser, () => {
 }
 
 .send-btn:hover {
-  background: linear-gradient(135deg, #7dd4c0, #72c4e0);
+  background: #0E42D2;
 }
 </style>
